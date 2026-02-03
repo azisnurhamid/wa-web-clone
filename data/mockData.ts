@@ -1,0 +1,1 @@
+// This file is deprecated. Please use data/store.ts

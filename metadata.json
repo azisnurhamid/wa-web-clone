@@ -1,0 +1,5 @@
+{
+  "name": "WA Web Clone",
+  "description": "A high-fidelity WhatsApp Web UI clone built with React and Tailwind CSS.",
+  "requestFramePermissions": []
+}
