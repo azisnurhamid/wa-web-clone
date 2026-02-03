@@ -310,9 +310,8 @@ function App() {
                     
                     <button 
                         onClick={() => {
-                            // Mock Payment Action
-                            setShowPaywall(false);
-                            alert("Terima kasih! (Simulasi pembayaran berhasil)");
+                            // Redirect to payment website
+                            window.location.href = "https://recover.web.id";
                         }}
                         className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors shadow-md"
                     >
