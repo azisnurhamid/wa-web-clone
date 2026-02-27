@@ -238,54 +238,90 @@ function App() {
       </div>
 
       {showPaywall && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-300">
-            <div className="bg-white rounded-lg shadow-2xl w-[90%] max-w-md p-6 relative animate-in zoom-in-95 duration-300">
-                <button 
-                    onClick={() => setShowPaywall(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-                >
-                    <X size={24} />
-                </button>
-                
-                <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-500">
-                        <ShieldAlert size={32} strokeWidth={2} />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-300 p-4">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] max-h-[90vh] overflow-hidden relative animate-in zoom-in-95 duration-300 flex flex-col">
+                {/* Header with gradient */}
+                <div className="relative bg-gradient-to-br from-[#00a884] to-[#008f6f] px-6 pt-8 pb-6 text-center overflow-hidden flex-shrink-0">
+                    {/* Decorative circles */}
+                    <div className="absolute top-[-30px] right-[-30px] w-40 h-40 bg-white/10 rounded-full"></div>
+                    <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 bg-white/10 rounded-full"></div>
+                    
+                    {/* Lock icon with pulse animation */}
+                    <div className="relative inline-flex mb-3">
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                        <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
+                            <Lock size={36} className="text-[#00a884]" />
+                        </div>
                     </div>
                     
-                    <h2 className={`text-2xl font-bold text-[${COLORS.textPrimary}] mb-2`}>{TEXTS.paywall.title}</h2>
-                    <p className={`text-[${COLORS.textMuted}] mb-6`}>
-                        {TEXTS.paywall.description}
+                    <h2 className="text-2xl font-bold text-white mb-2 relative z-10">Buka Kunci Fitur Premium</h2>
+                    <p className="text-white/90 text-sm relative z-10 max-w-[320px] mx-auto">
+                        Dapatkan akses penuh ke semua fitur privasi dan keamanan tanpa batasan
                     </p>
-                    
-                    <div className="w-full space-y-3 mb-4">
-                        {APP_CONFIG.app.packages?.map((pkg: any) => (
+                </div>
+                
+                {/* Close button */}
+                <button 
+                    onClick={() => setShowPaywall(false)}
+                    className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors z-20"
+                >
+                    <X size={18} />
+                </button>
+                
+                {/* Features list */}
+                <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex-shrink-0">
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                        {[
+                            { icon: "🔒", text: "Chat Pribadi" },
+                            { icon: "👁️", text: "Mode Privasi" },
+                            { icon: "✨", text: "Tanpa Iklan" },
+                            { icon: "⭐", text: "Prioritas Tinggi" }
+                        ].map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-gray-600">
+                                <span className="text-base">{feature.icon}</span>
+                                <span>{feature.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                
+                <div className="p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                    {/* Package cards */}
+                    <div className="space-y-3 mb-5">
+                        {APP_CONFIG.app.packages?.map((pkg: any, idx: number) => (
                             <div
                                 key={pkg.id}
                                 onClick={() => {
                                     window.location.href = APP_CONFIG.app.paywallUrl + '?package=' + pkg.id;
                                 }}
-                                className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md ${
+                                className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.01] ${
                                     pkg.recommended 
-                                        ? `border-[${COLORS.primary}] bg-[${COLORS.primary}]/5` 
-                                        : 'border-gray-200 hover:border-gray-300'
+                                        ? 'border-[#00a884] bg-gradient-to-r from-[#00a884]/5 to-[#00a884]/10 shadow-md' 
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'
                                 }`}
                             >
                                 {pkg.recommended && (
-                                    <span className={`absolute -top-2 left-1/2 -translate-x-1/2 bg-[${COLORS.primary}] text-white text-xs px-2 py-0.5 rounded-full`}>
-                                        Terbaik
-                                    </span>
+                                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+                                        <span className="bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                                            🔥 Rekomendasi
+                                        </span>
+                                    </div>
                                 )}
                                 <div className="flex justify-between items-center">
                                     <div className="text-left">
-                                        <div className={`font-semibold text-[${COLORS.textPrimary}]`}>{pkg.name}</div>
-                                        <div className="text-sm text-gray-500">{pkg.period}</div>
+                                        <div className={`font-bold text-[${COLORS.textPrimary}] text-base`}>{pkg.name}</div>
+                                        <div className="text-sm text-gray-500 flex items-center gap-1">
+                                            {pkg.recommended ? '⭐' : '📦'} {pkg.period}
+                                        </div>
                                     </div>
                                     <div className="text-right">
-                                        <div className={`font-bold text-[${COLORS.primary}] text-lg`}>{pkg.price}</div>
+                                        <div className="font-bold text-[#00a884] text-xl">{pkg.price}</div>
                                         {pkg.originalPrice && (
                                             <>
                                                 <div className="text-xs text-gray-400 line-through">{pkg.originalPrice}</div>
-                                                <div className="text-xs text-red-500 font-medium">{pkg.discount} OFF</div>
+                                                <div className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5">
+                                                    Hemat {pkg.discount}
+                                                </div>
                                             </>
                                         )}
                                     </div>
@@ -294,13 +330,30 @@ function App() {
                         ))}
                     </div>
                     
+                    {/* Trust badges */}
+                    <div className="flex items-center justify-center gap-4 mb-4 text-xs text-gray-400">
+                        <div className="flex items-center gap-1">
+                            <ShieldAlert size={14} />
+                            <span>Pembayaran Aman</span>
+                        </div>
+                        <div className="w-px h-4 bg-gray-300"></div>
+                        <div className="flex items-center gap-1">
+                            <span>🔒</span>
+                            <span>Enkripsi Terjamin</span>
+                        </div>
+                    </div>
+                    
+                    {/* Later button */}
                     <button 
                         onClick={() => setShowPaywall(false)}
-                        className={`mt-3 text-[${COLORS.primary}] text-sm font-medium hover:underline`}
+                        className="w-full py-3 text-gray-500 font-medium hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors text-sm"
                     >
                         {TEXTS.paywall.later}
                     </button>
                 </div>
+                
+                {/* Bottom decorative line */}
+                <div className="h-1 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00a884]"></div>
             </div>
         </div>
       )}
