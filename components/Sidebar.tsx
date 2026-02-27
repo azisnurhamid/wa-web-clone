@@ -224,9 +224,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                      <span className="absolute top-1 right-0.5 w-2 h-2 bg-[#00a884] rounded-full border border-white"></span>
                   </button>
                   <button 
-                    title="Chat Baru" 
-                    className="hover:bg-gray-200/50 p-1 rounded-full transition"
-                    onClick={() => setView('NEW_CHAT')}
+                    title={isInteractionLocked ? "Chat Baru (Dikunci)" : "Chat Baru"} 
+                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isInteractionLocked ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    onClick={() => !isInteractionLocked && setView('NEW_CHAT')}
+                    disabled={isInteractionLocked}
                   >
                     <MessageSquarePlus size={22} strokeWidth={2} />
                   </button>
@@ -281,9 +282,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                    <input 
                       type="text" 
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder={isUnreadFilter ? "Cari chat belum dibaca" : "Cari atau mulai chat baru"}
-                      className="bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 h-full"
+                      onChange={(e) => !isInteractionLocked && setSearchQuery(e.target.value)}
+                      placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : (isUnreadFilter ? "Cari chat belum dibaca" : "Cari atau mulai chat baru")}
+                      disabled={isInteractionLocked}
+                      className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 h-full ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
                    />
                 </div>
                 <button 

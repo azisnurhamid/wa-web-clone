@@ -66,9 +66,10 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
       className={`absolute inset-0 bg-[#f0f2f5] z-20 flex flex-col transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
+      style={{ top: '64px' }}
     >
       {/* Header */}
-      <div className="h-[108px] bg-[#008069] flex items-end px-6 pb-4">
+      <div className="h-[72px] bg-[#008069] flex items-end px-6 pb-4">
         <div className="flex items-center gap-4 text-white">
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />

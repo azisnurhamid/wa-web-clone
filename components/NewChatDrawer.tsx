@@ -49,6 +49,7 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
       className={`absolute inset-0 bg-[#f0f2f5] z-30 flex flex-col transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
+      style={{ top: '64px' }}
     >
       {/* Header */}
       <div className="h-[108px] bg-[#008069] flex items-end px-6 pb-4 shrink-0">
@@ -73,9 +74,10 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
             <input 
                 type="text" 
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Cari nama atau nomor"
-                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700"
+                onChange={(e) => !isInteractionLocked && setSearchTerm(e.target.value)}
+                placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : "Cari nama atau nomor"}
+                disabled={isInteractionLocked}
+                className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
             />
         </div>
       </div>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { User, StatusUpdate } from '../types';
 
 interface StatusDrawerProps {
@@ -14,14 +14,23 @@ interface StatusDrawerProps {
 const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContacts, isPrivacyMode, isInteractionLocked }) => {
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [activeStatusIndex, setActiveStatusIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Filter contacts who have status updates
   const usersWithStatus = allContacts.filter(u => u.statusUpdates && u.statusUpdates.length > 0);
 
+  // Apply search filter
+  const filteredUsersWithStatus = searchQuery 
+    ? usersWithStatus.filter(u => 
+        u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        u.statusUpdates?.some(s => s.caption?.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : usersWithStatus;
+
   // Separate recent (unviewed) vs viewed (viewed)
   // Logic: If ANY status is unviewed, put user in "Recent". If ALL viewed, "Viewed".
-  const recentUpdates = usersWithStatus.filter(u => u.statusUpdates?.some(s => !s.isViewed));
-  const viewedUpdates = usersWithStatus.filter(u => u.statusUpdates?.every(s => s.isViewed));
+  const recentUpdates = filteredUsersWithStatus.filter(u => u.statusUpdates?.some(s => !s.isViewed));
+  const viewedUpdates = filteredUsersWithStatus.filter(u => u.statusUpdates?.every(s => s.isViewed));
 
   // Auto advance status logic
   useEffect(() => {
@@ -65,9 +74,10 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
     <>
     <div 
       className={`absolute inset-0 bg-[#f0f2f5] z-20 flex flex-col transition-transform duration-300 ease-in-out transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      style={{ top: '64px' }}
     >
         {/* Header */}
-      <div className="h-[108px] bg-[#008069] flex items-end px-6 pb-4">
+      <div className="h-[72px] bg-[#008069] flex items-end px-6 pb-4">
         <div className="flex items-center gap-4 text-white">
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />
@@ -103,13 +113,30 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
               </div>
           </div>
 
+          {/* Search Bar - Between My Status and Recent Updates */}
+          <div className="px-4 py-2 bg-white border-b border-gray-100">
+            <div className="flex items-center bg-[#f0f2f5] border border-gray-200 rounded-lg px-3 py-1.5">
+                <Search size={18} className="text-[#54656f] mr-3" />
+                <input 
+                    type="text" 
+                    value={searchQuery}
+                    onChange={(e) => !isInteractionLocked && setSearchQuery(e.target.value)}
+                    placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : "Cari status"}
+                    disabled={isInteractionLocked}
+                    className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
+                />
+            </div>
+          </div>
+
           {/* RECENT UPDATES */}
           {recentUpdates.length > 0 && (
              <div className="px-4 py-3 text-[#008069] text-[14px] font-medium">TERBARU</div>
           )}
           
           {recentUpdates.map(user => (
-              <StatusItem key={user.id} user={user} onClick={() => handleOpenStatus(user)} isPrivacyMode={isPrivacyMode} isInteractionLocked={isInteractionLocked} />
+              <div key={user.id}>
+                  <StatusItem user={user} onClick={() => handleOpenStatus(user)} isPrivacyMode={isPrivacyMode} isInteractionLocked={isInteractionLocked} />
+              </div>
           ))}
 
           {/* VIEWED UPDATES */}
@@ -118,7 +145,9 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
           )}
 
           {viewedUpdates.map(user => (
-              <StatusItem key={user.id} user={user} onClick={() => handleOpenStatus(user)} isViewedSection isPrivacyMode={isPrivacyMode} isInteractionLocked={isInteractionLocked} />
+              <div key={`viewed-${user.id}`}>
+                  <StatusItem user={user} onClick={() => handleOpenStatus(user)} isViewedSection isPrivacyMode={isPrivacyMode} isInteractionLocked={isInteractionLocked} />
+              </div>
           ))}
 
           {usersWithStatus.length === 0 && (
