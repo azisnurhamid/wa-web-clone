@@ -3,7 +3,8 @@ export const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const getRandomItem = <T>(arr: T[]): T => {
+export const getRandomItem = <T>(arr: readonly T[]): T | undefined => {
+  if (arr.length === 0) return undefined;
   return arr[Math.floor(Math.random() * arr.length)];
 };
 

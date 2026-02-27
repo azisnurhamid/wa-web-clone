@@ -86,7 +86,7 @@ function App() {
 
         } else if (eventType <= 8) {
             // --- NEW STATUS SIMULATION ---
-            const targetContact = getRandomItem(currentContacts);
+            const targetContact = getRandomItem(currentContacts as readonly User[]);
             if (targetContact) {
                 const newStatus = createNewStatusUpdate(targetContact.id);
                 const updatedContact = {
@@ -102,7 +102,7 @@ function App() {
             }
         } else {
              // --- PROFILE CHANGE SIMULATION ---
-             const targetContact = getRandomItem(currentContacts);
+             const targetContact = getRandomItem(currentContacts as readonly User[]);
              if (targetContact) {
                  const updates = generateProfileChange(targetContact);
                  const updatedContact = { ...targetContact, ...updates };
