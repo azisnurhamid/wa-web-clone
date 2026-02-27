@@ -9,6 +9,12 @@ import { getRandomInt, getRandomItem } from './data/utils/helpers';
 import { Lock, X, ShieldAlert } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
 function App() {
   const [chats, setChats] = useState<ChatSession[]>(CHAT_SESSIONS);
   const [contacts, setContacts] = useState<User[]>(ALL_CONTACTS);
