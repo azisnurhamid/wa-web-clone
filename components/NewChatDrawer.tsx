@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Users, UserPlus } from 'lucide-react';
+import { ArrowLeft, Search, Users, UserPlus, Lock, Ban } from 'lucide-react';
 import { ChatSession } from '../types';
 
 interface NewChatDrawerProps {
@@ -107,13 +107,20 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
           </div>
 
           {filteredContacts.map(contact => (
-              <div key={contact.id} className="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100">
+              <div key={contact.id} className={`flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100 ${isInteractionLocked ? 'opacity-60' : ''}`}>
                   {/* Granular Blur: Avatar */}
-                  <img 
-                    src={contact.user.avatar} 
-                    alt={contact.user.name} 
-                    className={`w-12 h-12 rounded-full object-cover transition-all duration-300 ${blurClass}`} 
-                  />
+                  <div className="relative">
+                    <img 
+                      src={contact.user.avatar} 
+                      alt={contact.user.name} 
+                      className={`w-12 h-12 rounded-full object-cover transition-all duration-300 ${blurClass}`} 
+                    />
+                    {isInteractionLocked && (
+                        <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center">
+                            <Ban size={20} className="text-white" />
+                        </div>
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                       {/* Granular Blur: Name */}
                       <div className={`text-[17px] text-[#111b21] font-normal truncate transition-all duration-300 ${blurClass}`}>
