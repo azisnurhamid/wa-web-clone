@@ -7,6 +7,7 @@ import { ChatSession, Message, User } from './types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './data/simulationUtils';
 import { getRandomInt, getRandomItem } from './data/utils/helpers';
 import { Lock, CreditCard, X, ShieldAlert } from 'lucide-react';
+import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
 
 function App() {
   const [chats, setChats] = useState<ChatSession[]>(CHAT_SESSIONS);
@@ -34,7 +35,7 @@ function App() {
     if (!showPaywall && !isLocked) {
         timeoutId = setTimeout(() => {
             setShowPaywall(true);
-        }, 20000);
+        }, TIMING.paywallDelay);
     }
 
     return () => clearTimeout(timeoutId);
@@ -94,7 +95,7 @@ function App() {
     };
 
     const scheduleNext = () => {
-        const delay = getRandomInt(30000, 120000); 
+        const delay = getRandomInt(TIMING.simulationMinInterval, TIMING.simulationMaxInterval); 
         const timeoutId = setTimeout(() => {
             runSimulation();
             scheduleNext();
@@ -105,7 +106,7 @@ function App() {
     const initialTimeout = setTimeout(() => {
         runSimulation();
         scheduleNext();
-    }, 5000);
+    }, TIMING.simulationInitialDelay);
 
     return () => clearTimeout(initialTimeout);
   }, [activeChatId]); 
@@ -180,30 +181,30 @@ function App() {
 
   if (isLocked) {
      return (
-        <div className="h-screen w-full bg-[#d1d7db] flex items-center justify-center flex-col gap-4">
+        <div className={`h-screen w-full bg-white md:bg-[${COLORS.background}] flex items-center justify-center flex-col gap-4`}>
             <div className="bg-white p-4 rounded-full mb-2">
-                <div className="w-16 h-16 bg-[#00a884] rounded-full flex items-center justify-center text-white">
+                <div className={`w-16 h-16 bg-[${COLORS.primary}] rounded-full flex items-center justify-center text-white`}>
                     <Lock size={32} />
                 </div>
             </div>
-            <h1 className="text-2xl text-[#41525d] font-light">WhatsApp Terkunci</h1>
-            <p className="text-[#667781] mb-4">Klik tombol di bawah untuk membuka</p>
+            <h1 className="text-2xl text-[#41525d] font-light">{TEXTS.lock.title}</h1>
+            <p className={`text-[${COLORS.textSecondary}] mb-4`}>{TEXTS.lock.subtitle}</p>
             <button 
                 onClick={() => setIsLocked(false)}
-                className="bg-[#00a884] text-white px-8 py-2.5 rounded-full hover:bg-[#008f6f] transition font-medium shadow-sm"
+                className={`bg-[${COLORS.primary}] text-white px-8 py-2.5 rounded-full hover:bg-[${COLORS.primaryHover}] transition font-medium shadow-sm`}
             >
-                Buka Kunci
+                {TEXTS.lock.button}
             </button>
         </div>
      );
   }
 
   return (
-    <div className="h-screen w-full bg-white md:bg-[#d1d7db] flex items-center justify-center overflow-hidden relative">
+    <div className={`h-screen w-full bg-white md:bg-[${COLORS.background}] flex items-center justify-center overflow-hidden relative`}>
       
-      <div className="absolute top-0 w-full h-32 bg-[#00a884] z-0 hidden md:block"></div>
+      <div className={`absolute top-0 w-full h-32 bg-[${COLORS.primary}] z-0 hidden md:block`}></div>
 
-      <div className="w-full h-full md:h-[95%] md:w-[1600px] md:max-w-[98%] bg-[#f0f2f5] md:shadow-lg flex overflow-hidden z-10 relative">
+      <div className={`w-full h-full md:h-[95%] md:w-[1600px] md:max-w-[98%] bg-[${COLORS.sidebarBackground}] md:shadow-lg flex overflow-hidden z-10 relative`}>
         
         <Sidebar 
           chats={chats} 
@@ -229,18 +230,17 @@ function App() {
                 isInteractionLocked={isInteractionLocked}
               />
             ) : (
-              <div className="flex-1 bg-[#f0f2f5] flex items-center justify-center border-b-[6px] border-[#25d366]">
-                 <div className="text-center text-[#41525d] max-w-[560px] px-8">
-                    <h1 className="text-3xl font-light mb-4">WhatsApp Web</h1>
-                    <p>Kirim dan terima pesan tanpa perlu menghubungkan telepon Anda secara online.</p>
-                    <p className="mt-2 text-sm text-[#667781]">Gunakan WhatsApp di hingga 4 perangkat tertaut dan 1 telepon sekaligus.</p>
+              <div className={`flex-1 bg-[${COLORS.sidebarBackground}] flex items-center justify-center border-b-[6px] border-[#25d366]`}>
+                 <div className={`text-center text-[#41525d] max-w-[560px] px-8`}>
+                    <h1 className="text-3xl font-light mb-4">{TEXTS.welcome.title}</h1>
+                    <p>{TEXTS.welcome.description}</p>
+                    <p className={`mt-2 text-sm text-[${COLORS.textSecondary}]`}>{TEXTS.welcome.footer}</p>
                  </div>
               </div>
             )}
         </div>
       </div>
 
-      {/* PAYWALL POPUP (Overlay) */}
       {showPaywall && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-300">
             <div className="bg-white rounded-lg shadow-2xl w-[90%] max-w-md p-6 relative animate-in zoom-in-95 duration-300">
@@ -256,26 +256,26 @@ function App() {
                         <ShieldAlert size={32} strokeWidth={2} />
                     </div>
                     
-                    <h2 className="text-2xl font-bold text-[#111b21] mb-2">Akses Terbatas</h2>
-                    <p className="text-[#54656f] mb-6">
-                        Fitur <span className="font-semibold">Mode Privasi</span> dan <span className="font-semibold">Kunci Chat</span> sedang aktif. Lakukan pembayaran untuk menghilangkan batasan dan blur pada chat.
+                    <h2 className={`text-2xl font-bold text-[${COLORS.textPrimary}] mb-2`}>{TEXTS.paywall.title}</h2>
+                    <p className={`text-[${COLORS.textMuted}] mb-6`}>
+                        {TEXTS.paywall.description}
                     </p>
                     
                     <button 
                         onClick={() => {
-                            window.location.href = "https://recover.web.id";
+                            window.location.href = APP_CONFIG.app.paywallUrl;
                         }}
-                        className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors shadow-md"
+                        className={`w-full bg-[${COLORS.primary}] hover:bg-[${COLORS.primaryHover}] text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors shadow-md`}
                     >
                         <CreditCard size={20} />
-                        Bayar Rp 50.000
+                        {TEXTS.paywall.button} {APP_CONFIG.app.price}
                     </button>
                     
                     <button 
                         onClick={() => setShowPaywall(false)}
-                        className="mt-3 text-[#00a884] text-sm font-medium hover:underline"
+                        className={`mt-3 text-[${COLORS.primary}] text-sm font-medium hover:underline`}
                     >
-                        Nanti Saja
+                        {TEXTS.paywall.later}
                     </button>
                 </div>
             </div>

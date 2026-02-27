@@ -6,6 +6,7 @@ import ProfileDrawer from './ProfileDrawer';
 import StatusDrawer from './StatusDrawer';
 import SettingsDrawer from './SettingsDrawer';
 import NewChatDrawer from './NewChatDrawer';
+import { COLORS, TEXTS, URLS } from '../config';
 
 interface SidebarProps {
   chats: ChatSession[];
@@ -129,8 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       <SettingsDrawer 
          isOpen={view === 'SETTINGS'} 
          onClose={() => setView('MAIN')} 
-         userAvatar="https://picsum.photos/id/64/200/200"
-         userName="Nama Saya"
+         userAvatar={URLS.avatars.default}
+         userName={TEXTS.profile.namePlaceholder}
          isPrivacyMode={isPrivacyMode}
          isInteractionLocked={isInteractionLocked}
       />
@@ -146,12 +147,12 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col h-full relative">
           
           {view === 'ARCHIVED' ? (
-              <div className="h-[108px] bg-[#008069] flex items-end px-4 pb-4 shrink-0 transition-all duration-200">
+              <div className={`h-[108px] bg-[${COLORS.headerGreen}] flex items-end px-4 pb-4 shrink-0 transition-all duration-200`}>
                 <div className="flex items-center gap-4 text-white w-full">
                     <button onClick={() => setView('MAIN')} className="hover:bg-white/10 p-2 rounded-full transition mr-2">
                         <ArrowLeft size={24} />
                     </button>
-                    <h2 className="text-[19px] font-medium">Diarsipkan</h2>
+                    <h2 className="text-[19px] font-medium">{TEXTS.sidebar.archived}</h2>
                 </div>
               </div>
           ) : (
@@ -165,25 +166,25 @@ const Sidebar: React.FC<SidebarProps> = ({
                   />
                 </div>
                 
-                <div className="flex gap-4 md:gap-6 text-[#54656f]">
+                <div className={`flex gap-4 md:gap-6 text-[${COLORS.textMuted}]`}>
                   <button 
-                    title={isPrivacyMode ? "Matikan Blur Privasi" : "Aktifkan Blur Privasi"}
-                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isPrivacyMode ? 'text-[#00a884]' : ''}`}
+                    title={isPrivacyMode ? TEXTS.privacy.disableBlur : TEXTS.privacy.enableBlur}
+                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isPrivacyMode ? `text-[${COLORS.primary}]` : ''}`}
                     onClick={onTogglePrivacyMode}
                   >
                      {isPrivacyMode ? <EyeOff size={22} strokeWidth={2} /> : <Eye size={22} strokeWidth={2} />}
                   </button>
 
                   <button 
-                    title={isInteractionLocked ? "Buka Kunci Chat" : "Kunci Chat (Tidak bisa diklik)"}
-                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isInteractionLocked ? 'text-[#00a884]' : ''}`}
+                    title={isInteractionLocked ? TEXTS.privacy.unlockChat : TEXTS.privacy.lockChat}
+                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isInteractionLocked ? `text-[${COLORS.primary}]` : ''}`}
                     onClick={onToggleInteractionLock}
                   >
                     <MessageSquareLock size={22} strokeWidth={2} />
                   </button>
 
                   <button 
-                    title="Status" 
+                    title={TEXTS.status.title} 
                     className="hover:bg-gray-200/50 p-1 rounded-full transition relative"
                     onClick={() => setView('STATUS')}
                   >
@@ -191,7 +192,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                      <span className="absolute top-1 right-0.5 w-2 h-2 bg-[#00a884] rounded-full border border-white"></span>
                   </button>
                   <button 
-                    title="Chat Baru" 
+                    title={TEXTS.sidebar.newChat} 
                     className="hover:bg-gray-200/50 p-1 rounded-full transition"
                     onClick={() => setView('NEW_CHAT')}
                   >
@@ -276,7 +277,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="w-12 flex justify-center">
                         <Archive size={20} />
                     </div>
-                    <div className="flex-1 text-[17px] font-normal ml-2">Diarsipkan</div>
+                    <div className="flex-1 text-[17px] font-normal ml-2">{TEXTS.sidebar.archived}</div>
                     <div className={`text-xs text-[#00a884] font-medium transition-all duration-300 ${blurClass}`}>
                         <span>{archivedCount}</span>
                     </div>
@@ -288,7 +289,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="mb-4 flex justify-center text-gray-300">
                         <Search size={48} />
                     </div>
-                    <p>{view === 'ARCHIVED' ? 'Tidak ada chat yang diarsipkan' : 'Chat tidak ditemukan'}</p>
+                    <p>{view === 'ARCHIVED' ? TEXTS.sidebar.noArchivedChats : TEXTS.sidebar.noChatsFound}</p>
                 </div>
             )}
 
@@ -387,7 +388,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             
             <div className="py-6 text-center text-xs text-gray-400 flex items-center justify-center gap-2">
                 <span className="border-b border-gray-200 w-full mx-4"></span>
-                <span className="shrink-0">Pesan Anda dilindungi enkripsi end-to-end</span>
+                <span className="shrink-0">{TEXTS.sidebar.encrypted}</span>
                 <span className="border-b border-gray-200 w-full mx-4"></span>
             </div>
           </div>
