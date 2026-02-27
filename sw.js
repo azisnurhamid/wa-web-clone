@@ -2,7 +2,10 @@ const CACHE_NAME = 'whatsapp-web-clone-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/index.tsx',
+  '/manifest.json',
+  '/App.tsx',
+  '/sw.js'
 ];
 
 self.addEventListener('install', (event) => {
