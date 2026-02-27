@@ -41,10 +41,6 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [showPaywall, isLocked]);
 
-  const reorderChats = (currentList: ChatSession[], updatedChat: ChatSession) => {
-    return currentList.map(c => c.id === updatedChat.id ? updatedChat : c);
-  };
-
   useEffect(() => {
     const runSimulation = () => {
         const currentChats = chatsRef.current;

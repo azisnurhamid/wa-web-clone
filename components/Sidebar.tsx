@@ -118,10 +118,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';
-  
-  const blurClassGroup = isPrivacyMode 
-    ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}` 
-    : '';
 
   return (
     <div className={`flex flex-col w-full md:w-[35%] md:min-w-[320px] md:max-w-[450px] h-full border-r border-gray-300 bg-white relative ${className}`}>
