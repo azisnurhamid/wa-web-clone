@@ -224,10 +224,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                      <span className="absolute top-1 right-0.5 w-2 h-2 bg-[#00a884] rounded-full border border-white"></span>
                   </button>
                   <button 
-                    title={isInteractionLocked ? "Chat Baru (Dikunci)" : "Chat Baru"} 
-                    className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isInteractionLocked ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    onClick={() => !isInteractionLocked && setView('NEW_CHAT')}
-                    disabled={isInteractionLocked}
+                    title="Chat Baru" 
+                    className="hover:bg-gray-200/50 p-1 rounded-full transition"
+                    onClick={() => setView('NEW_CHAT')}
                   >
                     <MessageSquarePlus size={22} strokeWidth={2} />
                   </button>
