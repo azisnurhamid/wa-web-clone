@@ -68,8 +68,8 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
       </div>
 
       {/* Search Contacts */}
-       <div className="bg-white px-3 py-2 border-b border-gray-100 flex items-center gap-2 shrink-0 z-10 shadow-sm">
-        <div className="flex-1 flex items-center bg-[#f0f2f5] rounded-lg px-4 py-1.5">
+       <div className="bg-white px-3 py-2 border-b border-gray-100 flex items-center justify-center shrink-0 z-10 shadow-sm">
+        <div className="w-full max-w-md flex items-center bg-[#f0f2f5] rounded-lg px-4 py-1.5">
             <Search size={18} className="text-[#54656f] mr-4" />
             <input 
                 type="text" 
