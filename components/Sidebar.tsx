@@ -254,8 +254,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                    />
                 </div>
                 <button 
-                    onClick={() => setIsUnreadFilter(!isUnreadFilter)}
-                    className={`p-2 rounded-full transition ${isUnreadFilter ? 'bg-[#00a884] text-white shadow-sm' : 'text-[#54656f] hover:bg-gray-100'}`}
+                    onClick={() => !isInteractionLocked && setIsUnreadFilter(!isUnreadFilter)}
+                    disabled={isInteractionLocked}
+                    className={`p-2 rounded-full transition ${isUnreadFilter ? 'bg-[#00a884] text-white shadow-sm' : 'text-[#54656f] hover:bg-gray-100'} ${isInteractionLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                     title="Filter chat belum dibaca"
                 >
                     <Filter size={20} fill={isUnreadFilter ? "currentColor" : "none"} />
@@ -269,10 +270,9 @@ const Sidebar: React.FC<SidebarProps> = ({
             {view === 'MAIN' && archivedCount > 0 && !searchQuery && !isUnreadFilter && (
                 <div 
                     onClick={() => {
-                        if (isInteractionLocked) return;
                         setView('ARCHIVED');
                     }}
-                    className={`flex items-center px-4 py-3 hover:bg-[#f5f6f6] text-[#2ba995] transition-colors border-b border-gray-100 ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+                    className={`flex items-center px-4 py-3 hover:bg-[#f5f6f6] text-[#2ba995] transition-colors border-b border-gray-100 cursor-pointer`}
                 >
                     <div className="w-12 flex justify-center">
                         <Archive size={20} />
@@ -296,12 +296,15 @@ const Sidebar: React.FC<SidebarProps> = ({
             {sortedChats.map((chat) => (
               <div
                 key={chat.id}
-                onClick={() => onSelectChat(chat.id)}
+                onClick={() => {
+                    if (isInteractionLocked && isArchivedView) return;
+                    onSelectChat(chat.id);
+                }}
                 className={`
                   flex items-center gap-4 px-3 py-3 transition-colors relative group
                   ${activeChatId === chat.id && !isArchivedView ? 'bg-[#f0f2f5]' : 'hover:bg-[#f5f6f6]'}
                   border-b border-gray-100
-                  ${isInteractionLocked ? 'cursor-not-allowed' : 'cursor-pointer'}
+                  ${isInteractionLocked && isArchivedView ? 'cursor-not-allowed opacity-70' : (isInteractionLocked ? 'cursor-not-allowed' : 'cursor-pointer')}
                 `}
               >
                 <div 

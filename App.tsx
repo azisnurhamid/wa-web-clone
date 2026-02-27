@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatWindow from './components/ChatWindow';
+import PricingPage from './components/PricingPage';
 import { CHAT_SESSIONS, ALL_CONTACTS } from './data/store';
 import { ChatSession, Message, User } from './types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './data/simulationUtils';
@@ -17,6 +18,7 @@ function App() {
   const [isPrivacyMode, setIsPrivacyMode] = useState(true);
   const [isInteractionLocked, setIsInteractionLocked] = useState(true);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showPricingPage, setShowPricingPage] = useState(false);
   
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
@@ -286,50 +288,6 @@ function App() {
                 </div>
                 
                 <div className="p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {/* Package cards */}
-                    <div className="space-y-3 mb-5">
-                        {APP_CONFIG.app.packages?.map((pkg: any, idx: number) => (
-                            <div
-                                key={pkg.id}
-                                onClick={() => {
-                                    window.location.href = APP_CONFIG.app.paywallUrl + '?package=' + pkg.id;
-                                }}
-                                className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.01] ${
-                                    pkg.recommended 
-                                        ? 'border-[#00a884] bg-gradient-to-r from-[#00a884]/5 to-[#00a884]/10 shadow-md' 
-                                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                                }`}
-                            >
-                                {pkg.recommended && (
-                                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
-                                        <span className="bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                                            🔥 Rekomendasi
-                                        </span>
-                                    </div>
-                                )}
-                                <div className="flex justify-between items-center">
-                                    <div className="text-left">
-                                        <div className={`font-bold text-[${COLORS.textPrimary}] text-base`}>{pkg.name}</div>
-                                        <div className="text-sm text-gray-500 flex items-center gap-1">
-                                            {pkg.recommended ? '⭐' : '📦'} {pkg.period}
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <div className="font-bold text-[#00a884] text-xl">{pkg.price}</div>
-                                        {pkg.originalPrice && (
-                                            <>
-                                                <div className="text-xs text-gray-400 line-through">{pkg.originalPrice}</div>
-                                                <div className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5">
-                                                    Hemat {pkg.discount}
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    
                     {/* Trust badges */}
                     <div className="flex items-center justify-center gap-4 mb-4 text-xs text-gray-400">
                         <div className="flex items-center gap-1">
@@ -343,12 +301,15 @@ function App() {
                         </div>
                     </div>
                     
-                    {/* Later button */}
+                    {/* View all packages button */}
                     <button 
-                        onClick={() => setShowPaywall(false)}
-                        className="w-full py-3 text-gray-500 font-medium hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors text-sm"
+                        onClick={() => {
+                            setShowPaywall(false);
+                            setShowPricingPage(true);
+                        }}
+                        className="w-full py-3 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#00a884]/30 transition-all"
                     >
-                        {TEXTS.paywall.later}
+                        Lihat Selengkapnya →
                     </button>
                 </div>
                 
@@ -356,6 +317,15 @@ function App() {
                 <div className="h-1 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00a884]"></div>
             </div>
         </div>
+      )}
+
+      {showPricingPage && (
+        <PricingPage 
+          onClose={() => setShowPricingPage(false)} 
+          onSelectPackage={(pkgId) => {
+            window.location.href = APP_CONFIG.app.paywallUrl + '/topup?package=' + pkgId;
+          }}
+        />
       )}
     </div>
   );

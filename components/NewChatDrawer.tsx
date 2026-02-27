@@ -79,13 +79,13 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
 
       <div className="flex-1 overflow-y-auto custom-scrollbar bg-white">
           <div className="py-2">
-               <div className="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6]">
+               <div className={`flex items-center gap-4 px-4 py-3 ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-[#f5f6f6]'}`}>
                     <div className="w-12 h-12 bg-[#00a884] rounded-full flex items-center justify-center text-white">
                         <Users size={24} fill="currentColor" />
                     </div>
                     <div className="text-[17px] text-[#111b21] font-medium">{TEXTS.newChat.newGroup}</div>
                </div>
-               <div className="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6]">
+               <div className={`flex items-center gap-4 px-4 py-3 ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-[#f5f6f6]'}`}>
                     <div className="w-12 h-12 bg-[#00a884] rounded-full flex items-center justify-center text-white">
                          <UserPlus size={24} />
                     </div>
@@ -102,14 +102,16 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
           {filteredContacts.map(contact => (
               <div 
                 key={contact.id} 
-                className={`flex items-center gap-4 px-4 py-3 border-b border-gray-100 ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-[#f5f6f6]'}`}
+                className={`flex items-center gap-4 px-4 py-3 border-b border-gray-100 relative group ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-[#f5f6f6]'}`}
                 onClick={() => isInteractionLocked ? null : null}
               >
-                  <img 
-                    src={contact.user.avatar} 
-                    alt={contact.user.name} 
-                    className={`w-12 h-12 rounded-full object-cover transition-all duration-300 ${blurClass}`} 
-                  />
+                  <div className={`relative transition-all duration-300 ${isPrivacyMode ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
+                      <img 
+                        src={contact.user.avatar} 
+                        alt={contact.user.name} 
+                        className="w-12 h-12 rounded-full object-cover" 
+                      />
+                  </div>
                   <div className="flex-1 min-w-0">
                       <div className={`text-[17px] text-[#111b21] font-normal truncate transition-all duration-300 ${blurClass}`}>
                           {contact.user.name}

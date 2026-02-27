@@ -86,10 +86,23 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                     alt="My Profile" 
                     className="w-full h-full rounded-full object-cover"
                 />
-                <div className={`absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity ${isPrivacyMode ? 'hidden group-hover:flex' : ''}`}>
-                    <Camera size={24} className="mb-2" />
-                    <span className="text-xs uppercase text-center w-24">{TEXTS.profile.changePhoto}</span>
-                </div>
+                {isPrivacyMode ? (
+                    <div className={`absolute inset-0 rounded-full flex flex-col items-center justify-center text-white transition-opacity ${isInteractionLocked ? 'opacity-100 bg-black/40' : 'opacity-0 hover:opacity-100 bg-black/40'}`}>
+                        {isInteractionLocked ? (
+                            <Edit2 size={32} className="text-red-500" />
+                        ) : (
+                            <>
+                                <Camera size={24} className="mb-2" />
+                                <span className="text-xs uppercase text-center w-24">{TEXTS.profile.changePhoto}</span>
+                            </>
+                        )}
+                    </div>
+                ) : (
+                    <div className="absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Camera size={24} className="mb-2" />
+                        <span className="text-xs uppercase text-center w-24">{TEXTS.profile.changePhoto}</span>
+                    </div>
+                )}
             </div>
         </div>
 
@@ -119,11 +132,12 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                 </div>
             ) : (
                 <div className="flex items-center justify-between group cursor-pointer" onClick={() => {
+                    if (isInteractionLocked) return;
                     setTempName(name);
                     setIsEditingName(true);
                 }}>
                     <span className={`text-[#3b4a54] text-[17px] transition-all duration-300 ${blurClass}`}>{name}</span>
-                    <Edit2 size={20} className="text-[#8696a0] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Edit2 size={20} className="text-[#8696a0]" />
                 </div>
             )}
         </div>
@@ -156,11 +170,12 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                 </div>
             ) : (
                 <div className="flex items-center justify-between group cursor-pointer" onClick={() => {
+                    if (isInteractionLocked) return;
                     setTempAbout(about);
                     setIsEditingAbout(true);
                 }}>
                      <span className={`text-[#3b4a54] text-[17px] transition-all duration-300 ${blurClass}`}>{about}</span>
-                    <Edit2 size={20} className="text-[#8696a0] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Edit2 size={20} className="text-[#8696a0]" />
                 </div>
             )}
         </div>

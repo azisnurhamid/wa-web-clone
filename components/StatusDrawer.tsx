@@ -95,13 +95,20 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                       alt="My Status" 
                       className="w-10 h-10 rounded-full object-cover opacity-80"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
-                      <Plus size={10} strokeWidth={4} />
-                  </div>
+                  {!isPrivacyMode && (
+                      <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
+                          <Plus size={10} strokeWidth={4} />
+                      </div>
+                  )}
+                  {!isPrivacyMode && (
+                      <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
+                          <Plus size={10} strokeWidth={4} />
+                      </div>
+                  )}
               </div>
               <div>
                   <h3 className={`text-[17px] text-[#111b21] font-normal transition-all duration-300 ${blurClass}`}>{TEXTS.status.myStatus}</h3>
-                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{TEXTS.status.addStatus}</p>
+                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{isInteractionLocked ? 'Dinonaktifkan' : TEXTS.status.addStatus}</p>
               </div>
           </div>
 
@@ -254,6 +261,16 @@ const StatusItem = ({ user, onClick, isViewedSection = false, isPrivacyMode, isI
                     <circle cx="26" cy="26" r="24" fill="none" stroke={strokeColor} strokeWidth="2.5" />
                </svg>
                <img src={user.avatar} alt="Status" className="w-10 h-10 rounded-full object-cover" />
+               {!isPrivacyMode && (
+                   <svg viewBox="0 0 52 52" className="absolute w-[52px] h-[52px] -rotate-90">
+                        <circle cx="26" cy="26" r="24" fill="none" stroke={strokeColor} strokeWidth="2.5" />
+                   </svg>
+               )}
+               {isPrivacyMode && (
+                   <svg viewBox="0 0 52 52" className={`absolute w-[52px] h-[52px] -rotate-90 ${!isInteractionLocked ? 'group-hover:opacity-0' : ''}`}>
+                        <circle cx="26" cy="26" r="24" fill="none" stroke={strokeColor} strokeWidth="2.5" />
+                   </svg>
+               )}
             </div>
             <div className="flex-1 min-w-0">
                 <h3 className={`text-[17px] text-[#111b21] font-medium transition-all duration-300 ${blurClass}`}>{user.name}</h3>
