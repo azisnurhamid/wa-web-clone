@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { ChatSession, User } from '../types';
-import { MessageSquarePlus, MoreVertical, Search, Donut, Filter, Archive, Pin, ChevronDown, ArrowLeft, Lock, Eye, EyeOff, MessageSquareLock } from 'lucide-react';
+import { MessageSquarePlus, MoreVertical, Search, Donut, Filter, Archive, ChevronDown, ArrowLeft, Lock, Eye, EyeOff, MessageSquareLock } from 'lucide-react';
 import ProfileDrawer from './ProfileDrawer';
 import StatusDrawer from './StatusDrawer';
 import SettingsDrawer from './SettingsDrawer';
@@ -39,7 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [view, setView] = useState<SidebarView>('MAIN');
   const [searchQuery, setSearchQuery] = useState('');
   const [isUnreadFilter, setIsUnreadFilter] = useState(false);
-  const [showPinLimitToast, setShowPinLimitToast] = useState(false); // State for Pin Limit Warning
   
   // Dropdown states
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
@@ -89,33 +88,18 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Count archived for the button in MAIN view
   const archivedCount = chats.filter(c => c.archived).length;
 
-  const sortedChats = [...displayChats].sort((a, b) => {
-    if (a.pinned && !b.pinned) return -1;
-    if (!a.pinned && b.pinned) return 1;
-    return 0; 
-  });
+  const sortedChats = [...displayChats];
 
   const handleMenuClick = (e: React.MouseEvent, chatId: string) => {
     e.stopPropagation(); // Prevent opening chat
     setMenuOpenId(menuOpenId === chatId ? null : chatId);
   };
 
-  const handleAction = (e: React.MouseEvent, chatId: string, action: 'pin' | 'unpin' | 'archive' | 'unarchive') => {
+  const handleAction = (e: React.MouseEvent, chatId: string, action: 'unpin' | 'archive' | 'unarchive') => {
     e.stopPropagation();
     setMenuOpenId(null);
     
     switch(action) {
-        case 'pin': 
-            // LIMIT PIN LOGIC: Check count before pinning
-            const pinnedCount = chats.filter(c => c.pinned && !c.archived).length;
-            if (pinnedCount >= 3) {
-                setShowPinLimitToast(true);
-                // Hide toast after 3 seconds
-                setTimeout(() => setShowPinLimitToast(false), 3000);
-            } else {
-                onUpdateChat(chatId, { pinned: true }); 
-            }
-            break;
         case 'unpin': onUpdateChat(chatId, { pinned: false }); break;
         case 'archive': onUpdateChat(chatId, { archived: true, pinned: false }); break;
         case 'unarchive': onUpdateChat(chatId, { archived: false }); break;
@@ -390,7 +374,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </p>
                     <div className="flex items-center gap-2">
                          {chat.pinned && (
-                            <Pin size={16} className="text-[#667781] rotate-45" fill="currentColor" />
+                            <span className="text-[#667781] text-[12px]">📌</span>
                          )}
 
                         {chat.unreadCount > 0 && (
@@ -421,12 +405,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {menuOpenId === chat.id && (
                     <div ref={menuRef} className="absolute right-8 top-8 bg-white shadow-xl rounded-md py-2 z-50 w-48 border border-gray-100">
                             <ul className="text-[#3b4a54] text-[14.5px]">
-                            {chat.pinned ? (
-                                <li onClick={(e) => handleAction(e, chat.id, 'unpin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Lepas sematan</li>
-                            ) : (
-                                <li onClick={(e) => handleAction(e, chat.id, 'pin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Sematkan chat</li>
-                            )}
-                            
                             {chat.archived ? (
                                 <li onClick={(e) => handleAction(e, chat.id, 'unarchive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Buka arsip</li>
                             ) : (
@@ -446,15 +424,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <span className="border-b border-gray-200 w-full mx-4"></span>
             </div>
           </div>
-          
-          {/* TOAST WARNING FOR PIN LIMIT */}
-          {showPinLimitToast && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                  <div className="bg-[#111b21] text-white px-4 py-3 rounded-md shadow-lg text-sm font-normal whitespace-nowrap opacity-90">
-                      Anda hanya dapat menyematkan hingga 3 chat
-                  </div>
-              </div>
-          )}
       </div>
     </div>
   );
