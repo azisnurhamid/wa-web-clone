@@ -47,17 +47,9 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [showPaywall, isLocked]);
 
-  // Helper to maintain pinned order stability
-  // 1. If Pinned: Update in place (don't move to top) to keep order fixed.
-  // 2. If Unpinned: Move to top of Unpinned section (below Pinned).
+  // Helper to update chat order
   const reorderChats = (currentList: ChatSession[], updatedChat: ChatSession) => {
-    if (updatedChat.pinned) {
-        return currentList.map(c => c.id === updatedChat.id ? updatedChat : c);
-    } else {
-        const pinnedChats = currentList.filter(c => c.pinned);
-        const unpinnedChats = currentList.filter(c => !c.pinned && c.id !== updatedChat.id);
-        return [...pinnedChats, updatedChat, ...unpinnedChats];
-    }
+    return currentList.map(c => c.id === updatedChat.id ? updatedChat : c);
   };
 
   // --- AI SIMULATION LOOP ---
@@ -86,11 +78,10 @@ function App() {
                     lastMessage: newMessage.text,
                     lastMessageTime: newMessage.timestamp,
                     unreadCount: targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1,
-                    archived: false // Unarchive on new message
                 };
 
-                // Apply reorder logic respecting Pinned status
-                setChats(reorderChats(currentChats, updatedChat));
+                // Update chat
+                setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
             }
 
         } else if (eventType <= 8) {
@@ -163,8 +154,8 @@ function App() {
         archived: false
     };
 
-    // Apply reorder logic respecting Pinned status
-    setChats(prev => reorderChats(prev, updatedChat));
+    // Update chat in list
+    setChats(prev => prev.map(c => c.id === activeChatId ? updatedChat : c));
   };
 
   const handleSelectChat = (id: string) => {

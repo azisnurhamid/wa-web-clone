@@ -100,8 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     setMenuOpenId(null);
     
     switch(action) {
-        case 'unpin': onUpdateChat(chatId, { pinned: false }); break;
-        case 'archive': onUpdateChat(chatId, { archived: true, pinned: false }); break;
+        case 'archive': onUpdateChat(chatId, { archived: true }); break;
         case 'unarchive': onUpdateChat(chatId, { archived: false }); break;
     }
   };
@@ -373,9 +372,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                        {chat.lastMessage}
                     </p>
                     <div className="flex items-center gap-2">
-                         {chat.pinned && (
-                            <span className="text-[#667781] text-[12px]">📌</span>
-                         )}
 
                         {chat.unreadCount > 0 && (
                            <span className={`bg-[#00a884] text-white text-[10px] font-bold h-5 min-w-[20px] px-1 flex items-center justify-center rounded-full shrink-0 transition-all duration-300 ${blurClass}`}>
