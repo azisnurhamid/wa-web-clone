@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChatSession } from '../types';
 import { Search, MoreVertical, Smile, Paperclip, Mic, Send, X, FileText, Image as ImageIcon, Camera, User, BarChart2, Sticker, ArrowLeft } from 'lucide-react';
 import MessageBubble from './MessageBubble';
+import { COLORS, TEXTS, URLS } from '../config';
 
 interface ChatWindowProps {
   chat: ChatSession;
@@ -105,7 +106,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                             {chat.user.name}
                         </span>
                         <span className="text-[11px] md:text-[13px] text-[#667781] leading-tight truncate">
-                            {chat.user.isOnline ? 'online' : 'terakhir dilihat hari ini 12:00'}
+                            {chat.user.isOnline ? TEXTS.chatWindow.online : TEXTS.chatWindow.lastSeen}
                         </span>
                     </div>
                 </div>
@@ -113,7 +114,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
 
             <div className="flex items-center gap-3 md:gap-6 text-[#54656f]">
                 <button 
-                    title="Cari" 
+                    title={TEXTS.chatWindow.search} 
                     onClick={() => setShowSearchSidebar(true)}
                     className={`p-2 rounded-full transition ${showSearchSidebar ? 'bg-gray-200' : ''}`}
                     disabled={isInteractionLocked}
@@ -122,7 +123,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                 </button>
                 <div className="relative" ref={chatMenuRef}>
                     <button 
-                        title="Menu"
+                        title={TEXTS.chatWindow.menu}
                         onClick={() => setShowChatMenu(!showChatMenu)}
                         className={`p-2 rounded-full transition ${showChatMenu ? 'bg-gray-200' : ''}`}
                         disabled={isInteractionLocked}
@@ -132,13 +133,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                     {showChatMenu && !isInteractionLocked && (
                         <div className="absolute right-0 top-10 bg-white shadow-xl rounded-md py-2 z-50 w-56 border border-gray-100 origin-top-right">
                             <ul className="text-[#3b4a54] text-[14.5px]">
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Info kontak</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Pilih pesan</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Tutup chat</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Bisukan notifikasi</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Pesan sementara</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Bersihkan pesan</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-red-500 hover:text-red-600">Hapus chat</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.contactInfo}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.selectMessage}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.closeChat}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.muteNotifications}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.temporaryMessage}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.chatMenu.clearMessages}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-red-500 hover:text-red-600">{TEXTS.chatMenu.deleteChat}</li>
                             </ul>
                         </div>
                     )}
@@ -149,7 +150,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
         <div 
             className="flex-1 overflow-y-auto px-[3%] md:px-[6%] py-4 custom-scrollbar relative"
             style={{
-                backgroundImage: `url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70fcded21.png")`,
+                backgroundImage: `url("${URLS.background.chat}")`,
                 backgroundRepeat: 'repeat',
                 backgroundSize: '400px'
             }}
@@ -171,16 +172,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
 
         <div className="min-h-[62px] bg-[#f0f2f5] px-2 md:px-4 py-2 flex items-center gap-2 md:gap-4 z-10 border-t border-gray-200 relative">
             <div className="flex gap-2 md:gap-4 text-[#54656f] items-center">
-                <button title="Emoji" className="hidden md:block" disabled={isInteractionLocked}>
+                <button title={TEXTS.chatWindow.emoji} className="hidden md:block" disabled={isInteractionLocked}>
                     <Smile size={26} strokeWidth={1.5} className="hover:text-gray-600" />
                 </button>
-                <button title="Emoji" className="block md:hidden" disabled={isInteractionLocked}>
+                <button title={TEXTS.chatWindow.emoji} className="block md:hidden" disabled={isInteractionLocked}>
                     <Smile size={24} strokeWidth={1.5} className="hover:text-gray-600" />
                 </button>
 
                 <div className="relative" ref={attachMenuRef}>
                     <button 
-                        title="Lampirkan" 
+                        title={TEXTS.chatWindow.attach} 
                         onClick={() => setShowAttachMenu(!showAttachMenu)}
                         className={`transition-transform duration-200 ${showAttachMenu ? 'rotate-45 text-[#008069]' : 'rotate-0'}`}
                         disabled={isInteractionLocked}
@@ -205,7 +206,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder="Ketik pesan"
+                placeholder={TEXTS.chatWindow.typeMessage}
                 className="w-full py-[9px] px-4 bg-white rounded-lg text-sm text-[#111b21] placeholder:text-[#667781] focus:outline-none"
                 disabled={isInteractionLocked}
                 />
@@ -217,7 +218,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                         <Send size={24} />
                     </button>
                 ) : (
-                    <button title="Rekam Suara" disabled={isInteractionLocked}>
+                    <button title={TEXTS.chatWindow.voiceRecord} disabled={isInteractionLocked}>
                         <Mic size={24} strokeWidth={1.5} />
                     </button>
                 )}
@@ -231,7 +232,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                     <button onClick={() => setShowSearchSidebar(false)} className="mr-4 text-[#54656f]">
                         <X size={24} />
                     </button>
-                    <div className="text-[#111b21] text-base font-medium">Cari pesan</div>
+                    <div className="text-[#111b21] text-base font-medium">{TEXTS.chatWindow.searchMessages}</div>
                 </div>
 
                 <div className="px-4 py-3 bg-white shadow-sm z-10">
@@ -239,7 +240,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                         <Search size={16} className="text-[#54656f] mr-3" />
                         <input 
                             type="text" 
-                            placeholder="Cari..."
+                            placeholder={TEXTS.chatWindow.searchInChat}
                             autoFocus
                             className="bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700"
                         />
@@ -247,7 +248,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                 </div>
                 
                 <div className="flex-1 flex flex-col items-center justify-center text-[#667781] p-10 text-center">
-                    <div className="text-sm">Cari pesan dengan {chat.user.name}</div>
+                    <div className="text-sm">{TEXTS.chatWindow.searchWith} {chat.user.name}</div>
                 </div>
             </div>
         )}
@@ -260,7 +261,6 @@ const AttachItem = ({ color, icon, label }: { color: string, icon: React.ReactNo
          <div className={`w-[52px] h-[52px] rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 ${color}`}>
             {icon}
          </div>
-         {/*  */}
          <div className="absolute left-16 bg-white/80 px-2 py-1 rounded text-xs text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm z-50">
              {label}
          </div>

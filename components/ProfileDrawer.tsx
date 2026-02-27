@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Edit2, Camera, Check, Smile } from 'lucide-react';
+import { TEXTS, URLS } from '../config';
 
 interface ProfileDrawerProps {
   isOpen: boolean;
@@ -10,8 +11,8 @@ interface ProfileDrawerProps {
 }
 
 const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivacyMode, isInteractionLocked }) => {
-  const [name, setName] = useState("Nama Saya");
-  const [about, setAbout] = useState("Ada");
+  const [name, setName] = useState(TEXTS.profile.namePlaceholder);
+  const [about, setAbout] = useState(TEXTS.profile.aboutPlaceholder);
   
   const [isEditingName, setIsEditingName] = useState(false);
   const [tempName, setTempName] = useState(name);
@@ -72,7 +73,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />
           </button>
-          <h2 className="text-[19px] font-medium">Profil</h2>
+          <h2 className="text-[19px] font-medium">{TEXTS.profile.title}</h2>
         </div>
       </div>
 
@@ -81,19 +82,19 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
         <div className="py-7 flex justify-center">
             <div className={`relative group cursor-pointer w-[200px] h-[200px] transition-all duration-300 ${isPrivacyMode ? `blur-[8px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
                 <img 
-                    src="https://picsum.photos/id/64/400/400" 
+                    src={URLS.avatars.default} 
                     alt="My Profile" 
                     className="w-full h-full rounded-full object-cover"
                 />
                 <div className={`absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity ${isPrivacyMode ? 'hidden group-hover:flex' : ''}`}>
                     <Camera size={24} className="mb-2" />
-                    <span className="text-xs uppercase text-center w-24">Ganti Foto Profil</span>
+                    <span className="text-xs uppercase text-center w-24">{TEXTS.profile.changePhoto}</span>
                 </div>
             </div>
         </div>
 
         <div className="bg-white px-8 py-4 shadow-sm mb-3">
-            <div className="text-[#008069] text-[14px] mb-4">Nama Anda</div>
+            <div className="text-[#008069] text-[14px] mb-4">{TEXTS.profile.yourName}</div>
             
             {isEditingName ? (
                 <div className="mb-2">
@@ -128,11 +129,11 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
         </div>
         
         <div className="px-8 py-2 text-[#667781] text-[14px] mb-4">
-            Ini bukan username Anda.
+            {TEXTS.profile.aboutHint}
         </div>
 
         <div className="bg-white px-8 py-4 shadow-sm mb-3">
-            <div className="text-[#008069] text-[14px] mb-4">Info</div>
+            <div className="text-[#008069] text-[14px] mb-4">{TEXTS.profile.about}</div>
             
             {isEditingAbout ? (
                  <div className="mb-2">

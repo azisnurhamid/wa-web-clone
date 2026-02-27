@@ -1,44 +1,29 @@
+// Service Worker - No caching for development
 const CACHE_NAME = 'whatsapp-web-clone-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/index.tsx',
-  '/manifest.json',
-  '/App.tsx',
-  '/sw.js'
-];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
+  // Skip waiting to activate immediately
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
+  // Clean up old caches
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
+          return caches.delete(cacheName);
         })
       );
     })
+  );
+  // Take control immediately
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  // No caching - always fetch from network
+  event.respondWith(
+    fetch(event.request)
   );
 });

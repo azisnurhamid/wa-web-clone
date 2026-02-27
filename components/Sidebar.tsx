@@ -160,7 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div className="h-16 bg-[#f0f2f5] flex items-center justify-between px-4 py-3 shrink-0 border-b border-gray-200 relative z-20">
                 <div className="cursor-pointer" onClick={() => setView('PROFILE')}>
                   <img
-                    src="https://picsum.photos/id/64/200/200"
+                    src={URLS.avatars.default}
                     alt="My Profile"
                     className={`w-10 h-10 rounded-full object-cover transition-all duration-300 ${isPrivacyMode ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}
                   />

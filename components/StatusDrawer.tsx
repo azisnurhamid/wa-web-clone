@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { User, StatusUpdate } from '../types';
+import { TEXTS, URLS, COLORS } from '../config';
 
 interface StatusDrawerProps {
   isOpen: boolean;
@@ -90,7 +91,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
           >
               <div className={`relative transition-all duration-300 ${isPrivacyMode ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
                   <img 
-                      src="https://picsum.photos/id/64/200/200" 
+                      src={URLS.avatars.default}
                       alt="My Status" 
                       className="w-10 h-10 rounded-full object-cover opacity-80"
                   />
@@ -99,8 +100,8 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                   </div>
               </div>
               <div>
-                  <h3 className={`text-[17px] text-[#111b21] font-normal transition-all duration-300 ${blurClass}`}>Status Saya</h3>
-                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>Klik untuk menambahkan pembaruan status</p>
+                  <h3 className={`text-[17px] text-[#111b21] font-normal transition-all duration-300 ${blurClass}`}>{TEXTS.status.myStatus}</h3>
+                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{TEXTS.status.addStatus}</p>
               </div>
           </div>
 
@@ -119,7 +120,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
           </div>
 
           {recentUpdates.length > 0 && (
-             <div className="px-4 py-3 text-[#008069] text-[14px] font-medium">TERBARU</div>
+             <div className="px-4 py-3 text-[#008069] text-[14px] font-medium">{TEXTS.status.recent}</div>
           )}
           
           {recentUpdates.map(user => (
@@ -129,7 +130,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
           ))}
 
           {viewedUpdates.length > 0 && (
-            <div className="px-4 py-3 text-[#008069] text-[14px] font-medium mt-4">DILIHAT</div>
+            <div className="px-4 py-3 text-[#008069] text-[14px] font-medium mt-4">{TEXTS.status.viewed}</div>
           )}
 
           {viewedUpdates.map(user => (
@@ -140,7 +141,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
 
           {usersWithStatus.length === 0 && (
               <div className="text-center py-10 text-gray-500">
-                  Tidak ada pembaruan status dari kontak Anda.
+                  {TEXTS.status.noStatus}
               </div>
           )}
       </div>
@@ -200,7 +201,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                 {currentStatus.type === 'image' ? (
                      <div className="relative max-w-[500px] w-full flex flex-col items-center">
                         <img 
-                            key={currentStatus.id} // Key forces re-render for animation
+                            key={currentStatus.id}
                             src={currentStatus.content} 
                             alt="Status" 
                             className="max-h-[80vh] w-full object-contain"

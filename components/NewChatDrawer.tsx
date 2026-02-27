@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Users, UserPlus } from 'lucide-react';
 import { ChatSession } from '../types';
+import { TEXTS } from '../config';
 
 interface NewChatDrawerProps {
   isOpen: boolean;
@@ -54,9 +55,9 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
             <ArrowLeft size={24} />
           </button>
           <div className="flex flex-col">
-            <h2 className="text-[19px] font-medium leading-none mb-1">Chat baru</h2>
+            <h2 className="text-[19px] font-medium leading-none mb-1">{TEXTS.newChat.title}</h2>
             <span className={`text-xs text-white/80 transition-all duration-300 ${blurClass}`}>
-                {contacts.length} kontak
+                {contacts.length} {TEXTS.newChat.contacts}
             </span>
           </div>
         </div>
@@ -69,7 +70,7 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
                 type="text" 
                 value={searchTerm}
                 onChange={(e) => !isInteractionLocked && setSearchTerm(e.target.value)}
-                placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : "Cari nama atau nomor"}
+                placeholder={isInteractionLocked ? TEXTS.sidebar.searchDisabled : TEXTS.newChat.searchPlaceholder}
                 disabled={isInteractionLocked}
                 className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
             />
@@ -82,19 +83,19 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
                     <div className="w-12 h-12 bg-[#00a884] rounded-full flex items-center justify-center text-white">
                         <Users size={24} fill="currentColor" />
                     </div>
-                    <div className="text-[17px] text-[#111b21] font-medium">Grup baru</div>
+                    <div className="text-[17px] text-[#111b21] font-medium">{TEXTS.newChat.newGroup}</div>
                </div>
                <div className="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6]">
                     <div className="w-12 h-12 bg-[#00a884] rounded-full flex items-center justify-center text-white">
                          <UserPlus size={24} />
                     </div>
-                    <div className="text-[17px] text-[#111b21] font-medium">Komunitas baru</div>
+                    <div className="text-[17px] text-[#111b21] font-medium">{TEXTS.newChat.newCommunity}</div>
                </div>
           </div>
 
           <div className="px-8 py-4 text-[#008069] text-[16px] font-normal uppercase flex items-center">
             <span className={`transition-all duration-300 ${blurClass}`}>
-                {filteredContacts.length} Kontak di WhatsApp
+                {filteredContacts.length} {TEXTS.newChat.contactsOnWhatsApp}
             </span>
           </div>
 
@@ -122,7 +123,7 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
           
           {filteredContacts.length === 0 && (
              <div className="p-8 text-center text-gray-500 text-sm">
-                Tidak ada kontak ditemukan untuk "{searchTerm}"
+                {TEXTS.newChat.noContactsFound} "{searchTerm}"
              </div>
           )}
       </div>

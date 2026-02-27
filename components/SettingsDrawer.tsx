@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List, User } from 'lucide-react';
+import { TEXTS } from '../config';
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -13,12 +14,12 @@ interface SettingsDrawerProps {
 
 const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAvatar, userName, isPrivacyMode, isInteractionLocked }) => {
   const settingsItems = [
-    { icon: Bell, label: 'Notifikasi', sub: 'Nada pesan, grup & panggilan' },
-    { icon: Lock, label: 'Privasi', sub: 'Blokir kontak, pesan sementara' },
-    { icon: Sun, label: 'Tema', sub: 'Default sistem' },
-    { icon: Image, label: 'Wallpaper Chat', sub: 'Doodle' },
-    { icon: List, label: 'Minta Info Akun', sub: '' },
-    { icon: HelpCircle, label: 'Bantuan', sub: 'Pusat bantuan, hubungi kami, kebijakan privasi' },
+    { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
+    { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },
+    { icon: Sun, label: TEXTS.settings.theme, sub: TEXTS.settings.themeSub },
+    { icon: Image, label: TEXTS.settings.wallpaper, sub: TEXTS.settings.wallpaperSub },
+    { icon: List, label: TEXTS.settings.requestAccount, sub: '' },
+    { icon: HelpCircle, label: TEXTS.settings.help, sub: TEXTS.settings.helpSub },
   ];
   
   const blurClass = isPrivacyMode 
@@ -41,7 +42,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />
           </button>
-          <h2 className="text-[19px] font-medium">Setelan</h2>
+          <h2 className="text-[19px] font-medium">{TEXTS.settings.title}</h2>
         </div>
       </div>
 
@@ -55,7 +56,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
             />
             <div className="flex-1">
                 <h3 className={`text-[17px] text-[#111b21] mb-1 transition-all duration-300 ${blurClass}`}>{userName}</h3>
-                <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>Ada</p>
+                <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{TEXTS.profile.aboutPlaceholder}</p>
             </div>
         </div>
 
