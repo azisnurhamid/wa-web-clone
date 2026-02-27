@@ -8,8 +8,8 @@ interface ChatWindowProps {
   chat: ChatSession;
   onSendMessage: (text: string) => void;
   onBack: () => void;
-  isPrivacyMode: boolean; // Received from parent
-  isInteractionLocked: boolean; // Received from parent
+  isPrivacyMode: boolean;
+  isInteractionLocked: boolean;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, isPrivacyMode, isInteractionLocked }) => {
@@ -22,12 +22,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
   const attachMenuRef = useRef<HTMLDivElement>(null);
   const chatMenuRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chat.messages]);
 
-  // Click outside listener
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
         if (attachMenuRef.current && !attachMenuRef.current.contains(event.target as Node)) {
@@ -41,28 +39,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Handle ESC Key to close menus or go back
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
-            // Priority 1: Close Attach Menu if open
             if (showAttachMenu) {
                 setShowAttachMenu(false);
                 return;
             }
-            // Priority 2: Close Chat Menu if open
             if (showChatMenu) {
                 setShowChatMenu(false);
                 return;
             }
-            // Priority 3: Close Search Sidebar if open
             if (showSearchSidebar) {
                 setShowSearchSidebar(false);
                 return;
             }
 
-            // Priority 4: Close Chat (trigger onBack)
-            // Only if interaction is NOT locked
             if (!isInteractionLocked) {
                 onBack();
             }
@@ -88,7 +80,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
     }
   };
 
-  // Helper for blur logic
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';
@@ -97,17 +88,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
     <div className="flex h-full w-full relative">
         <div className="flex flex-col flex-1 h-full bg-[#efeae2] relative min-w-0">
         
-        {/* Chat Header */}
         <div className="h-16 bg-[#f0f2f5] px-2 md:px-4 py-2 flex items-center justify-between border-b border-gray-300 z-10 shrink-0 group">
             <div className="flex items-center gap-2 md:gap-4 cursor-pointer overflow-hidden">
-                {/* Back Button (Mobile Only) */}
                 <button onClick={onBack} className="md:hidden text-[#54656f] p-1">
                     <ArrowLeft size={24} />
                 </button>
 
-                {/* Info Container */}
                 <div className="flex items-center gap-3">
-                    {/* Granular Blur: Avatar */}
                     <img 
                         src={chat.user.avatar} 
                         alt={chat.user.name} 
@@ -159,7 +146,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
             </div>
         </div>
 
-        {/* Messages Area */}
         <div 
             className="flex-1 overflow-y-auto px-[3%] md:px-[6%] py-4 custom-scrollbar relative"
             style={{
@@ -168,10 +154,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                 backgroundSize: '400px'
             }}
         >
-            {/* Overlay to dim the background pattern slightly to match WA */}
             <div className="absolute inset-0 bg-[#efeae2] opacity-40 pointer-events-none"></div>
 
-            {/* Message Container content - Pass granular privacy prop */}
             <div className="relative z-0">
                 {chat.messages.map((msg) => (
                     <MessageBubble 
@@ -185,7 +169,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
             </div>
         </div>
 
-        {/* Input Area (Footer) */}
         <div className="min-h-[62px] bg-[#f0f2f5] px-2 md:px-4 py-2 flex items-center gap-2 md:gap-4 z-10 border-t border-gray-200 relative">
             <div className="flex gap-2 md:gap-4 text-[#54656f] items-center">
                 <button title="Emoji" className="hidden md:block" disabled={isInteractionLocked}>
@@ -205,9 +188,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                         <Paperclip size={24} strokeWidth={1.5} />
                     </button>
                     
-                    {/* Attach Popup Menu */}
                     <div className={`absolute bottom-12 left-0 md:left-[-10px] flex flex-col gap-4 transition-all duration-200 ${showAttachMenu ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-75 invisible'}`}>
-                         {/* Items */}
                          <AttachItem color="bg-[#5157ae]" icon={<FileText size={20} fill="white" />} label="Dokumen" />
                          <AttachItem color="bg-[#007bfc]" icon={<ImageIcon size={20} fill="white" />} label="Foto & video" />
                          <AttachItem color="bg-[#d3396d]" icon={<Camera size={20} />} label="Kamera" />
@@ -244,10 +225,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
         </div>
         </div>
         
-        {/* Right Search Sidebar */}
         {showSearchSidebar && (
             <div className="absolute right-0 top-0 bottom-0 w-full md:w-[400px] bg-white border-l border-gray-200 z-20 flex flex-col animate-in slide-in-from-right duration-300 shadow-xl">
-                {/* Search Header */}
                 <div className="h-14 bg-[#f0f2f5] flex items-center px-4 shrink-0 border-b border-gray-100">
                     <button onClick={() => setShowSearchSidebar(false)} className="mr-4 text-[#54656f]">
                         <X size={24} />
@@ -255,7 +234,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                     <div className="text-[#111b21] text-base font-medium">Cari pesan</div>
                 </div>
 
-                {/* Search Input */}
                 <div className="px-4 py-3 bg-white shadow-sm z-10">
                     <div className="bg-[#f0f2f5] flex items-center rounded-lg px-4 py-1.5">
                         <Search size={16} className="text-[#54656f] mr-3" />

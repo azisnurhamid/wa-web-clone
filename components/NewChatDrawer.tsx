@@ -6,9 +6,9 @@ import { ChatSession } from '../types';
 interface NewChatDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  contacts: ChatSession[]; // Reusing chat sessions as mock contacts
-  isPrivacyMode: boolean; // Receive privacy state
-  isInteractionLocked: boolean; // Receive lock state
+  contacts: ChatSession[];
+  isPrivacyMode: boolean;
+  isInteractionLocked: boolean;
 }
 
 const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts, isPrivacyMode, isInteractionLocked }) => {
@@ -20,11 +20,9 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
     
     let phoneMatch = false;
     if (c.user.phoneNumber) {
-        // Basic substring match (handles "+62", space, etc if typed exactly)
         if (c.user.phoneNumber.toLowerCase().includes(term)) {
             phoneMatch = true;
         } 
-        // Numeric only match (handles "0812" matching "+62 812")
         else {
              const cleanTerm = term.replace(/\D/g, '');
              if (cleanTerm.length > 0) {
@@ -39,7 +37,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
     return nameMatch || phoneMatch;
   });
   
-  // Helper for blur logic
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';
@@ -51,7 +48,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
       }`}
       style={{ top: '64px' }}
     >
-      {/* Header */}
       <div className="h-16 bg-[#008069] flex items-end px-6 pb-4 shrink-0">
         <div className="flex items-center gap-4 text-white">
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
@@ -59,7 +55,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
           </button>
           <div className="flex flex-col">
             <h2 className="text-[19px] font-medium leading-none mb-1">Chat baru</h2>
-            {/* Granular Blur: Total Contact Count in Header */}
             <span className={`text-xs text-white/80 transition-all duration-300 ${blurClass}`}>
                 {contacts.length} kontak
             </span>
@@ -67,7 +62,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
         </div>
       </div>
 
-      {/* Search Contacts */}
        <div className="bg-white px-3 py-2 border-b border-gray-100 flex items-center justify-center shrink-0 z-10 shadow-sm">
         <div className="w-full max-w-md flex items-center bg-[#f0f2f5] rounded-lg px-4 py-1.5">
             <Search size={18} className="text-[#54656f] mr-4" />
@@ -82,7 +76,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar bg-white">
           <div className="py-2">
                <div className="flex items-center gap-4 px-4 py-3 cursor-pointer hover:bg-[#f5f6f6]">
@@ -100,7 +93,6 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
           </div>
 
           <div className="px-8 py-4 text-[#008069] text-[16px] font-normal uppercase flex items-center">
-             {/* Granular Blur: Section Title Count */}
             <span className={`transition-all duration-300 ${blurClass}`}>
                 {filteredContacts.length} Kontak di WhatsApp
             </span>
@@ -110,20 +102,17 @@ const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts
               <div 
                 key={contact.id} 
                 className={`flex items-center gap-4 px-4 py-3 border-b border-gray-100 ${isInteractionLocked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:bg-[#f5f6f6]'}`}
-                onClick={() => isInteractionLocked ? null : /* TODO: Add contact click handler */ null}
+                onClick={() => isInteractionLocked ? null : null}
               >
-                  {/* Granular Blur: Avatar */}
                   <img 
                     src={contact.user.avatar} 
                     alt={contact.user.name} 
                     className={`w-12 h-12 rounded-full object-cover transition-all duration-300 ${blurClass}`} 
                   />
                   <div className="flex-1 min-w-0">
-                      {/* Granular Blur: Name */}
                       <div className={`text-[17px] text-[#111b21] font-normal truncate transition-all duration-300 ${blurClass}`}>
                           {contact.user.name}
                       </div>
-                      {/* Granular Blur: About */}
                       <div className={`text-[14px] text-[#667781] truncate transition-all duration-300 ${blurClass}`}>
                           {contact.user.about || contact.user.phoneNumber || "Ada"}
                       </div>

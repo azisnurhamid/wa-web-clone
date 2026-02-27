@@ -1,18 +1,15 @@
 
 export const ROMANTIC_SCRIPT = [
-  // HARI KEMARIN (Yesterday) - Fase Normal
   { offset: 1500, text: "Good night sayang 🌙 Mimpi indah ya", isMine: false },
   { offset: 1495, text: "Night too babe ❤️", isMine: true },
   { offset: 1490, text: "Love you", isMine: false },
   { offset: 1485, text: "Love you more", isMine: true },
 
-  // PAGI INI (Morning) - Fase Perhatian
   { offset: 480, text: "Pagi sayaang ☀️ Bangun yuk", isMine: false },
   { offset: 475, text: "Udah bangun dong. Kamu semangat kerjanya ya hari ini!", isMine: true },
   { offset: 470, text: "Siap bosku 🫡 Nanti siang call ya?", isMine: false },
   { offset: 465, text: "Okee kabarin aja", isMine: true },
 
-  // SIANG (The Fight - Konflik Cemburu/Slow Respon)
   { offset: 200, text: "Yang?", isMine: false },
   { offset: 190, text: "Yaaang??", isMine: false },
   { offset: 180, text: "Kok online tapi ga bales sih?", isMine: false },
@@ -25,7 +22,6 @@ export const ROMANTIC_SCRIPT = [
   { offset: 50, text: "Demi Tuhan sayang, jangan marah dong... 😔", isMine: true },
   { offset: 45, text: "Tau ah. Kesel aku.", isMine: false },
   
-  // SORE (Reconciliation/Baikan)
   { offset: 30, text: "Sayang masih marah? 🥺", isMine: true },
   { offset: 28, text: "Aku beliin martabak kesukaan kamu ya nanti pas pulang?", isMine: true },
   
@@ -34,7 +30,6 @@ export const ROMANTIC_SCRIPT = [
   { offset: 10, text: "Yaudah dimaafin 🙄 Awas ya diulangin lagi!", isMine: false },
   { offset: 8, text: "Makasih sayaang hehe 😘", isMine: true },
   
-  // SAAT INI (Current)
   { offset: 2, text: "Pap dong lagi apa", isMine: false },
   { offset: 1, text: "Lagi mikirin kamu wkwk 🤪", isMine: true },
 ];

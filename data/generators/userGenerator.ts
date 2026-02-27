@@ -13,8 +13,8 @@ const STATUS_TEXTS = [
 const generateStatusUpdates = (userId: string, count: number): StatusUpdate[] => {
     const updates: StatusUpdate[] = [];
     for (let i = 0; i < count; i++) {
-        const isImage = getRandomBoolean(0.7); // 70% chance image
-        const minutesAgo = getRandomInt(5, 1400); // Status within last 24h
+        const isImage = getRandomBoolean(0.7);
+        const minutesAgo = getRandomInt(5, 1400);
         
         updates.push({
             id: `st_${userId}_${i}`,
@@ -24,19 +24,16 @@ const generateStatusUpdates = (userId: string, count: number): StatusUpdate[] =>
                 : getRandomItem(STATUS_TEXTS),
             caption: isImage && getRandomBoolean(0.4) ? getRandomItem(STATUS_TEXTS) : undefined,
             timestamp: generateTimestamp(minutesAgo),
-            isViewed: i === 0 ? false : getRandomBoolean(0.5), // First one usually unviewed for demo
+            isViewed: i === 0 ? false : getRandomBoolean(0.5),
             color: !isImage ? getRandomItem(STATUS_COLORS) : undefined
         });
     }
-    // Sort chronological: older first (so user watches in order)
     return updates.sort((a, b) => {
-        // Simple sort hack for mock timestamps, real app would use Date objects
         return a.id.localeCompare(b.id); 
     });
 };
 
 const generatePhoneNumber = () => {
-    // Format: +62 8xx-xxxx-xxxx
     return `+62 8${getRandomInt(10, 99)}-${getRandomInt(1000, 9999)}-${getRandomInt(1000, 9999)}`;
 };
 
@@ -56,7 +53,6 @@ export const generateUser = (id: string, isGroup = false): User => {
     avatar = `https://picsum.photos/seed/${id}/200/200`;
     phoneNumber = generatePhoneNumber();
 
-    // 25% chance a user has active status updates
     if (getRandomBoolean(0.25)) {
         const statusCount = getRandomInt(1, 5);
         statusUpdates = generateStatusUpdates(id, statusCount);

@@ -4,7 +4,6 @@ import { GREETINGS, QUESTIONS, STATEMENTS, BUSINESS_TALK } from './seeds/convers
 import { getRandomItem, getRandomInt, generateTimestamp, getRandomBoolean } from './utils/helpers';
 import { ROMANTIC_SCRIPT } from './seeds/romance';
 
-// Helper for "AI" Text Generation
 const getRandomMessageText = (isSpecialUser: boolean): string => {
   if (isSpecialUser) {
     const romanticTexts = [
@@ -15,7 +14,6 @@ const getRandomMessageText = (isSpecialUser: boolean): string => {
     return getRandomItem(romanticTexts);
   }
   
-  // Mix of different types for regular users
   const category = getRandomInt(1, 4);
   switch (category) {
     case 1: return getRandomItem(GREETINGS);
@@ -33,8 +31,8 @@ export const createIncomingMessage = (chat: ChatSession): Message => {
     id: `msg_auto_${Date.now()}`,
     text: getRandomMessageText(isSpecial),
     timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'),
-    isMine: false, // Incoming message
-    status: 'read', // Doesn't matter for incoming
+    isMine: false,
+    status: 'read',
   };
 };
 
@@ -55,12 +53,9 @@ export const createNewStatusUpdate = (userId: string): StatusUpdate => {
 };
 
 export const generateProfileChange = (user: User): Partial<User> => {
-    // 50% chance name change, 50% about change
     if (getRandomBoolean(0.5)) {
-        // Add or remove emoji/suffix
         const currentName = user.name;
         const suffixes = [' 💼', ' 🏠', ' (Work)', ' 😊', ''];
-        // Strip existing suffix if simple approach
         const baseName = currentName.replace(/ [\p{Emoji}\u203C-\u3299]\s?.*$/gu, '').replace(/ \(.*\)$/, '');
         return { name: baseName + getRandomItem(suffixes) };
     } else {

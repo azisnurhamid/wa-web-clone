@@ -9,63 +9,49 @@ import { getRandomInt, getRandomItem } from './data/utils/helpers';
 import { Lock, CreditCard, X, ShieldAlert } from 'lucide-react';
 
 function App() {
-  // State for Chats and Contacts needs to be reactive now
   const [chats, setChats] = useState<ChatSession[]>(CHAT_SESSIONS);
   const [contacts, setContacts] = useState<User[]>(ALL_CONTACTS);
   
-  // App States
   const [isLocked, setIsLocked] = useState(false);
-  const [isPrivacyMode, setIsPrivacyMode] = useState(true); // Shared Privacy State - Default TRUE
-  const [isInteractionLocked, setIsInteractionLocked] = useState(true); // Chat Interaction Lock - Default TRUE
-  const [showPaywall, setShowPaywall] = useState(false); // New Paywall State
+  const [isPrivacyMode, setIsPrivacyMode] = useState(true);
+  const [isInteractionLocked, setIsInteractionLocked] = useState(true);
+  const [showPaywall, setShowPaywall] = useState(false);
   
-  // Start with null (List view) by default for better responsive UX
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
   const activeChat = chats.find((c) => c.id === activeChatId);
   const chatsRef = useRef(chats);
   const contactsRef = useRef(contacts);
 
-  // Keep refs synced for the interval closure
   useEffect(() => {
     chatsRef.current = chats;
     contactsRef.current = contacts;
   }, [chats, contacts]);
 
-  // --- PAYWALL LOGIC (20 Seconds After Closing) ---
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
 
-    // Only schedule the next popup if it is currently closed (showPaywall is false)
-    // and the app is not in full screen lock mode.
     if (!showPaywall && !isLocked) {
         timeoutId = setTimeout(() => {
             setShowPaywall(true);
-        }, 20000); // 20 seconds delay
+        }, 20000);
     }
 
     return () => clearTimeout(timeoutId);
   }, [showPaywall, isLocked]);
 
-  // Helper to update chat order
   const reorderChats = (currentList: ChatSession[], updatedChat: ChatSession) => {
     return currentList.map(c => c.id === updatedChat.id ? updatedChat : c);
   };
 
-  // --- AI SIMULATION LOOP ---
   useEffect(() => {
     const runSimulation = () => {
         const currentChats = chatsRef.current;
         const currentContacts = contactsRef.current;
         
-        // Random Event Type: 
-        // 1-6: New Message (High prob)
-        // 7-8: New Status (Medium prob)
-        // 9: Profile Change (Low prob)
         const eventType = getRandomInt(1, 9);
 
         if (eventType <= 6) {
-            // --- NEW MESSAGE SIMULATION ---
             const targetChatIndex = getRandomInt(0, Math.min(15, currentChats.length - 1));
             const targetChat = currentChats[targetChatIndex];
 
@@ -80,12 +66,10 @@ function App() {
                     unreadCount: targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1,
                 };
 
-                // Update chat
                 setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
             }
 
         } else if (eventType <= 8) {
-            // --- NEW STATUS SIMULATION ---
             const targetContact = getRandomItem(currentContacts as readonly User[]);
             if (targetContact) {
                 const newStatus = createNewStatusUpdate(targetContact.id);
@@ -94,14 +78,10 @@ function App() {
                     statusUpdates: targetContact.statusUpdates ? [...targetContact.statusUpdates, newStatus] : [newStatus]
                 };
 
-                // Update Contacts List
                 setContacts(prev => prev.map(u => u.id === targetContact.id ? updatedContact : u));
-                
-                // Update Chat Session User (without reordering)
                 setChats(prev => prev.map(c => c.user.id === targetContact.id ? { ...c, user: updatedContact } : c));
             }
         } else {
-             // --- PROFILE CHANGE SIMULATION ---
              const targetContact = getRandomItem(currentContacts as readonly User[]);
              if (targetContact) {
                  const updates = generateProfileChange(targetContact);
@@ -114,11 +94,10 @@ function App() {
     };
 
     const scheduleNext = () => {
-        // Random interval between 30s (30000ms) and 2m (120000ms)
         const delay = getRandomInt(30000, 120000); 
         const timeoutId = setTimeout(() => {
             runSimulation();
-            scheduleNext(); // Recursive schedule
+            scheduleNext();
         }, delay);
         return timeoutId;
     };
@@ -134,7 +113,6 @@ function App() {
   const handleSendMessage = (text: string) => {
     if (!activeChatId) return;
 
-    // Find current state of the active chat
     const currentChat = chats.find(c => c.id === activeChatId);
     if (!currentChat) return;
 
@@ -154,12 +132,10 @@ function App() {
         archived: false
     };
 
-    // Update chat in list
     setChats(prev => prev.map(c => c.id === activeChatId ? updatedChat : c));
   };
 
   const handleSelectChat = (id: string) => {
-      // Guard: If Interaction Lock is active, prevent opening chat
       if (isInteractionLocked) return;
 
       setActiveChatId(id);
@@ -180,34 +156,25 @@ function App() {
     }));
   };
 
-  // --- LOCKING HANDLERS ---
-  
-  // Handle Full Screen Lock (via Menu)
   const handleAppLock = () => {
     setIsLocked(true);
-    setActiveChatId(null); // Close active chat immediately
+    setActiveChatId(null);
   };
 
-  // Handle Privacy Toggle (via Header Icon)
   const handleTogglePrivacyMode = () => {
       if (isPrivacyMode) {
-          // If currently ON, trying to turn OFF (Unlock Blur) -> Paywall
           setShowPaywall(true);
       } else {
-          // If currently OFF, turning ON -> Allow
           setIsPrivacyMode(true);
       }
   };
 
-  // Handle Interaction Lock (via Header Icon)
   const handleToggleInteractionLock = () => {
     if (isInteractionLocked) {
-        // If currently LOCKED, trying to UNLOCK (Unlock Chat) -> Paywall
         setShowPaywall(true);
     } else {
-        // If currently UNLOCKED, locking -> Allow
         setIsInteractionLocked(true);
-        setActiveChatId(null); // Close active chat immediately when locking
+        setActiveChatId(null);
     }
   };
 
@@ -232,16 +199,12 @@ function App() {
   }
 
   return (
-    // Main Background
     <div className="h-screen w-full bg-white md:bg-[#d1d7db] flex items-center justify-center overflow-hidden relative">
       
-      {/* Green Header Strip (Desktop Only) */}
       <div className="absolute top-0 w-full h-32 bg-[#00a884] z-0 hidden md:block"></div>
 
-      {/* App Container */}
       <div className="w-full h-full md:h-[95%] md:w-[1600px] md:max-w-[98%] bg-[#f0f2f5] md:shadow-lg flex overflow-hidden z-10 relative">
         
-        {/* Sidebar */}
         <Sidebar 
           chats={chats} 
           allContacts={contacts} 
@@ -256,7 +219,6 @@ function App() {
           className={`${activeChatId ? 'hidden md:flex' : 'flex'}`}
         />
         
-        {/* Chat Window */}
         <div className={`flex-1 flex-col bg-[#f0f2f5] min-w-0 ${activeChatId ? 'flex' : 'hidden md:flex'}`}>
             {activeChat ? (
               <ChatWindow 
@@ -301,7 +263,6 @@ function App() {
                     
                     <button 
                         onClick={() => {
-                            // Redirect to payment website
                             window.location.href = "https://recover.web.id";
                         }}
                         className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors shadow-md"

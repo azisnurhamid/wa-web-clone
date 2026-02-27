@@ -7,8 +7,8 @@ interface SettingsDrawerProps {
   onClose: () => void;
   userAvatar: string;
   userName: string;
-  isPrivacyMode: boolean; // New prop
-  isInteractionLocked: boolean; // New prop
+  isPrivacyMode: boolean;
+  isInteractionLocked: boolean;
 }
 
 const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAvatar, userName, isPrivacyMode, isInteractionLocked }) => {
@@ -21,7 +21,6 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
     { icon: HelpCircle, label: 'Bantuan', sub: 'Pusat bantuan, hubungi kami, kebijakan privasi' },
   ];
   
-  // Helper for blur logic
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}` 
     : '';
@@ -37,7 +36,6 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
       }`}
       style={{ top: '64px' }}
     >
-      {/* Header */}
       <div className="h-[72px] bg-[#008069] flex items-end px-6 pb-4 shrink-0">
         <div className="flex items-center gap-4 text-white">
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
@@ -47,10 +45,8 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         
-        {/* User Mini Profile */}
         <div className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group">
             <img 
               src={userAvatar} 
@@ -63,7 +59,6 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
             </div>
         </div>
 
-        {/* List Items */}
         <div className="bg-white shadow-sm">
             {settingsItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-4 px-6 py-5 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100 last:border-none transition">

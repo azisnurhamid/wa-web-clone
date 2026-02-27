@@ -2,11 +2,11 @@
 export interface StatusUpdate {
   id: string;
   type: 'image' | 'text';
-  content: string; // Image URL or Text content
+  content: string;
   caption?: string;
   timestamp: string;
   isViewed: boolean;
-  color?: string; // Background color for text status
+  color?: string;
 }
 
 export interface User {
@@ -15,8 +15,8 @@ export interface User {
   avatar: string;
   isOnline: boolean;
   about?: string;
-  statusUpdates?: StatusUpdate[]; // New field for stories
-  phoneNumber?: string; // New field for phone number
+  statusUpdates?: StatusUpdate[];
+  phoneNumber?: string;
 }
 
 export interface Message {

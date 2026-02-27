@@ -5,8 +5,8 @@ import { ArrowLeft, Edit2, Camera, Check, Smile } from 'lucide-react';
 interface ProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  isPrivacyMode: boolean; // New prop
-  isInteractionLocked: boolean; // New prop
+  isPrivacyMode: boolean;
+  isInteractionLocked: boolean;
 }
 
 const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivacyMode, isInteractionLocked }) => {
@@ -56,7 +56,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
       if (e.key === 'Enter') handleSaveAbout();
   };
   
-  // Helper for blur logic
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}` 
     : '';
@@ -68,7 +67,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
       }`}
       style={{ top: '64px' }}
     >
-      {/* Header */}
       <div className="h-[72px] bg-[#008069] flex items-end px-6 pb-4">
         <div className="flex items-center gap-4 text-white">
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
@@ -78,10 +76,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         
-        {/* Profile Picture */}
         <div className="py-7 flex justify-center">
             <div className={`relative group cursor-pointer w-[200px] h-[200px] transition-all duration-300 ${isPrivacyMode ? `blur-[8px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
                 <img 
@@ -96,7 +92,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
             </div>
         </div>
 
-        {/* Name Section */}
         <div className="bg-white px-8 py-4 shadow-sm mb-3">
             <div className="text-[#008069] text-[14px] mb-4">Nama Anda</div>
             
@@ -126,7 +121,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                     setTempName(name);
                     setIsEditingName(true);
                 }}>
-                    {/* Granular Blur: Name Display */}
                     <span className={`text-[#3b4a54] text-[17px] transition-all duration-300 ${blurClass}`}>{name}</span>
                     <Edit2 size={20} className="text-[#8696a0] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
@@ -137,7 +131,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
             Ini bukan username atau PIN Anda. Nama ini akan terlihat oleh kontak WhatsApp Anda.
         </div>
 
-        {/* About Section */}
         <div className="bg-white px-8 py-4 shadow-sm mb-3">
             <div className="text-[#008069] text-[14px] mb-4">Info</div>
             
@@ -165,8 +158,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                     setTempAbout(about);
                     setIsEditingAbout(true);
                 }}>
-                     {/* Granular Blur: About Display */}
-                    <span className={`text-[#3b4a54] text-[17px] transition-all duration-300 ${blurClass}`}>{about}</span>
+                     <span className={`text-[#3b4a54] text-[17px] transition-all duration-300 ${blurClass}`}>{about}</span>
                     <Edit2 size={20} className="text-[#8696a0] opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
             )}

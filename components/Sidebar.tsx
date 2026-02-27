@@ -16,8 +16,8 @@ interface SidebarProps {
   onLock: () => void; 
   isPrivacyMode: boolean; 
   onTogglePrivacyMode: () => void;
-  isInteractionLocked: boolean; // New prop
-  onToggleInteractionLock: () => void; // New prop
+  isInteractionLocked: boolean;
+  onToggleInteractionLock: () => void;
   className?: string;
 }
 
@@ -39,15 +39,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [view, setView] = useState<SidebarView>('MAIN');
   const [searchQuery, setSearchQuery] = useState('');
   const [isUnreadFilter, setIsUnreadFilter] = useState(false);
-  
-  // Dropdown states
+
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
   
   const menuRef = useRef<HTMLDivElement>(null);
   const mainMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -63,16 +61,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     };
   }, []);
 
-  // Filter and Sort logic
   const isArchivedView = view === 'ARCHIVED';
   
-  // Base Filter (Archived vs Main)
   let displayChats = chats.filter(c => {
     if (isArchivedView) return c.archived;
     return !c.archived;
   });
 
-  // Search Filter
   if (searchQuery) {
       displayChats = displayChats.filter(c => 
         c.user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -80,18 +75,16 @@ const Sidebar: React.FC<SidebarProps> = ({
       );
   }
 
-  // Unread Filter
   if (isUnreadFilter) {
       displayChats = displayChats.filter(c => c.unreadCount > 0);
   }
 
-  // Count archived for the button in MAIN view
   const archivedCount = chats.filter(c => c.archived).length;
 
   const sortedChats = [...displayChats];
 
   const handleMenuClick = (e: React.MouseEvent, chatId: string) => {
-    e.stopPropagation(); // Prevent opening chat
+    e.stopPropagation();
     setMenuOpenId(menuOpenId === chatId ? null : chatId);
   };
 
@@ -109,7 +102,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         allContacts.map(u => ({ id: u.id, user: u, lastMessage: '', lastMessageTime: '', unreadCount: 0, messages: [] } as ChatSession)) 
         : chats;
   
-  // Helper for blur logic
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';
@@ -121,7 +113,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className={`flex flex-col w-full md:w-[35%] md:min-w-[320px] md:max-w-[450px] h-full border-r border-gray-300 bg-white relative ${className}`}>
       
-      {/* Drawers */}
       <ProfileDrawer 
         isOpen={view === 'PROFILE'} 
         onClose={() => setView('MAIN')} 
@@ -154,7 +145,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Main Content */}
       <div className="flex flex-col h-full relative">
           
-          {/* HEADER LOGIC: Main vs Archived */}
           {view === 'ARCHIVED' ? (
               <div className="h-[108px] bg-[#008069] flex items-end px-4 pb-4 shrink-0 transition-all duration-200">
                 <div className="flex items-center gap-4 text-white w-full">
@@ -166,9 +156,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
           ) : (
             <>
-              {/* Sidebar Header */}
               <div className="h-16 bg-[#f0f2f5] flex items-center justify-between px-4 py-3 shrink-0 border-b border-gray-200 relative z-20">
-                {/* User Avatar - GRANULAR BLUR */}
                 <div className="cursor-pointer" onClick={() => setView('PROFILE')}>
                   <img
                     src="https://picsum.photos/id/64/200/200"
@@ -177,9 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   />
                 </div>
                 
-                {/* Actions */}
                 <div className="flex gap-4 md:gap-6 text-[#54656f]">
-                  {/* Privacy Toggle Button */}
                   <button 
                     title={isPrivacyMode ? "Matikan Blur Privasi" : "Aktifkan Blur Privasi"}
                     className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isPrivacyMode ? 'text-[#00a884]' : ''}`}
@@ -188,7 +174,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                      {isPrivacyMode ? <EyeOff size={22} strokeWidth={2} /> : <Eye size={22} strokeWidth={2} />}
                   </button>
 
-                  {/* New Interaction Lock Button (Next to Blur) */}
                   <button 
                     title={isInteractionLocked ? "Buka Kunci Chat" : "Kunci Chat (Tidak bisa diklik)"}
                     className={`hover:bg-gray-200/50 p-1 rounded-full transition ${isInteractionLocked ? 'text-[#00a884]' : ''}`}
@@ -197,7 +182,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <MessageSquareLock size={22} strokeWidth={2} />
                   </button>
 
-                  {/* STATUS BUTTON - Visible on Mobile now */}
                   <button 
                     title="Status" 
                     className="hover:bg-gray-200/50 p-1 rounded-full transition relative"
@@ -223,7 +207,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <MoreVertical size={22} strokeWidth={2} />
                       </button>
                       
-                      {/* Main Menu Dropdown */}
                       {isMainMenuOpen && (
                         <div className="absolute right-0 top-10 bg-white shadow-xl rounded-md py-2 z-50 w-52 border border-gray-100 origin-top-right">
                              <ul className="text-[#3b4a54] text-[14.5px]">
@@ -250,7 +233,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               </div>
 
-              {/* Search Bar */}
               <div className="bg-white px-3 py-2 border-b border-gray-100 flex items-center gap-2">
                 <div className="flex-1 flex items-center bg-[#f0f2f5] rounded-lg px-4 py-1.5 focus-within:bg-white focus-within:shadow-sm border border-transparent focus-within:border-white transition-all">
                    <div className={`transition-transform duration-300 ${searchQuery ? 'rotate-90 scale-0 w-0' : 'rotate-0 scale-100'}`}>
@@ -281,10 +263,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             </>
           )}
 
-          {/* Chat List */}
           <div className="flex-1 overflow-y-auto bg-white custom-scrollbar relative">
             
-            {/* Archived Row Link */}
             {view === 'MAIN' && archivedCount > 0 && !searchQuery && !isUnreadFilter && (
                 <div 
                     onClick={() => {
@@ -297,7 +277,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <Archive size={20} />
                     </div>
                     <div className="flex-1 text-[17px] font-normal ml-2">Diarsipkan</div>
-                    {/* Granular Blur for Archived Count */}
                     <div className={`text-xs text-[#00a884] font-medium transition-all duration-300 ${blurClass}`}>
                         <span>{archivedCount}</span>
                     </div>
@@ -324,18 +303,16 @@ const Sidebar: React.FC<SidebarProps> = ({
                   ${isInteractionLocked ? 'cursor-not-allowed' : 'cursor-pointer'}
                 `}
               >
-                {/* Avatar with Status Ring - GRANULAR BLUR */}
                 <div 
                     className={`relative shrink-0 transition-all duration-300 ${isPrivacyMode ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}
                     onClick={(e) => {
-                        if (isInteractionLocked) return; // Prevent status click on lock
+                        if (isInteractionLocked) return;
                         if (chat.user.statusUpdates?.length) {
                             e.stopPropagation();
                             setView('STATUS');
                         }
                     }}
                 >
-                    {/* SVG Status Ring */}
                    {chat.user.statusUpdates && chat.user.statusUpdates.length > 0 && (
                        <StatusRing count={chat.user.statusUpdates.length} hasUnviewed={chat.user.statusUpdates.some(s => !s.isViewed)} />
                    )}
@@ -349,10 +326,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                    </div>
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex justify-between items-baseline mb-0.5">
-                     {/* Name - GRANULAR BLUR */}
                      <h3 className={`text-[17px] text-[#111b21] font-normal truncate transition-all duration-300 ${blurClass}`}>
                         {searchQuery ? (
                              <span dangerouslySetInnerHTML={{
@@ -360,7 +335,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                              }} />
                         ) : chat.user.name}
                      </h3>
-                     {/* Time - GRANULAR BLUR */}
                      <span className={`text-xs ${chat.unreadCount > 0 ? 'text-[#00a884] font-medium' : 'text-[#667781]'} transition-all duration-300 ${blurClass}`}>
                         {chat.lastMessageTime}
                      </span>
@@ -382,8 +356,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 </div>
                 
-                {/* Hover Dropdown Trigger (Outside Blur) */}
-                {/* Hide toggle when interaction is locked */}
                 {!isInteractionLocked && (
                     <div 
                         className={`absolute right-3 top-1/2 -translate-y-1/2 ${menuOpenId === chat.id ? 'block' : 'hidden group-hover:block'} z-10`}
@@ -397,7 +369,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
                 )}
 
-                {/* Context Menu (Outside Blur) */}
                 {menuOpenId === chat.id && (
                     <div ref={menuRef} className="absolute right-8 top-8 bg-white shadow-xl rounded-md py-2 z-50 w-48 border border-gray-100">
                             <ul className="text-[#3b4a54] text-[14.5px]">
@@ -425,15 +396,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
-// SVG Logic for Status Ring
 const StatusRing = ({ count, hasUnviewed }: { count: number, hasUnviewed: boolean }) => {
-    const size = 56; // Slightly larger than avatar (48px)
+    const size = 56;
     const strokeWidth = 2.5;
     const radius = 24;
     const center = size / 2;
     const circumference = 2 * Math.PI * radius;
     
-    // If only 1 status, draw a full circle
     if (count === 1) {
         return (
             <svg viewBox={`0 0 ${size} ${size}`} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[56px] h-[56px] z-10 pointer-events-none">
@@ -447,8 +416,7 @@ const StatusRing = ({ count, hasUnviewed }: { count: number, hasUnviewed: boolea
         );
     }
 
-    // If multiple, use dasharray
-    const gap = 3; // Gap size in pixels
+    const gap = 3;
     const segmentLength = (circumference - (gap * count)) / count;
 
     return (

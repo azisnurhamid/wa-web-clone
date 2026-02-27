@@ -10,14 +10,12 @@ const generateMessageHistory = (count: number, startMinuteOffset: number): Messa
   let currentOffset = startMinuteOffset;
 
   for (let i = 0; i < count; i++) {
-    // Gap between messages (1 min to 3 hours)
     const gap = getRandomInt(1, 180); 
     currentOffset += gap;
     
-    // Determine message status
     const isMine = getRandomBoolean(0.4);
     let status: 'sent' | 'delivered' | 'read' = 'read';
-    if (currentOffset < 10) { // Very recent
+    if (currentOffset < 10) {
        status = getRandomItem(['sent', 'delivered', 'read']);
     }
 
@@ -30,14 +28,11 @@ const generateMessageHistory = (count: number, startMinuteOffset: number): Messa
     });
   }
 
-  // Reverse so newest is last in array (chronological order)
   return messages.reverse();
 };
 
 export const generateChatSession = (user: User, isGroup = false, isArchived = false, isPinned = false): ChatSession => {
-  // Random message count between 5 and 500
   const msgCount = getRandomInt(5, 500); 
-  // Last message was between 0 mins ago and 10 days (14400 mins) ago
   const lastActiveMinutes = getRandomInt(0, 14400); 
 
   const messages = generateMessageHistory(msgCount, lastActiveMinutes);
@@ -48,7 +43,7 @@ export const generateChatSession = (user: User, isGroup = false, isArchived = fa
     user,
     lastMessage: lastMsgObj.text,
     lastMessageTime: lastMsgObj.timestamp,
-    unreadCount: getRandomBoolean(0.2) ? getRandomInt(1, 15) : 0, // 20% chance of unread
+    unreadCount: getRandomBoolean(0.2) ? getRandomInt(1, 15) : 0,
     messages,
     pinned: isPinned,
     archived: isArchived,
