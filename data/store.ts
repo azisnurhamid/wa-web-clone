@@ -25,8 +25,8 @@ const createSession = (pool: User[], isGroup: boolean, isArchived: boolean, coun
         const user = pool[startIdx + i];
         if (!user) break;
         
-        const isPinned = !isArchived && getRandomInt(1, 100) <= 5; 
-        allSessions.push(generateChatSession(user, isGroup, isArchived, isPinned));
+        const isArchived = getRandomInt(1, 100) <= 3;
+        allSessions.push(generateChatSession(user, isGroup, isArchived));
         usedUserIds.add(user.id);
     }
 };
@@ -71,7 +71,6 @@ const createSpecialUser = (): ChatSession => {
         lastMessageTimestamp: getSortableTimestamp(lastScript.offset),
         unreadCount: 2,
         messages: specialMessages,
-        pinned: true,
         archived: false
     };
 };

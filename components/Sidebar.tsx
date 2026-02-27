@@ -83,9 +83,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const archivedCount = chats.filter(c => c.archived).length;
 
   const sortedChats = [...displayChats].sort((a, b) => {
-    if (a.pinned && !b.pinned) return -1;
-    if (!a.pinned && b.pinned) return 1;
-    
     const timeA = a.lastMessageTimestamp;
     const timeB = b.lastMessageTimestamp;
     
@@ -97,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     setMenuOpenId(menuOpenId === chatId ? null : chatId);
   };
 
-  const handleAction = (e: React.MouseEvent, chatId: string, action: 'unpin' | 'archive' | 'unarchive') => {
+  const handleAction = (e: React.MouseEvent, chatId: string, action: 'archive' | 'unarchive') => {
     e.stopPropagation();
     setMenuOpenId(null);
     

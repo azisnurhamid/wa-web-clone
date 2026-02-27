@@ -31,7 +31,7 @@ const generateMessageHistory = (count: number, startMinuteOffset: number): Messa
   return messages.reverse();
 };
 
-export const generateChatSession = (user: User, isGroup = false, isArchived = false, isPinned = false): ChatSession => {
+export const generateChatSession = (user: User, isGroup = false, isArchived = false): ChatSession => {
   const msgCount = getRandomInt(5, 500); 
   const lastActiveMinutes = getRandomInt(0, 14400); 
 
@@ -46,7 +46,6 @@ export const generateChatSession = (user: User, isGroup = false, isArchived = fa
     lastMessageTimestamp: getSortableTimestamp(lastActiveMinutes),
     unreadCount: getRandomBoolean(0.2) ? getRandomInt(1, 15) : 0,
     messages,
-    pinned: isPinned,
     archived: isArchived,
   };
 };

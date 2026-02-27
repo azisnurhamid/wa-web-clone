@@ -128,7 +128,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
         </div>
         
         <div className="px-8 py-2 text-[#667781] text-[14px] mb-4">
-            Ini bukan username atau PIN Anda. Nama ini akan terlihat oleh kontak WhatsApp Anda.
+            Ini bukan username Anda.
         </div>
 
         <div className="bg-white px-8 py-4 shadow-sm mb-3">
