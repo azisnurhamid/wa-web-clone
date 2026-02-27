@@ -8,6 +8,8 @@
         "id": "monthly",
         "name": "Paket Bulanan",
         "price": "Rp 50.000",
+        "originalPrice": "Rp 80.000",
+        "discount": "38%",
         "period": "per bulan",
         "recommended": false
       },
@@ -15,6 +17,8 @@
         "id": "yearly",
         "name": "Paket Tahunan",
         "price": "Rp 450.000",
+        "originalPrice": "Rp 960.000",
+        "discount": "53%",
         "period": "per tahun",
         "recommended": true
       },
@@ -22,6 +26,8 @@
         "id": "unlimited",
         "name": "Unlimited",
         "price": "Rp 900.000",
+        "originalPrice": "Rp 1.500.000",
+        "discount": "40%",
         "period": "seumur hidup",
         "recommended": false
       }

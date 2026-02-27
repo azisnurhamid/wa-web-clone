@@ -280,7 +280,15 @@ function App() {
                                         <div className={`font-semibold text-[${COLORS.textPrimary}]`}>{pkg.name}</div>
                                         <div className="text-sm text-gray-500">{pkg.period}</div>
                                     </div>
-                                    <div className={`font-bold text-[${COLORS.primary}]`}>{pkg.price}</div>
+                                    <div className="text-right">
+                                        <div className={`font-bold text-[${COLORS.primary}] text-lg`}>{pkg.price}</div>
+                                        {pkg.originalPrice && (
+                                            <>
+                                                <div className="text-xs text-gray-400 line-through">{pkg.originalPrice}</div>
+                                                <div className="text-xs text-red-500 font-medium">{pkg.discount} OFF</div>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
