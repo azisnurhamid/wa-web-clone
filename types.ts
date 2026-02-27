@@ -32,6 +32,7 @@ export interface ChatSession {
   user: User;
   lastMessage: string;
   lastMessageTime: string;
+  lastMessageTimestamp: number;
   unreadCount: number;
   messages: Message[];
   pinned?: boolean;

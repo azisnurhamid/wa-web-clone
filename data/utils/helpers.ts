@@ -31,3 +31,9 @@ export const generateTimestamp = (minusMinutes: number): string => {
     return date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: '2-digit' });
   }
 };
+
+export const getSortableTimestamp = (minusMinutes: number): number => {
+  const date = new Date();
+  date.setMinutes(date.getMinutes() - minusMinutes);
+  return date.getTime();
+};

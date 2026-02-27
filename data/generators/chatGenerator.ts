@@ -1,7 +1,7 @@
 
 import { ChatSession, Message, User } from '../../types';
 import { GREETINGS, QUESTIONS, STATEMENTS, LONG_MESSAGES, BUSINESS_TALK } from '../seeds/conversations';
-import { generateTimestamp, getRandomBoolean, getRandomInt, getRandomItem } from '../utils/helpers';
+import { generateTimestamp, getSortableTimestamp, getRandomBoolean, getRandomInt, getRandomItem } from '../utils/helpers';
 
 const ALL_TEXTS = [...GREETINGS, ...QUESTIONS, ...STATEMENTS, ...LONG_MESSAGES, ...BUSINESS_TALK];
 
@@ -43,6 +43,7 @@ export const generateChatSession = (user: User, isGroup = false, isArchived = fa
     user,
     lastMessage: lastMsgObj.text,
     lastMessageTime: lastMsgObj.timestamp,
+    lastMessageTimestamp: getSortableTimestamp(lastActiveMinutes),
     unreadCount: getRandomBoolean(0.2) ? getRandomInt(1, 15) : 0,
     messages,
     pinned: isPinned,

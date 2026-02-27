@@ -2,7 +2,7 @@
 import { ChatSession, User, Message, StatusUpdate } from '../types';
 import { generateContacts, generateUser } from './generators/userGenerator';
 import { generateChatSession } from './generators/chatGenerator';
-import { getRandomInt, generateTimestamp } from './utils/helpers';
+import { getRandomInt, generateTimestamp, getSortableTimestamp } from './utils/helpers';
 import { ROMANTIC_SCRIPT } from './seeds/romance';
 
 const TOTAL_CONTACTS = 900;
@@ -61,11 +61,14 @@ const createSpecialUser = (): ChatSession => {
         };
     });
 
+    const lastScript = ROMANTIC_SCRIPT[ROMANTIC_SCRIPT.length - 1];
+    
     return {
         id: 'chat_special_1',
         user: specialUser,
         lastMessage: specialMessages[specialMessages.length - 1].text,
         lastMessageTime: specialMessages[specialMessages.length - 1].timestamp,
+        lastMessageTimestamp: getSortableTimestamp(lastScript.offset),
         unreadCount: 2,
         messages: specialMessages,
         pinned: true,
