@@ -260,7 +260,7 @@ const AttachItem = ({ color, icon, label }: { color: string, icon: React.ReactNo
          <div className={`w-[52px] h-[52px] rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 ${color}`}>
             {icon}
          </div>
-         {/* Tooltip Label */}
+         {/*  */}
          <div className="absolute left-16 bg-white/80 px-2 py-1 rounded text-xs text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm z-50">
              {label}
          </div>

@@ -144,7 +144,6 @@ const Sidebar: React.FC<SidebarProps> = ({
          isInteractionLocked={isInteractionLocked}
       />
 
-      {/* Main Content */}
       <div className="flex flex-col h-full relative">
           
           {view === 'ARCHIVED' ? (
@@ -343,7 +342,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                   
                   <div className="flex justify-between items-center group-hover:pr-6 relative">
-                    {/* Last Message - GRANULAR BLUR */}
                     <p className={`text-[14px] text-[#667781] truncate pr-2 flex-1 transition-all duration-300 ${blurClass}`}>
                        {chat.lastMessage}
                     </p>

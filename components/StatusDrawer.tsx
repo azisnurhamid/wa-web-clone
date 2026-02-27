@@ -161,7 +161,6 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                 ))}
             </div>
 
-            {/* Controls */}
             <div className="absolute top-6 left-0 right-0 px-4 flex justify-between items-center z-50 max-w-[600px] mx-auto w-full">
                  <div className="flex items-center gap-3">
                      <button onClick={() => setViewingUser(null)} className="text-white">
