@@ -82,7 +82,19 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const archivedCount = chats.filter(c => c.archived).length;
 
-  const sortedChats = [...displayChats];
+  const sortedChats = [...displayChats].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    
+    const timeA = a.lastMessageTime;
+    const timeB = b.lastMessageTime;
+    
+    if (timeA === timeB) return 0;
+    if (!timeA) return 1;
+    if (!timeB) return -1;
+    
+    return timeB.localeCompare(timeA);
+  });
 
   const handleMenuClick = (e: React.MouseEvent, chatId: string) => {
     e.stopPropagation();
