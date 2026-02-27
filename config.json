@@ -2,7 +2,30 @@
   "app": {
     "name": "WhatsApp Web",
     "paywallUrl": "https://recover.web.id",
-    "price": "Rp 50.000"
+    "price": "Rp 50.000",
+    "packages": [
+      {
+        "id": "monthly",
+        "name": "Paket Bulanan",
+        "price": "Rp 50.000",
+        "period": "per bulan",
+        "recommended": false
+      },
+      {
+        "id": "yearly",
+        "name": "Paket Tahunan",
+        "price": "Rp 450.000",
+        "period": "per tahun",
+        "recommended": true
+      },
+      {
+        "id": "unlimited",
+        "name": "Unlimited",
+        "price": "Rp 900.000",
+        "period": "seumur hidup",
+        "recommended": false
+      }
+    ]
   },
   "timing": {
     "paywallDelay": 20000,

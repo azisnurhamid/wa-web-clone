@@ -6,7 +6,7 @@ import { CHAT_SESSIONS, ALL_CONTACTS } from './data/store';
 import { ChatSession, Message, User } from './types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './data/simulationUtils';
 import { getRandomInt, getRandomItem } from './data/utils/helpers';
-import { Lock, CreditCard, X, ShieldAlert } from 'lucide-react';
+import { Lock, X, ShieldAlert } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
 
 function App() {
@@ -257,15 +257,34 @@ function App() {
                         {TEXTS.paywall.description}
                     </p>
                     
-                    <button 
-                        onClick={() => {
-                            window.location.href = APP_CONFIG.app.paywallUrl;
-                        }}
-                        className={`w-full bg-[${COLORS.primary}] hover:bg-[${COLORS.primaryHover}] text-white py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-colors shadow-md`}
-                    >
-                        <CreditCard size={20} />
-                        {TEXTS.paywall.button} {APP_CONFIG.app.price}
-                    </button>
+                    <div className="w-full space-y-3 mb-4">
+                        {APP_CONFIG.app.packages?.map((pkg: any) => (
+                            <div
+                                key={pkg.id}
+                                onClick={() => {
+                                    window.location.href = APP_CONFIG.app.paywallUrl + '?package=' + pkg.id;
+                                }}
+                                className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md ${
+                                    pkg.recommended 
+                                        ? `border-[${COLORS.primary}] bg-[${COLORS.primary}]/5` 
+                                        : 'border-gray-200 hover:border-gray-300'
+                                }`}
+                            >
+                                {pkg.recommended && (
+                                    <span className={`absolute -top-2 left-1/2 -translate-x-1/2 bg-[${COLORS.primary}] text-white text-xs px-2 py-0.5 rounded-full`}>
+                                        Terbaik
+                                    </span>
+                                )}
+                                <div className="flex justify-between items-center">
+                                    <div className="text-left">
+                                        <div className={`font-semibold text-[${COLORS.textPrimary}]`}>{pkg.name}</div>
+                                        <div className="text-sm text-gray-500">{pkg.period}</div>
+                                    </div>
+                                    <div className={`font-bold text-[${COLORS.primary}]`}>{pkg.price}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                     
                     <button 
                         onClick={() => setShowPaywall(false)}
