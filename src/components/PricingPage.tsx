@@ -15,10 +15,13 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
     if (!pkgEndTime) return null;
     const now = new Date();
     const [hours, minutes] = pkgEndTime.split(':').map(Number);
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(hours, minutes, 0, 0);
-    return tomorrow;
+    let targetTime = new Date(now);
+    targetTime.setHours(hours, minutes, 0, 0);
+    
+    if (targetTime <= now) {
+      targetTime.setDate(targetTime.getDate() + 1);
+    }
+    return targetTime;
   };
   
   const getDefaultPromoEndTime = () => {
