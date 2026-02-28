@@ -1,0 +1,31 @@
+{
+  "name": "WhatsApp Web",
+  "short_name": "WhatsApp",
+  "description": "Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00a884",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
