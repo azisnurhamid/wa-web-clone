@@ -76,13 +76,19 @@ const createSpecialUser = (): ChatSession => {
 };
 
 const specialSession = createSpecialUser();
+specialSession.pinned = true;
 allSessions.push(specialSession);
 
 createSession(groupsPool, true, true, 5, 0);
 createSession(groupsPool, true, false, 15, 5);
 
 createSession(contactsPool, false, true, TOTAL_ARCHIVED - 5, 0); 
-createSession(contactsPool, false, false, TOTAL_ACTIVE_CHATS, TOTAL_ARCHIVED - 5);
+const regularChats = createSession(contactsPool, false, false, TOTAL_ACTIVE_CHATS, TOTAL_ARCHIVED - 5);
+
+// Pin second chat (first regular contact after special user)
+if (allSessions.length > 1) {
+    allSessions[1].pinned = true;
+}
 
 export const CHAT_SESSIONS = allSessions; 
 export const ALL_CONTACTS = [specialSession.user, ...contactsPool, ...groupsPool]; 

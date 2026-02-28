@@ -36,4 +36,5 @@ export interface ChatSession {
   unreadCount: number;
   messages: Message[];
   archived?: boolean;
+  pinned?: boolean;
 }

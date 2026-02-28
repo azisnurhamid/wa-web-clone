@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { ChatSession, User } from '../types';
-import { MessageSquarePlus, MoreVertical, Search, Donut, Filter, Archive, ChevronDown, ArrowLeft, Lock, Eye, EyeOff, MessageSquareLock } from 'lucide-react';
+import { MessageSquarePlus, MoreVertical, Search, Donut, Filter, Archive, ChevronDown, ArrowLeft, Lock, Eye, EyeOff, MessageSquareLock, Pin, PinOff } from 'lucide-react';
 import ProfileDrawer from './ProfileDrawer';
 import StatusDrawer from './StatusDrawer';
 import SettingsDrawer from './SettingsDrawer';
@@ -83,6 +83,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   const archivedCount = chats.filter(c => c.archived).length;
 
   const sortedChats = [...displayChats].sort((a, b) => {
+    // Pinned chats always at top
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    
     const timeA = a.lastMessageTimestamp;
     const timeB = b.lastMessageTimestamp;
     
@@ -94,13 +98,24 @@ const Sidebar: React.FC<SidebarProps> = ({
     setMenuOpenId(menuOpenId === chatId ? null : chatId);
   };
 
-  const handleAction = (e: React.MouseEvent, chatId: string, action: 'archive' | 'unarchive') => {
+  const handleAction = (e: React.MouseEvent, chatId: string, action: 'archive' | 'unarchive' | 'pin' | 'unpin') => {
     e.stopPropagation();
     setMenuOpenId(null);
+    
+    const currentChat = chats.find(c => c.id === chatId);
+    const pinnedChats = chats.filter(c => c.pinned && c.id !== chatId);
     
     switch(action) {
         case 'archive': onUpdateChat(chatId, { archived: true }); break;
         case 'unarchive': onUpdateChat(chatId, { archived: false }); break;
+        case 'pin': 
+            if (pinnedChats.length < 3) {
+                onUpdateChat(chatId, { pinned: true });
+            } else {
+                alert('Maksimal 3 chat yang dapat di-pin. Silakan lepas pin chat lain terlebih dahulu.');
+            }
+            break;
+        case 'unpin': onUpdateChat(chatId, { pinned: false }); break;
     }
   };
 
@@ -350,6 +365,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </p>
                     <div className="flex items-center gap-2">
 
+                        {chat.pinned && (
+                            <span className={`text-[#667781] transition-all duration-300 ${blurClass}`} title="Chat di-pin">
+                                <Pin size={14} className="fill-current" />
+                            </span>
+                        )}
+
                         {chat.unreadCount > 0 && (
                            <span className={`bg-[#00a884] text-white text-[10px] font-bold h-5 min-w-[20px] px-1 flex items-center justify-center rounded-full shrink-0 transition-all duration-300 ${blurClass}`}>
                               {chat.unreadCount}
@@ -375,6 +396,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {menuOpenId === chat.id && (
                     <div ref={menuRef} className="absolute right-8 top-8 bg-white shadow-xl rounded-md py-2 z-50 w-48 border border-gray-100">
                             <ul className="text-[#3b4a54] text-[14.5px]">
+                            {chat.pinned ? (
+                                <li onClick={(e) => handleAction(e, chat.id, 'unpin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer flex items-center gap-2">
+                                    <PinOff size={16} /> Lepas pin
+                                </li>
+                            ) : (
+                                <li onClick={(e) => handleAction(e, chat.id, 'pin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer flex items-center gap-2">
+                                    <Pin size={16} /> Pin chat
+                                </li>
+                            )}
                             {chat.archived ? (
                                 <li onClick={(e) => handleAction(e, chat.id, 'unarchive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Buka arsip</li>
                             ) : (
