@@ -11,7 +11,15 @@ interface PricingPageProps {
 const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) => {
   const packages = APP_CONFIG.app.packages || [];
   
-  const promoEndTime = TEXTS.pricing.promoEndTime ? new Date(TEXTS.pricing.promoEndTime) : null;
+  const getPromoEndTime = () => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow;
+  };
+  
+  const promoEndTime = TEXTS.pricing.promoEndTime ? new Date(TEXTS.pricing.promoEndTime) : getPromoEndTime();
   const now = new Date();
   const isPromoActive = promoEndTime && promoEndTime > now;
   
@@ -23,6 +31,13 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
     if (days > 0) return `${days} ${TEXTS.pricing.timeUnits.days} ${hours} ${TEXTS.pricing.timeUnits.hours}`;
     if (hours > 0) return `${hours} ${TEXTS.pricing.timeUnits.hours} ${minutes} ${TEXTS.pricing.timeUnits.minutes}`;
     return `${minutes} ${TEXTS.pricing.timeUnits.minutes}`;
+  };
+  
+  const getPromoSubtitle = () => {
+    if (TEXTS.pricing.promoSubtitle) return TEXTS.pricing.promoSubtitle;
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return `Berlaku hingga ${tomorrow.getDate()} ${['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][tomorrow.getMonth()]} ${tomorrow.getFullYear()} jam 00:00`;
   };
 
   const features = {
@@ -80,7 +95,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                 <span>{TEXTS.pricing.promoTitle}</span>
               </div>
               <div className="text-sm mt-1">
-                {TEXTS.pricing.promoSubtitle} • {TEXTS.pricing.remainingTime}: {formatRemainingTime(promoEndTime)}
+                {getPromoSubtitle()} • {TEXTS.pricing.remainingTime}: {formatRemainingTime(promoEndTime)}
               </div>
             </div>
           )}
