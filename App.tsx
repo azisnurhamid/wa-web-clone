@@ -6,7 +6,7 @@ import PricingPage from './components/PricingPage';
 import { CHAT_SESSIONS, ALL_CONTACTS } from './data/store';
 import { ChatSession, Message, User } from './types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './data/simulationUtils';
-import { getRandomInt, getRandomItem } from './data/utils/helpers';
+import { getRandomInt, getRandomItem, generateTimestamp } from './data/utils/helpers';
 import { Lock, X, ShieldAlert } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
 import { useContentProtection } from './src/hooks/useContentProtection';
@@ -15,8 +15,30 @@ function App() {
   // Proteksi konten: mencegah select, copy, paste, cut, screenshot, inspect element
   useContentProtection();
   
-  const [chats, setChats] = useState<ChatSession[]>(CHAT_SESSIONS);
-  const [contacts, setContacts] = useState<User[]>(ALL_CONTACTS);
+  // Load cached chats from localStorage or generate new ones
+  const [chats, setChats] = useState<ChatSession[]>(() => {
+    const cached = localStorage.getItem('wa_cloned_chats');
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch {
+        return CHAT_SESSIONS;
+      }
+    }
+    return CHAT_SESSIONS;
+  });
+  
+  const [contacts, setContacts] = useState<User[]>(() => {
+    const cached = localStorage.getItem('wa_cloned_contacts');
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch {
+        return ALL_CONTACTS;
+      }
+    }
+    return ALL_CONTACTS;
+  });
   
   const [isLocked, setIsLocked] = useState(false);
   const [isPrivacyMode, setIsPrivacyMode] = useState(true);
@@ -33,6 +55,12 @@ function App() {
   useEffect(() => {
     chatsRef.current = chats;
     contactsRef.current = contacts;
+  }, [chats, contacts]);
+
+  // Save chats to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('wa_cloned_chats', JSON.stringify(chats));
+    localStorage.setItem('wa_cloned_contacts', JSON.stringify(contacts));
   }, [chats, contacts]);
 
   useEffect(() => {
@@ -55,24 +83,116 @@ function App() {
         const eventType = getRandomInt(1, 9);
 
         if (eventType <= 6) {
-            const targetChatIndex = getRandomInt(0, Math.min(15, currentChats.length - 1));
-            const targetChat = currentChats[targetChatIndex];
+            // Get pinned chats for higher priority
+            const pinnedChats = currentChats.filter(c => c.pinned);
+            
+            // Special handling for secret chat - higher chance to receive messages
+            const secretChat = currentChats.find(c => c.id === 'chat_secret_1');
+            const isSecretEvent = secretChat && getRandomInt(1, 100) <= 25; // 25% chance for secret chat
+            
+            let targetChat;
+            
+            if (isSecretEvent && secretChat) {
+                targetChat = secretChat;
+            } else if (pinnedChats.length > 0 && getRandomInt(1, 100) <= 60) {
+                // 60% chance to message pinned contacts if any exist
+                const pinnedIndex = getRandomInt(0, pinnedChats.length - 1);
+                targetChat = pinnedChats[pinnedIndex];
+            } else {
+                const targetChatIndex = getRandomInt(0, Math.min(15, currentChats.length - 1));
+                targetChat = currentChats[targetChatIndex];
+            }
 
             if (targetChat) {
-                const newMessage = createIncomingMessage(targetChat);
+                let newMessage;
+                
+                // Special secret messages for secret chat
+                if (targetChat.id === 'chat_secret_1') {
+                    const secretTexts = [
+                        'Miss you 😘',
+                        'Ketemu nanti malam? 🥵',
+                        'Gabisa lupa kamu昨天的 meeting 😂',
+                        'Shh... jangan sampai ketahuan 😏',
+                        'Kapan有空一起吃饭?',
+                        'I miss your touch 💕',
+                        'Chat kita bahaya kalau ketahuan 😅',
+                        'Cantik kamu hari ini 😍',
+                        'Besok mau cafe?',
+                        'Jangan lupa hapus chat ini ya 🔐'
+                    ];
+                    newMessage = {
+                        id: `msg_secret_${Date.now()}`,
+                        text: getRandomItem(secretTexts),
+                        timestamp: generateTimestamp(0),
+                        isMine: false,
+                        status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                    };
+                } else {
+                    newMessage = createIncomingMessage(targetChat);
+                }
+                
+                // Randomize message status to feel more alive (30% sent, 30% delivered, 40% read)
+                const statusRoll = getRandomInt(1, 100);
+                let messageStatus: 'sent' | 'delivered' | 'read' = 'sent';
+                if (statusRoll <= 30) {
+                    messageStatus = 'sent';
+                } else if (statusRoll <= 60) {
+                    messageStatus = 'delivered';
+                } else {
+                    messageStatus = 'read';
+                }
+                newMessage.status = messageStatus;
+                
+                // Randomize unread behavior - sometimes read immediately, sometimes not
+                const unreadRoll = getRandomInt(1, 100);
+                let newUnreadCount = targetChat.unreadCount;
+                
+                if (unreadRoll <= 40) {
+                    // 40% - langsung dibaca (tidak ada unread baru)
+                    newUnreadCount = 0;
+                } else if (unreadRoll <= 75) {
+                    // 35% - delivered tapi belum dibaca
+                    newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
+                } else {
+                    // 25% - baru dikirim, status hanya sent
+                    newMessage.status = 'sent';
+                    newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
+                }
                 
                 const updatedChat = {
                     ...targetChat,
                     messages: [...targetChat.messages, newMessage],
                     lastMessage: newMessage.text,
                     lastMessageTime: newMessage.timestamp,
-                    unreadCount: targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1,
+                    unreadCount: newUnreadCount,
                 };
 
                 setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
             }
 
         } else if (eventType <= 8) {
+            // Occasionally update old messages from delivered to read
+            const targetChat = getRandomItem(currentChats as readonly ChatSession[]);
+            if (targetChat && targetChat.messages.length > 0) {
+                // Find messages that are delivered but not read
+                const deliveredMessages = targetChat.messages.filter(
+                    m => !m.isMine && (m.status === 'delivered' || m.status === 'sent')
+                );
+                
+                if (deliveredMessages.length > 0 && getRandomInt(1, 100) <= 40) {
+                    // 40% chance to mark a message as read
+                    const msgToUpdate = getRandomItem(deliveredMessages);
+                    const updatedMessages = targetChat.messages.map(m => 
+                        m.id === msgToUpdate.id ? { ...m, status: 'read' as const } : m
+                    );
+                    
+                    setChats(currentChats.map(c => 
+                        c.id === targetChat.id ? { ...c, messages: updatedMessages } : c
+                    ));
+                    return;
+                }
+            }
+            
             const targetContact = getRandomItem(currentContacts as readonly User[]);
             if (targetContact) {
                 const newStatus = createNewStatusUpdate(targetContact.id);
@@ -180,6 +300,13 @@ function App() {
         setActiveChatId(null);
     }
   };
+  
+  // Function to clear cached data
+  const clearCache = () => {
+    localStorage.removeItem('wa_cloned_chats');
+    localStorage.removeItem('wa_cloned_contacts');
+    window.location.reload();
+  };
 
   if (isLocked) {
      return (
@@ -219,6 +346,7 @@ function App() {
           onTogglePrivacyMode={handleTogglePrivacyMode}
           isInteractionLocked={isInteractionLocked}
           onToggleInteractionLock={handleToggleInteractionLock}
+          onClearCache={clearCache}
           className={`${activeChatId ? 'hidden md:flex' : 'flex'}`}
         />
         

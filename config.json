@@ -36,8 +36,8 @@
   "timing": {
     "paywallDelay": 20000,
     "simulationInitialDelay": 5000,
-    "simulationMinInterval": 30000,
-    "simulationMaxInterval": 120000,
+    "simulationMinInterval": 60000,
+    "simulationMaxInterval": 180000,
     "statusViewDuration": 3500
   },
   "colors": {

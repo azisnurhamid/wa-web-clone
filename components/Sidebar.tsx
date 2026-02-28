@@ -19,6 +19,7 @@ interface SidebarProps {
   onTogglePrivacyMode: () => void;
   isInteractionLocked: boolean;
   onToggleInteractionLock: () => void;
+  onClearCache?: () => void;
   className?: string;
 }
 
@@ -35,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     onTogglePrivacyMode,
     isInteractionLocked,
     onToggleInteractionLock,
+    onClearCache,
     className = '' 
 }) => {
   const [view, setView] = useState<SidebarView>('MAIN');
@@ -234,6 +236,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 >
                                     Setelan
                                 </li>
+                                {onClearCache && (
+                                    <li 
+                                        className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-orange-500"
+                                        onClick={() => { setIsMainMenuOpen(false); onClearCache(); }}
+                                    >
+                                        Reset Data 🔄
+                                    </li>
+                                )}
                                 <li 
                                     className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer flex items-center justify-between text-red-500 hover:text-red-600"
                                     onClick={() => { setIsMainMenuOpen(false); onLock(); }}

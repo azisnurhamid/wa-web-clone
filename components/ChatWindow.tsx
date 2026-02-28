@@ -202,13 +202,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
 
             <div className="flex-1">
                 <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder={TEXTS.chatWindow.typeMessage}
-                className="w-full py-[9px] px-4 bg-white rounded-lg text-sm text-[#111b21] placeholder:text-[#667781] focus:outline-none"
-                disabled={isInteractionLocked}
+                    id="message-input"
+                    name="message"
+                    type="text"
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    placeholder={TEXTS.chatWindow.typeMessage}
+                    className="w-full py-[9px] px-4 bg-white rounded-lg text-sm text-[#111b21] placeholder:text-[#667781] focus:outline-none"
+                    disabled={isInteractionLocked}
+                    autoComplete="off"
                 />
             </div>
 
