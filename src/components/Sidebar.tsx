@@ -370,7 +370,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   
                   <div className="flex justify-between items-center group-hover:pr-6 relative">
                     <p className={`text-[14px] text-[#667781] truncate pr-2 flex-1 transition-all duration-300 ${blurClass}`}>
-                       {chat.lastMessage}
+                       {chat.isTyping ? <span className="text-[#00a884] italic">Mengetik...</span> : chat.lastMessage}
                     </p>
                     <div className="flex items-center gap-2">
 

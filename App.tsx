@@ -73,11 +73,150 @@ function App() {
   }, [showPaywall, isLocked]);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let isMounted = true;
+
+    // Get current hour in Indonesia (UTC+7)
+    const getIndonesiaHour = (): number => {
+        const now = new Date();
+        const utcHour = now.getUTCHours();
+        return (utcHour + 7) % 24;
+    };
+    
+    // Calculate message frequency based on Indonesian busy hours
+    // Busy hours: 6-9 AM (morning), 12-1 PM (lunch), 5-8 PM (evening), 11 PM-6 AM (sleeping)
+    const getBusyHourMultiplier = (): number => {
+        const hour = getIndonesiaHour();
+        
+        // Sleeping time (11 PM - 6 AM) - very slow
+        if (hour >= 23 || hour < 6) {
+            return 3.0; // Very slow - messages rare
+        }
+        // Morning rush (6-9 AM) - moderate
+        if (hour >= 6 && hour < 9) {
+            return 1.5;
+        }
+        // Lunch break (12-1 PM) - busy
+        if (hour >= 12 && hour < 13) {
+            return 1.5;
+        }
+        // Evening rush (17-20 / 5-8 PM) - busy
+        if (hour >= 17 && hour < 20) {
+            return 1.5;
+        }
+        // Working hours (9-12, 13-17) - normal
+        // Night (20-23) - normal
+        return 1.0; // Normal speed
+    };
+
     const runSimulation = () => {
+        if (!isMounted) return;
+        
         const currentChats = chatsRef.current;
         const currentContacts = contactsRef.current;
         
-        const eventType = getRandomInt(1, 9);
+        // PRIORITY: If there's an active chat, send message to that chat immediately
+        if (activeChatId) {
+            const activeChat = currentChats.find(c => c.id === activeChatId);
+            if (activeChat) {
+                // Show typing indicator first
+                setChats(currentChats.map(c => 
+                    c.id === activeChat.id ? { ...c, isTyping: true } : c
+                ));
+                
+                // Quick response for active chat (1-2 seconds)
+                const typingDuration = getRandomInt(1000, 2000);
+                
+                setTimeout(() => {
+                    if (!isMounted) return;
+                    
+                    let newMessage;
+                    
+                    if (activeChat.id === 'chat_secret_1') {
+                        const secretTexts = [
+                            'Miss you 😘',
+                            'Ketemu nanti malam? 🥵',
+                            'Gabisa lupa kamu昨天的 meeting 😂',
+                            'Shh... jangan sampai ketahuan 😏',
+                            'Kapan有空一起吃饭?',
+                            'I miss your touch 💕',
+                            'Chat kita bahaya kalau ketahuan 😅',
+                            'Cantik kamu hari ini 😍',
+                            'Besok mau cafe?',
+                            'Jangan lupa hapus chat ini ya 🔐'
+                        ];
+                        newMessage = {
+                            id: `msg_secret_${Date.now()}`,
+                            text: getRandomItem(secretTexts),
+                            timestamp: generateTimestamp(0),
+                            isMine: false,
+                            status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                        };
+                    } else {
+                        newMessage = createIncomingMessage(activeChat);
+                    }
+                    
+                    const statusRoll = getRandomInt(1, 100);
+                    let messageStatus: 'sent' | 'delivered' | 'read' = 'sent';
+                    if (statusRoll <= 30) {
+                        messageStatus = 'sent';
+                    } else if (statusRoll <= 60) {
+                        messageStatus = 'delivered';
+                    } else {
+                        messageStatus = 'read';
+                    }
+                    newMessage.status = messageStatus;
+                    
+                    const updatedChat = {
+                        ...activeChat,
+                        messages: [...activeChat.messages, newMessage],
+                        lastMessage: newMessage.text,
+                        lastMessageTime: newMessage.timestamp,
+                        unreadCount: 0,
+                        isTyping: false
+                    };
+
+                    setChats(currentChats.map(c => c.id === activeChat.id ? updatedChat : c));
+                    
+                    // AI automatically replies to incoming messages
+                    // Apply busy hour multiplier to make AI slower during busy times
+                    const busyMultiplier = getBusyHourMultiplier();
+                    const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
+                    setTimeout(() => {
+                        if (!isMounted) return;
+                        const isSecretChat = activeChat.id === 'chat_secret_1' || activeChat.user.name === '???';
+                        const isSpecialChat = activeChat.user.name.includes('❤️') || activeChat.user.name.includes('🌹') || activeChat.user.name.includes('💕');
+                        const aiResponse = generateAIResponse(newMessage.text, isSpecialChat, isSecretChat);
+                        const aiMessage: Message = {
+                            id: `ai_auto_${Date.now()}`,
+                            text: aiResponse,
+                            timestamp: generateTimestamp(0),
+                            isMine: true,
+                            status: 'delivered'
+                        };
+                        setChats(prev => {
+                            const chat = prev.find(c => c.id === activeChat.id);
+                            if (!chat) return prev;
+                            const updatedChatWithAI = {
+                                ...chat,
+                                messages: [...chat.messages, aiMessage],
+                                lastMessage: aiResponse,
+                                lastMessageTime: aiMessage.timestamp
+                            };
+                            return prev.map(c => c.id === activeChat.id ? updatedChatWithAI : c);
+                        });
+                    }, aiReplyDelay);
+                    
+                    // Schedule next message for active chat sooner
+                    scheduleNext(true);
+                }, typingDuration);
+                
+                return;
+            }
+        }
+        
+        // Original random events when no active chat
+        const eventType = getRandomInt(1, 7);
 
         if (eventType <= 6) {
             const pinnedChats = currentChats.filter(c => c.pinned);
@@ -98,64 +237,105 @@ function App() {
             }
 
             if (targetChat) {
-                let newMessage;
+                // Show typing indicator first
+                setChats(currentChats.map(c => 
+                    c.id === targetChat.id ? { ...c, isTyping: true } : c
+                ));
                 
-                if (targetChat.id === 'chat_secret_1') {
-                    const secretTexts = [
-                        'Miss you 😘',
-                        'Ketemu nanti malam? 🥵',
-                        'Gabisa lupa kamu昨天的 meeting 😂',
-                        'Shh... jangan sampai ketahuan 😏',
-                        'Kapan有空一起吃饭?',
-                        'I miss your touch 💕',
-                        'Chat kita bahaya kalau ketahuan 😅',
-                        'Cantik kamu hari ini 😍',
-                        'Besok mau cafe?',
-                        'Jangan lupa hapus chat ini ya 🔐'
-                    ];
-                    newMessage = {
-                        id: `msg_secret_${Date.now()}`,
-                        text: getRandomItem(secretTexts),
-                        timestamp: generateTimestamp(0),
-                        isMine: false,
-                        status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                // Wait for typing duration, then send message
+                const typingDuration = getRandomInt(1000, 2500);
+                
+                setTimeout(() => {
+                    let newMessage;
+                    
+                    if (targetChat.id === 'chat_secret_1') {
+                        const secretTexts = [
+                            'Miss you 😘',
+                            'Ketemu nanti malam? 🥵',
+                            'Gabisa lupa kamu昨天的 meeting 😂',
+                            'Shh... jangan sampai ketahuan 😏',
+                            'Kapan有空一起吃饭?',
+                            'I miss your touch 💕',
+                            'Chat kita bahaya kalau ketahuan 😅',
+                            'Cantik kamu hari ini 😍',
+                            'Besok mau cafe?',
+                            'Jangan lupa hapus chat ini ya 🔐'
+                        ];
+                        newMessage = {
+                            id: `msg_secret_${Date.now()}`,
+                            text: getRandomItem(secretTexts),
+                            timestamp: generateTimestamp(0),
+                            isMine: false,
+                            status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                        };
+                    } else {
+                        newMessage = createIncomingMessage(targetChat);
+                    }
+                    
+                    const statusRoll = getRandomInt(1, 100);
+                    let messageStatus: 'sent' | 'delivered' | 'read' = 'sent';
+                    if (statusRoll <= 30) {
+                        messageStatus = 'sent';
+                    } else if (statusRoll <= 60) {
+                        messageStatus = 'delivered';
+                    } else {
+                        messageStatus = 'read';
+                    }
+                    newMessage.status = messageStatus;
+                    
+                    const unreadRoll = getRandomInt(1, 100);
+                    let newUnreadCount = targetChat.unreadCount;
+                    
+                    if (unreadRoll <= 40) {
+                        newUnreadCount = 0;
+                    } else if (unreadRoll <= 75) {
+                        newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
+                    } else {
+                        newMessage.status = 'sent';
+                        newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
+                    }
+                    
+                    const updatedChat = {
+                        ...targetChat,
+                        messages: [...targetChat.messages, newMessage],
+                        lastMessage: newMessage.text,
+                        lastMessageTime: newMessage.timestamp,
+                        unreadCount: newUnreadCount,
+                        isTyping: false
                     };
-                } else {
-                    newMessage = createIncomingMessage(targetChat);
-                }
-                
-                const statusRoll = getRandomInt(1, 100);
-                let messageStatus: 'sent' | 'delivered' | 'read' = 'sent';
-                if (statusRoll <= 30) {
-                    messageStatus = 'sent';
-                } else if (statusRoll <= 60) {
-                    messageStatus = 'delivered';
-                } else {
-                    messageStatus = 'read';
-                }
-                newMessage.status = messageStatus;
-                
-                const unreadRoll = getRandomInt(1, 100);
-                let newUnreadCount = targetChat.unreadCount;
-                
-                if (unreadRoll <= 40) {
-                    newUnreadCount = 0;
-                } else if (unreadRoll <= 75) {
-                    newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
-                } else {
-                    newMessage.status = 'sent';
-                    newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
-                }
-                
-                const updatedChat = {
-                    ...targetChat,
-                    messages: [...targetChat.messages, newMessage],
-                    lastMessage: newMessage.text,
-                    lastMessageTime: newMessage.timestamp,
-                    unreadCount: newUnreadCount,
-                };
 
-                setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
+                    setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
+                    
+                    // AI auto-reply if this is the active chat
+                    if (targetChat.id === activeChatId) {
+                        const busyMultiplier = getBusyHourMultiplier();
+                        const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
+                        setTimeout(() => {
+                            if (!isMounted) return;
+                            const isSecretChat = targetChat.id === 'chat_secret_1' || targetChat.user.name === '???';
+                            const isSpecialChat = targetChat.user.name.includes('❤️') || targetChat.user.name.includes('🌹') || targetChat.user.name.includes('💕');
+                            const aiResponse = generateAIResponse(newMessage.text, isSpecialChat, isSecretChat);
+                            const aiMessage: Message = {
+                                id: `ai_auto_${Date.now()}`,
+                                text: aiResponse,
+                                timestamp: generateTimestamp(0),
+                                isMine: true,
+                                status: 'delivered'
+                            };
+                            setChats(prev => {
+                                const chat = prev.find(c => c.id === targetChat.id);
+                                if (!chat) return prev;
+                                const updatedChatWithAI = {
+                                    ...chat,
+                                    messages: [...chat.messages, aiMessage],
+                                    lastMessage: aiResponse,
+                                    lastMessageTime: aiMessage.timestamp
+                                };
+                                return prev.map(c => c.id === targetChat.id ? updatedChatWithAI : c);
+                            });
+                        }, aiReplyDelay);
+                    }
+                }, typingDuration);
             }
 
         } else if (eventType <= 8) {
@@ -201,21 +381,42 @@ function App() {
         }
     };
 
-    const scheduleNext = () => {
-        const delay = getRandomInt(TIMING.simulationMinInterval, TIMING.simulationMaxInterval); 
-        const timeoutId = setTimeout(() => {
-            runSimulation();
-            scheduleNext();
+    const scheduleNext = (isQuick: boolean = false) => {
+        // Apply Indonesian busy hour timing
+        const busyMultiplier = getBusyHourMultiplier();
+        
+        // If there's an active chat, respond faster (2-5 seconds)
+        // Otherwise use default timing (5-12 seconds) with busy multiplier
+        let baseDelay: number;
+        if (isQuick) {
+            baseDelay = getRandomInt(2000, 5000);
+        } else {
+            baseDelay = getRandomInt(TIMING.simulationMinInterval, TIMING.simulationMaxInterval);
+        }
+        
+        // Apply busy hour multiplier (slower during busy times)
+        const delay = Math.floor(baseDelay * busyMultiplier);
+        
+        timeoutId = setTimeout(() => {
+            if (isMounted) {
+                runSimulation();
+                scheduleNext();
+            }
         }, delay);
-        return timeoutId;
     };
 
     const initialTimeout = setTimeout(() => {
-        runSimulation();
-        scheduleNext();
+        if (isMounted) {
+            runSimulation();
+            scheduleNext();
+        }
     }, TIMING.simulationInitialDelay);
 
-    return () => clearTimeout(initialTimeout);
+    return () => {
+        isMounted = false;
+        clearTimeout(initialTimeout);
+        clearTimeout(timeoutId);
+    };
   }, [activeChatId]); 
 
   const handleSendMessage = (text: string) => {

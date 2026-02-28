@@ -37,4 +37,5 @@ export interface ChatSession {
   messages: Message[];
   archived?: boolean;
   pinned?: boolean;
+  isTyping?: boolean;
 }

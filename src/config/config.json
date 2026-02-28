@@ -38,9 +38,9 @@
   },
   "timing": {
     "paywallDelay": 20000,
-    "simulationInitialDelay": 5000,
-    "simulationMinInterval": 60000,
-    "simulationMaxInterval": 180000,
+    "simulationInitialDelay": 1000,
+    "simulationMinInterval": 5000,
+    "simulationMaxInterval": 12000,
     "statusViewDuration": 3500
   },
   "colors": {
