@@ -6,16 +6,16 @@
     "packages": [
       {
         "id": "monthly",
-        "name": "🔥 Promo Mingguan",
+        "name": "Paket Starter",
         "price": "Rp 50.000",
         "originalPrice": "Rp 80.000",
         "discount": "38%",
-        "period": "per minggu",
+        "period": "per bulan",
         "recommended": false
       },
       {
         "id": "yearly",
-        "name": "🔥 Promo tahun",
+        "name": "Paket Exclusive",
         "price": "Rp 450.000",
         "originalPrice": "Rp 960.000",
         "discount": "53%",
@@ -24,7 +24,7 @@
       },
       {
         "id": "unlimited",
-        "name": "🔥 Promo Paha",
+        "name": "Paket Premium",
         "price": "Rp 900.000",
         "originalPrice": "Rp 1.500.000",
         "discount": "40%",
