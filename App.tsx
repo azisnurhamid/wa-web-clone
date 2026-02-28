@@ -9,8 +9,12 @@ import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } f
 import { getRandomInt, getRandomItem } from './data/utils/helpers';
 import { Lock, X, ShieldAlert } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
+import { useContentProtection } from './src/hooks/useContentProtection';
 
 function App() {
+  // Proteksi konten: mencegah select, copy, paste, cut, screenshot, inspect element
+  useContentProtection();
+  
   const [chats, setChats] = useState<ChatSession[]>(CHAT_SESSIONS);
   const [contacts, setContacts] = useState<User[]>(ALL_CONTACTS);
   

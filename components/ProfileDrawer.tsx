@@ -61,6 +61,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
     ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}` 
     : '';
 
+  const cursorClass = isPrivacyMode && isInteractionLocked ? 'cursor-not-allowed' : 'cursor-pointer';
+
   return (
     <div 
       className={`absolute inset-0 bg-[#f0f2f5] z-20 flex flex-col transition-transform duration-300 ease-in-out ${
@@ -80,7 +82,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         
         <div className="py-7 flex justify-center">
-            <div className={`relative group cursor-pointer w-[200px] h-[200px] transition-all duration-300 ${isPrivacyMode ? `blur-[8px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
+            <div className={`relative group ${cursorClass} w-[200px] h-[200px] transition-all duration-300 ${isPrivacyMode ? `blur-[8px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
                 <img 
                     src={URLS.avatars.default} 
                     alt="My Profile" 
@@ -131,7 +133,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                     </div>
                 </div>
             ) : (
-                <div className="flex items-center justify-between group cursor-pointer" onClick={() => {
+                <div className={`flex items-center justify-between group ${cursorClass}`} onClick={() => {
                     if (isInteractionLocked) return;
                     setTempName(name);
                     setIsEditingName(true);
@@ -169,7 +171,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                     </div>
                 </div>
             ) : (
-                <div className="flex items-center justify-between group cursor-pointer" onClick={() => {
+                <div className={`flex items-center justify-between group ${cursorClass}`} onClick={() => {
                     if (isInteractionLocked) return;
                     setTempAbout(about);
                     setIsEditingAbout(true);
