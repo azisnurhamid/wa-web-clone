@@ -69,6 +69,7 @@
     "paywall": {
       "title": "Akses Terbatas",
       "description": "Fitur Mode Privasi dan Kunci Chat sedang aktif. Lakukan pembayaran untuk menghilangkan batasan dan blur pada chat.",
+      "aiNote": "Catatan: Jika paket belum aktif, interaksi tidak 100% akurat dan respons mungkin terasa lambat.",
       "button": "Bayar",
       "later": "Nanti Saja",
       "features": {
@@ -292,7 +293,7 @@
   },
   "urls": {
     "avatars": {
-      "default": "https://picsum.photos/id/64/200/200",
+      "default": "https://p16-lemon8-sign-sg.tiktokcdn.com/tos-alisg-v-a3e477-sg/77d9b7963f954d3289425c774f7fe304~tplv-sdweummd6v-wap-logo-v1:QGVfbnVyZmFkaGlsYWg=:1080:0.webp?lk3s=66c60501&source=wap_large_logo_image&x-expires=1774872000&x-signature=DpqJFi2UspYnFhhDsjFD%2FJU0SeU%3D",
       "special": "https://picsum.photos/id/65/200/200"
     },
     "background": {

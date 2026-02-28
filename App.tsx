@@ -5,7 +5,7 @@ import ChatWindow from './src/components/ChatWindow';
 import PricingPage from './src/components/PricingPage';
 import { CHAT_SESSIONS, ALL_CONTACTS } from './src/data/store';
 import { ChatSession, Message, User } from './src/types';
-import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './src/data/simulationUtils';
+import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from './src/data/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from './src/data/utils/helpers';
 import { Lock, X, ShieldAlert } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './src/config/config';
@@ -241,6 +241,52 @@ function App() {
     };
 
     setChats(prev => prev.map(c => c.id === activeChatId ? updatedChat : c));
+    
+    const isSpecialChat = currentChat.user.name.includes('❤️') || currentChat.user.name.includes('🌹') || currentChat.user.name.includes('💕');
+    const isSecretChat = currentChat.id === 'chat_secret_1' || currentChat.user.name === '???';
+    
+    const currentHour = new Date().getHours();
+    
+    let minDelay = 1000;
+    let maxDelay = 4000;
+    
+    if (currentHour >= 23 || currentHour < 6) {
+      minDelay = 4000;
+      maxDelay = 8000;
+    } else if (currentHour >= 6 && currentHour < 9) {
+      minDelay = 2000;
+      maxDelay = 5000;
+    } else if (currentHour >= 12 && currentHour < 14) {
+      minDelay = 2000;
+      maxDelay = 5000;
+    }
+    
+    const responseDelay = getRandomInt(minDelay, maxDelay);
+    
+    setTimeout(() => {
+      const aiResponseText = generateAIResponse(text, isSpecialChat, isSecretChat);
+      const aiMessage: Message = {
+        id: `ai_${Date.now()}`,
+        text: aiResponseText,
+        timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'),
+        isMine: false,
+        status: 'delivered',
+      };
+      
+      setChats(prev => {
+        const chat = prev.find(c => c.id === activeChatId);
+        if (!chat) return prev;
+        
+        const updatedChatWithAI = {
+          ...chat,
+          messages: [...chat.messages, aiMessage],
+          lastMessage: aiResponseText,
+          lastMessageTime: aiMessage.timestamp,
+        };
+        
+        return prev.map(c => c.id === activeChatId ? updatedChatWithAI : c);
+      });
+    }, responseDelay);
   };
 
   const handleSelectChat = (id: string) => {
@@ -373,6 +419,11 @@ function App() {
                     <p className="text-white/90 text-sm relative z-10 max-w-[320px] mx-auto">
                         {TEXTS.paywall.description}
                     </p>
+                    {TEXTS.paywall.aiNote && (
+                        <p className="text-white/70 text-xs mt-2 relative z-10 max-w-[320px] mx-auto italic">
+                            {TEXTS.paywall.aiNote}
+                        </p>
+                    )}
                 </div>
                 
                 <button 
