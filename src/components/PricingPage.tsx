@@ -107,13 +107,19 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                   isRecommended ? 'ring-4 ring-[#00a884] ring-offset-2 transform scale-105' : ''
                 }`}
               >
+                {isPromoActive && (
+                  <div className="absolute top-0 left-0 right-0 bg-red-500 text-white text-center py-1 font-semibold text-xs flex items-center justify-center gap-1">
+                    <Timer size={12} />
+                    <span>{TEXTS.pricing.promoTitle} • {formatRemainingTime(promoEndTime)}</span>
+                  </div>
+                )}
                 {isRecommended && (
-                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm">
+                  <div className={`absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm ${isPromoActive ? 'top-6' : ''}`}>
                     {TEXTS.pricing.mostPopular}
                   </div>
                 )}
 
-                <div className={`p-6 ${isRecommended ? 'pt-12' : 'pt-6'}`}>
+                <div className={`p-6 ${isRecommended ? 'pt-14' : isPromoActive ? 'pt-10' : 'pt-6'}`}>
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">{pkg.period}</p>
 
