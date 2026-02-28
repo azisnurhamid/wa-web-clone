@@ -84,15 +84,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const archivedCount = chats.filter(c => c.archived).length;
 
-  const sortedChats = [...displayChats].sort((a, b) => {
-    if (a.pinned && !b.pinned) return -1;
-    if (!a.pinned && b.pinned) return 1;
-    
-    const timeA = a.lastMessageTimestamp;
-    const timeB = b.lastMessageTimestamp;
-    
-    return timeB - timeA;
-  });
+  // Separate pinned and unpinned chats, keeping pinned in their original order
+  const pinnedChats = displayChats.filter(c => c.pinned);
+  const unpinnedChats = displayChats.filter(c => !c.pinned);
+  
+  // Sort only unpinned chats by timestamp
+  unpinnedChats.sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp);
+  
+  // Combine: pinned chats keep their original order, followed by sorted unpinned chats
+  const sortedChats = [...pinnedChats, ...unpinnedChats];
 
   const handleMenuClick = (e: React.MouseEvent, chatId: string) => {
     e.stopPropagation();
@@ -146,7 +146,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       />
       <SettingsDrawer 
          isOpen={view === 'SETTINGS'} 
-         onClose={() => setView('MAIN')} 
+         onClose={() => setView('MAIN')}
+         onProfileClick={() => setView('PROFILE')}
          userAvatar={URLS.avatars.default}
          userName={TEXTS.profile.namePlaceholder}
          isPrivacyMode={isPrivacyMode}
@@ -163,18 +164,26 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col h-full relative">
           
           {view === 'ARCHIVED' ? (
-              <div className={`h-[108px] bg-[${COLORS.headerGreen}] flex items-end px-4 pb-4 shrink-0 transition-all duration-200`}>
-                <div className="flex items-center gap-4 text-white w-full">
-                    <button onClick={() => setView('MAIN')} className="hover:bg-white/10 p-2 rounded-full transition mr-2">
-                        <ArrowLeft size={24} />
-                    </button>
-                    <h2 className="text-[19px] font-medium">{TEXTS.sidebar.archived}</h2>
+              <>
+                <div className="h-16 bg-[#008069] flex items-end px-4 pb-4 shrink-0 transition-all duration-200 z-30">
+                  <div className="flex items-center gap-4 text-white w-full">
+                      <button onClick={() => setView('MAIN')} className="hover:bg-white/10 p-2 rounded-full transition mr-2">
+                          <ArrowLeft size={24} />
+                      </button>
+                      <h2 className="text-[19px] font-medium">{TEXTS.sidebar.archived}</h2>
+                  </div>
                 </div>
-              </div>
+                <div className="bg-white px-3 py-2 border-b border-gray-100 flex items-center gap-2">
+                  <div className="flex-1 flex items-center bg-[#f0f2f5] rounded-lg px-4 py-1.5 border border-transparent transition-all">
+                      <Search size={18} className="text-[#54656f] mr-4" />
+                      <span className="text-sm text-[#54656f]">{TEXTS.sidebar.searchPlaceholder}</span>
+                  </div>
+                </div>
+              </>
           ) : (
             <>
               <div className="h-16 bg-[#f0f2f5] flex items-center justify-between px-4 py-3 shrink-0 border-b border-gray-200 relative z-20">
-                <div className="cursor-pointer" onClick={() => setView('PROFILE')}>
+                <div className="cursor-pointer" onClick={() => setView('SETTINGS')}>
                   <img
                     src={URLS.avatars.default}
                     alt="My Profile"
@@ -235,22 +244,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 >
                                     {TEXTS.sidebar.settings}
                                 </li>
-                                {onClearCache && (
-                                    <li 
-                                        className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-orange-500"
-                                        onClick={() => { setIsMainMenuOpen(false); onClearCache(); }}
-                                    >
-                                        {TEXTS.sidebar.resetData}
-                                    </li>
-                                )}
-                                <li 
-                                    className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer flex items-center justify-between text-red-500 hover:text-red-600"
-                                    onClick={() => { setIsMainMenuOpen(false); onLock(); }}
-                                >
-                                    <span>{TEXTS.sidebar.lockScreen}</span>
-                                    <Lock size={16} />
-                                </li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.logout}</li>
                              </ul>
                         </div>
                       )}

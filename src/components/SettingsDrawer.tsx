@@ -6,13 +6,14 @@ import { TEXTS } from '../config/config';
 interface SettingsDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  onProfileClick?: () => void;
   userAvatar: string;
   userName: string;
   isPrivacyMode: boolean;
   isInteractionLocked: boolean;
 }
 
-const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAvatar, userName, isPrivacyMode, isInteractionLocked }) => {
+const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProfileClick, userAvatar, userName, isPrivacyMode, isInteractionLocked }) => {
   const settingsItems = [
     { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
     { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },
@@ -48,7 +49,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, userAv
 
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         
-        <div className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group">
+        <div className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group" onClick={onProfileClick}>
             <img 
               src={userAvatar} 
               alt="Profile" 
