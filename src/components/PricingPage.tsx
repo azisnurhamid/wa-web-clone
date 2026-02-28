@@ -20,9 +20,9 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    if (days > 0) return `${days} hari ${hours} jam`;
-    if (hours > 0) return `${hours} jam ${minutes} menit`;
-    return `${minutes} menit`;
+    if (days > 0) return `${days} ${TEXTS.pricing.timeUnits.days} ${hours} ${TEXTS.pricing.timeUnits.hours}`;
+    if (hours > 0) return `${hours} ${TEXTS.pricing.timeUnits.hours} ${minutes} ${TEXTS.pricing.timeUnits.minutes}`;
+    return `${minutes} ${TEXTS.pricing.timeUnits.minutes}`;
   };
 
   const features = {
@@ -80,7 +80,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                 <span>{TEXTS.pricing.promoTitle}</span>
               </div>
               <div className="text-sm mt-1">
-                {TEXTS.pricing.promoSubtitle} • Tersisa: {formatRemainingTime(promoEndTime)}
+                {TEXTS.pricing.promoSubtitle} • {TEXTS.pricing.remainingTime}: {formatRemainingTime(promoEndTime)}
               </div>
             </div>
           )}
@@ -123,7 +123,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-lg text-gray-400 line-through">{pkg.originalPrice}</span>
                         <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full">
-                          Hemat {pkg.discount}
+                          {TEXTS.pricing.discount} {pkg.discount}
                         </span>
                       </div>
                     )}
@@ -194,8 +194,8 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
         <div className="mt-12 text-center">
           <p className="text-gray-400 text-sm">
             {TEXTS.pricing.support}{' '}
-            <a href="mailto:support@recover.web.id" className="text-[#00a884] hover:underline">
-              support@recover.web.id
+            <a href={`mailto:${TEXTS.pricing.supportEmail}`} className="text-[#00a884] hover:underline">
+              {TEXTS.pricing.supportEmail}
             </a>
           </p>
         </div>

@@ -194,8 +194,15 @@
     },
     "pricing": {
       "promoEndTime": "2026-03-01T23:59:59",
-      "promoTitle": "🔥 Promo Paha Premium",
+      "promoTitle": "Promo Paha Premium",
       "promoSubtitle": "Berlaku hingga 1 Maret 2026",
+      "remainingTime": "Tersisa",
+      "timeUnits": {
+        "days": "hari",
+        "hours": "jam",
+        "minutes": "menit"
+      },
+      "discount": "Hemat",
       "title": "Paket Premium",
       "subtitle": "Pilih paket yang sesuai dengan kebutuhan Anda dan nikmati pengalaman WhatsApp tanpa batasan",
       "selectPackage": "Pilih Paket",
@@ -204,6 +211,7 @@
       "mostPopular": "🔥 Paling Populer",
       "bestValue": "✓ Best Value for Money",
       "support": "Ada pertanyaan? Hubungi kami di",
+      "supportEmail": "support@recover.web.id",
       "footer": "© 2026 WhatsApp Clone. All rights reserved.",
       "featuresMonthly": {
         "privateLock": "Kunci Chat Pribadi",
