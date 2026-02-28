@@ -117,13 +117,18 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                     <span>{TEXTS.pricing.promoTitle} • {formatRemainingTime(promoEndTime)}</span>
                   </div>
                 )}
+                {!isPromoActive && (
+                  <div className="absolute top-0 left-0 right-0 bg-gray-400 text-white text-center py-1 font-semibold text-xs flex items-center justify-center gap-1">
+                    <span>{TEXTS.pricing.promoEnded}</span>
+                  </div>
+                )}
                 {isRecommended && (
                   <div className={`absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm ${isPromoActive ? 'top-6' : ''}`}>
                     {TEXTS.pricing.mostPopular}
                   </div>
                 )}
 
-                <div className={`p-6 ${isRecommended ? 'pt-14' : isPromoActive ? 'pt-10' : 'pt-6'}`}>
+                <div className={`p-6 ${isRecommended ? 'pt-14' : 'pt-10'}`}>
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">{pkg.period}</p>
 
