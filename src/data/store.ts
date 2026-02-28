@@ -180,13 +180,10 @@ const createSpecialUser = (): ChatSession => {
 };
 
 const generateAllSessions = () => {
-    // 1. Create romantic partner (pinned)
     allSessions.push(createSpecialUser());
     
-    // 2. Create secret conversation
     allSessions.push(generateSecretConversation());
     
-    // 3. Create groups
     for (let i = 0; i < TOTAL_GROUPS; i++) {
         const groupName = [
             'Keluarga 👨‍👩‍👧‍👦', 'Tim Kerja 💼', 'Teman Kuliah 📚', 
@@ -209,7 +206,6 @@ const generateAllSessions = () => {
         }
     }
     
-    // 4. Create individual contacts
     for (let i = 0; i < TOTAL_ACTIVE_CHATS; i++) {
         const names = [
             'Budi', 'Ani', 'Joko', 'Siti', 'Rudi', 'Wati', 'Doni', 'Lina',
@@ -233,7 +229,6 @@ const generateAllSessions = () => {
         allSessions.push(chat);
     }
     
-    // 5. Create some archived chats
     for (let i = 0; i < TOTAL_ARCHIVED; i++) {
         const contact: User = {
             id: `archived_${i}_${Date.now()}`,
@@ -283,7 +278,6 @@ const secretSession: ChatSession = {
 };
 allSessions.push(secretSession);
 
-// Pin second chat (first regular contact after special user - now secret chat is at index 1)
 if (allSessions.length > 1) {
     allSessions[1].pinned = true;
 }

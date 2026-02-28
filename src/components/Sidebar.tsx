@@ -84,14 +84,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const archivedCount = chats.filter(c => c.archived).length;
 
-  // Separate pinned and unpinned chats, keeping pinned in their original order
   const pinnedChats = displayChats.filter(c => c.pinned);
   const unpinnedChats = displayChats.filter(c => !c.pinned);
   
-  // Sort only unpinned chats by timestamp
   unpinnedChats.sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp);
   
-  // Combine: pinned chats keep their original order, followed by sorted unpinned chats
   const sortedChats = [...pinnedChats, ...unpinnedChats];
 
   const handleMenuClick = (e: React.MouseEvent, chatId: string) => {

@@ -76,37 +76,28 @@ function App() {
     let timeoutId: ReturnType<typeof setTimeout>;
     let isMounted = true;
 
-    // Get current hour in Indonesia (UTC+7)
     const getIndonesiaHour = (): number => {
         const now = new Date();
         const utcHour = now.getUTCHours();
         return (utcHour + 7) % 24;
     };
     
-    // Calculate message frequency based on Indonesian busy hours
-    // Busy hours: 6-9 AM (morning), 12-1 PM (lunch), 5-8 PM (evening), 11 PM-6 AM (sleeping)
     const getBusyHourMultiplier = (): number => {
         const hour = getIndonesiaHour();
         
-        // Sleeping time (11 PM - 6 AM) - very slow
         if (hour >= 23 || hour < 6) {
-            return 3.0; // Very slow - messages rare
+            return 3.0;
         }
-        // Morning rush (6-9 AM) - moderate
         if (hour >= 6 && hour < 9) {
             return 1.5;
         }
-        // Lunch break (12-1 PM) - busy
         if (hour >= 12 && hour < 13) {
             return 1.5;
         }
-        // Evening rush (17-20 / 5-8 PM) - busy
         if (hour >= 17 && hour < 20) {
             return 1.5;
         }
-        // Working hours (9-12, 13-17) - normal
-        // Night (20-23) - normal
-        return 1.0; // Normal speed
+        return 1.0;
     };
 
     const runSimulation = () => {
@@ -115,16 +106,13 @@ function App() {
         const currentChats = chatsRef.current;
         const currentContacts = contactsRef.current;
         
-        // PRIORITY: If there's an active chat, send message to that chat immediately
         if (activeChatId) {
             const activeChat = currentChats.find(c => c.id === activeChatId);
             if (activeChat) {
-                // Show typing indicator first
                 setChats(currentChats.map(c => 
                     c.id === activeChat.id ? { ...c, isTyping: true } : c
                 ));
                 
-                // Quick response for active chat (1-2 seconds)
                 const typingDuration = getRandomInt(1000, 2000);
                 
                 setTimeout(() => {
@@ -178,8 +166,6 @@ function App() {
 
                     setChats(currentChats.map(c => c.id === activeChat.id ? updatedChat : c));
                     
-                    // AI automatically replies to incoming messages
-                    // Apply busy hour multiplier to make AI slower during busy times
                     const busyMultiplier = getBusyHourMultiplier();
                     const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
                     setTimeout(() => {
@@ -207,7 +193,6 @@ function App() {
                         });
                     }, aiReplyDelay);
                     
-                    // Schedule next message for active chat sooner
                     scheduleNext(true);
                 }, typingDuration);
                 
@@ -215,7 +200,6 @@ function App() {
             }
         }
         
-        // Original random events when no active chat
         const eventType = getRandomInt(1, 7);
 
         if (eventType <= 6) {
@@ -237,12 +221,10 @@ function App() {
             }
 
             if (targetChat) {
-                // Show typing indicator first
                 setChats(currentChats.map(c => 
                     c.id === targetChat.id ? { ...c, isTyping: true } : c
                 ));
                 
-                // Wait for typing duration, then send message
                 const typingDuration = getRandomInt(1000, 2500);
                 
                 setTimeout(() => {
@@ -306,7 +288,6 @@ function App() {
 
                     setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
                     
-                    // AI auto-reply if this is the active chat
                     if (targetChat.id === activeChatId) {
                         const busyMultiplier = getBusyHourMultiplier();
                         const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
@@ -382,11 +363,8 @@ function App() {
     };
 
     const scheduleNext = (isQuick: boolean = false) => {
-        // Apply Indonesian busy hour timing
         const busyMultiplier = getBusyHourMultiplier();
         
-        // If there's an active chat, respond faster (2-5 seconds)
-        // Otherwise use default timing (5-12 seconds) with busy multiplier
         let baseDelay: number;
         if (isQuick) {
             baseDelay = getRandomInt(2000, 5000);
@@ -394,7 +372,6 @@ function App() {
             baseDelay = getRandomInt(TIMING.simulationMinInterval, TIMING.simulationMaxInterval);
         }
         
-        // Apply busy hour multiplier (slower during busy times)
         const delay = Math.floor(baseDelay * busyMultiplier);
         
         timeoutId = setTimeout(() => {
