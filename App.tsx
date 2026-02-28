@@ -7,7 +7,7 @@ import { CHAT_SESSIONS, ALL_CONTACTS } from './src/data/store';
 import { ChatSession, Message, User } from './src/types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from './src/data/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from './src/data/utils/helpers';
-import { Lock, X, ShieldAlert } from 'lucide-react';
+import { Lock, X, ShieldAlert, Crown } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './src/config/config';
 import { useContentProtection } from './src/hooks/useContentProtection';
 
@@ -603,78 +603,142 @@ function App() {
       </div>
 
       {showPaywall && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-300 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] max-h-[90vh] overflow-hidden relative animate-in zoom-in-95 duration-300 flex flex-col">
-                <div className="relative bg-gradient-to-br from-[#00a884] to-[#008f6f] px-6 pt-8 pb-6 text-center overflow-hidden flex-shrink-0">
-                    <div className="absolute top-[-30px] right-[-30px] w-40 h-40 bg-white/10 rounded-full"></div>
-                    <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 bg-white/10 rounded-full"></div>
-                    
-                    <div className="relative inline-flex mb-3">
-                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
-                        <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
-                            <Lock size={36} className="text-[#00a884]" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300 p-4">
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-[500px] max-h-[90vh] overflow-hidden relative animate-in zoom-in-95 duration-500 flex flex-col">
+                {/* Animated background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00a884] via-[#008f6f] to-[#00695c] overflow-hidden">
+                    {/* Floating particles */}
+                    <div className="absolute top-4 left-4 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
+                    <div className="absolute top-20 right-8 w-12 h-12 bg-white/10 rounded-full animate-pulse delay-75"></div>
+                    <div className="absolute bottom-16 left-8 w-16 h-16 bg-white/10 rounded-full animate-pulse delay-150"></div>
+                    <div className="absolute bottom-4 right-4 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-300"></div>
+                    {/* Diagonal lines pattern */}
+                    <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)'}}></div>
+                </div>
+                
+                {/* Close button */}
+                <button 
+                    onClick={() => setShowPaywall(false)}
+                    className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-all z-20 backdrop-blur-sm"
+                >
+                    <X size={20} />
+                </button>
+                
+                <div className="relative z-10 px-8 pt-10 pb-6 text-center">
+                    {/* Glowing lock icon */}
+                    <div className="relative inline-flex mb-4">
+                        <div className="absolute inset-0 bg-white/40 rounded-full animate-ping"></div>
+                        <div className="relative w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-gray-800 rounded-full"></div>
+                            <Lock size={40} className="text-[#00a884] mt-2" />
                         </div>
                     </div>
                     
-                    <h2 className="text-2xl font-bold text-white mb-2 relative z-10">{TEXTS.paywall.title}</h2>
-                    <p className="text-white/90 text-sm relative z-10 max-w-[320px] mx-auto">
-                        {TEXTS.paywall.description}
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-white text-sm font-medium mb-4">
+                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        Akses Terbatas
+                    </div>
+                    
+                    <h2 className="text-3xl font-bold text-white mb-3 drop-shadow-lg">
+                        Unlock Fitur Premium
+                    </h2>
+                    <p className="text-white/95 text-base leading-relaxed max-w-[340px] mx-auto mb-4">
+                        Nikmati pengalaman WhatsApp tanpa batas dengan fitur privasi tambahan dan pesan otomatis AI.
                     </p>
-                    {TEXTS.paywall.aiNote && (
-                        <p className="text-white/70 text-xs mt-2 relative z-10 max-w-[320px] mx-auto italic">
-                            {TEXTS.paywall.aiNote}
-                        </p>
-                    )}
+                    
+                    {/* Countdown timer */}
+                    <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 mb-4 inline-flex items-center gap-3">
+                        <div className="text-center">
+                            <div className="text-2xl font-bold text-white">23</div>
+                            <div className="text-xs text-white/70">Jam</div>
+                        </div>
+                        <span className="text-white/50 text-xl">:</span>
+                        <div className="text-center">
+                            <div className="text-2xl font-bold text-white">45</div>
+                            <div className="text-xs text-white/70">Menit</div>
+                        </div>
+                        <span className="text-white/50 text-xl">:</span>
+                        <div className="text-center">
+                            <div className="text-2xl font-bold text-white">30</div>
+                            <div className="text-xs text-white/70">Detik</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <button 
-                    onClick={() => setShowPaywall(false)}
-                    className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors z-20"
-                >
-                    <X size={18} />
-                </button>
-                
-                <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex-shrink-0">
-                    <div className="grid grid-cols-2 gap-2 text-sm">
+                {/* Features grid */}
+                <div className="bg-white px-6 py-4 flex-shrink-0">
+                    <div className="grid grid-cols-2 gap-3">
                         {[
-                            { icon: "🔒", text: TEXTS.paywall.features.privateChat },
-                            { icon: "👁️", text: TEXTS.paywall.features.privacyMode },
-                            { icon: "✨", text: TEXTS.paywall.features.noAds },
-                            { icon: "⭐", text: TEXTS.paywall.features.priority }
+                            { icon: "🔒", text: "Chat Pribadi Tersembunyi", color: "bg-purple-100" },
+                            { icon: "👁️", text: "Mode Privasi Canggih", color: "bg-blue-100" },
+                            { icon: "🤖", text: "AI Auto Reply", color: "bg-green-100" },
+                            { icon: "⭐", text: "Prioritas Tinggi", color: "bg-yellow-100" }
                         ].map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-gray-600">
-                                <span className="text-base">{feature.icon}</span>
-                                <span>{feature.text}</span>
+                            <div key={idx} className={`${feature.color} p-3 rounded-xl flex items-center gap-3 transition-transform hover:scale-105`}>
+                                <span className="text-2xl">{feature.icon}</span>
+                                <span className="text-sm font-medium text-gray-700">{feature.text}</span>
                             </div>
                         ))}
                     </div>
                 </div>
                 
-                <div className="p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    <div className="flex items-center justify-center gap-4 mb-4 text-xs text-gray-400">
-                        <div className="flex items-center gap-1">
-                            <ShieldAlert size={14} />
-                            <span>{TEXTS.paywall.trust.securePayment}</span>
+                {/* CTA Section */}
+                <div className="p-6 bg-gradient-to-b from-gray-50 to-white flex-1 overflow-y-auto">
+                    {/* Social proof */}
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                        <div className="flex -space-x-2">
+                            {[1,2,3,4,5].map(i => (
+                                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00a884] to-[#008f6f] border-2 border-white flex items-center justify-center text-white text-xs font-bold">
+                                    {String.fromCharCode(64+i)}
+                                </div>
+                            ))}
                         </div>
-                        <div className="w-px h-4 bg-gray-300"></div>
+                        <span className="text-sm text-gray-500">+520 orang sudah upgrade</span>
+                    </div>
+                    
+                    {/* Trust badges */}
+                    <div className="flex items-center justify-center gap-6 mb-5 text-xs text-gray-400">
                         <div className="flex items-center gap-1">
-                            <span>🔒</span>
-                            <span>{TEXTS.paywall.trust.encryption}</span>
+                            <ShieldAlert size={14} className="text-green-500" />
+                            <span>Pembayaran Aman</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span className="text-green-500">🔒</span>
+                            <span>Enkripsi Terjamin</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span className="text-green-500">↩️</span>
+                            <span>Garansi 30 Hari</span>
                         </div>
                     </div>
                     
+                    {/* Main CTA Button */}
                     <button 
                         onClick={() => {
                             setShowPaywall(false);
                             setShowPricingPage(true);
                         }}
-                        className="w-full py-3 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#00a884]/30 transition-all"
+                        className="w-full py-4 bg-gradient-to-r from-[#00a884] via-[#00c896] to-[#00e6b0] text-white font-bold rounded-2xl hover:shadow-2xl hover:shadow-[#00a884]/40 transition-all transform hover:-translate-y-1 active:scale-95 relative overflow-hidden group"
                     >
-                        {TEXTS.paywall.viewPackages}
+                        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
+                        <span className="relative flex items-center justify-center gap-2">
+                            <Crown className="w-5 h-5" />
+                            Lihat Paket Premium
+                        </span>
+                    </button>
+                    
+                    {/* Secondary link */}
+                    <button 
+                        onClick={() => setShowPaywall(false)}
+                        className="w-full mt-3 py-2 text-gray-500 text-sm hover:text-gray-700 transition-colors"
+                    >
+                        Mungkin nanti saja
                     </button>
                 </div>
                 
-                <div className="h-1 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00a884]"></div>
+                {/* Bottom decorative line */}
+                <div className="h-2 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00e6b0]"></div>
             </div>
         </div>
       )}
