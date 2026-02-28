@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Check, Lock, Shield, Zap, Star, Crown, Infinity, CreditCard, Headphones, Clock } from 'lucide-react';
+import { X, Check, Lock, Shield, Zap, Star, Crown, Infinity, CreditCard, Headphones, Clock, Timer } from 'lucide-react';
 import { APP_CONFIG, TEXTS } from '../config/config';
 
 interface PricingPageProps {
@@ -10,6 +10,20 @@ interface PricingPageProps {
 
 const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) => {
   const packages = APP_CONFIG.app.packages || [];
+  
+  const promoEndTime = TEXTS.pricing.promoEndTime ? new Date(TEXTS.pricing.promoEndTime) : null;
+  const now = new Date();
+  const isPromoActive = promoEndTime && promoEndTime > now;
+  
+  const formatRemainingTime = (endDate: Date) => {
+    const diff = endDate.getTime() - now.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    if (days > 0) return `${days} hari ${hours} jam`;
+    if (hours > 0) return `${hours} jam ${minutes} menit`;
+    return `${minutes} menit`;
+  };
 
   const features = {
     monthly: [
@@ -59,6 +73,17 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
         </button>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
+          {isPromoActive && (
+            <div className="inline-block bg-red-500 text-white px-6 py-2 rounded-full mb-4 font-semibold shadow-lg animate-pulse">
+              <div className="flex items-center gap-2 justify-center">
+                <Timer size={18} />
+                <span>{TEXTS.pricing.promoTitle}</span>
+              </div>
+              <div className="text-sm mt-1">
+                {TEXTS.pricing.promoSubtitle} • Tersisa: {formatRemainingTime(promoEndTime)}
+              </div>
+            </div>
+          )}
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-2xl mb-6">
             <Crown size={40} className="text-[#00a884]" />
           </div>
