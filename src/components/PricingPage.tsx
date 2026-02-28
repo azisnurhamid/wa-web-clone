@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { X, Check, Lock, Shield, Zap, Star, Crown, Infinity, CreditCard, Headphones, Clock } from 'lucide-react';
-import { APP_CONFIG, COLORS } from '../config';
+import { APP_CONFIG, TEXTS } from '../config/config';
 
 interface PricingPageProps {
   onClose: () => void;
@@ -12,27 +13,27 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
 
   const features = {
     monthly: [
-      { icon: Lock, text: "Kunci Chat Pribadi" },
-      { icon: Shield, text: "Mode Privasi Aktif" },
-      { icon: Zap, text: "Tanpa Batasan Fitur" },
-      { icon: Star, text: "Dukungan Prioritas" },
+      { icon: Lock, text: TEXTS.pricing.featuresMonthly.privateLock },
+      { icon: Shield, text: TEXTS.pricing.featuresMonthly.privacyMode },
+      { icon: Zap, text: TEXTS.pricing.featuresMonthly.noLimit },
+      { icon: Star, text: TEXTS.pricing.featuresMonthly.priority },
     ],
     yearly: [
-      { icon: Lock, text: "Kunci Chat Pribadi" },
-      { icon: Shield, text: "Mode Privasi Aktif" },
-      { icon: Zap, text: "Tanpa Batasan Fitur" },
-      { icon: Star, text: "Dukungan Prioritas" },
-      { icon: Crown, text: "Akses Eksklusif" },
-      { icon: Clock, text: "Simpan Riwayat Lengkap" },
+      { icon: Lock, text: TEXTS.pricing.featuresYearly.privateLock },
+      { icon: Shield, text: TEXTS.pricing.featuresYearly.privacyMode },
+      { icon: Zap, text: TEXTS.pricing.featuresYearly.noLimit },
+      { icon: Star, text: TEXTS.pricing.featuresYearly.priority },
+      { icon: Crown, text: TEXTS.pricing.featuresYearly.exclusive },
+      { icon: Clock, text: TEXTS.pricing.featuresYearly.history },
     ],
     unlimited: [
-      { icon: Lock, text: "Kunci Chat Pribadi" },
-      { icon: Shield, text: "Mode Privasi Aktif" },
-      { icon: Zap, text: "Tanpa Batasan Fitur" },
-      { icon: Star, text: "Dukungan Prioritas" },
-      { icon: Crown, text: "Akses Eksklusif" },
-      { icon: Infinity, text: "Semua Fitur Unlimited" },
-      { icon: Headphones, text: "Support 24/7" },
+      { icon: Lock, text: TEXTS.pricing.featuresUnlimited.privateLock },
+      { icon: Shield, text: TEXTS.pricing.featuresUnlimited.privacyMode },
+      { icon: Zap, text: TEXTS.pricing.featuresUnlimited.noLimit },
+      { icon: Star, text: TEXTS.pricing.featuresUnlimited.priority },
+      { icon: Crown, text: TEXTS.pricing.featuresUnlimited.exclusive },
+      { icon: Infinity, text: TEXTS.pricing.featuresUnlimited.unlimited },
+      { icon: Headphones, text: TEXTS.pricing.featuresUnlimited.support },
     ],
   };
 
@@ -47,7 +48,6 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
 
   return (
     <div className="fixed inset-0 z-[200] bg-gradient-to-br from-gray-900 to-gray-800 overflow-y-auto">
-      {/* Header */}
       <div className="relative bg-gradient-to-r from-[#00a884] via-[#00c896] to-[#00a884] py-12 px-4">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
         
@@ -62,14 +62,13 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-2xl mb-6">
             <Crown size={40} className="text-[#00a884]" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">Paket Premium</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">{TEXTS.pricing.title}</h1>
           <p className="text-white/90 text-lg max-w-2xl mx-auto">
-            Pilih paket yang sesuai dengan kebutuhan Anda dan nikmati pengalaman WhatsApp tanpa batasan
+            {TEXTS.pricing.subtitle}
           </p>
         </div>
       </div>
 
-      {/* Packages */}
       <div className="max-w-5xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-3 gap-6">
           {packages.map((pkg: any, idx: number) => {
@@ -85,7 +84,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
               >
                 {isRecommended && (
                   <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm">
-                    🔥 Paling Populer
+                    {TEXTS.pricing.mostPopular}
                   </div>
                 )}
 
@@ -115,12 +114,12 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    Pilih Paket
+                    {TEXTS.pricing.selectPackage}
                   </button>
                 </div>
 
                 <div className="border-t border-gray-100 p-6">
-                  <h4 className="font-semibold text-gray-700 mb-4">Fitur Included:</h4>
+                  <h4 className="font-semibold text-gray-700 mb-4">{TEXTS.pricing.features}</h4>
                   <ul className="space-y-3">
                     {pkgFeatures.map((feature: any, featureIdx: number) => (
                       <li key={featureIdx} className="flex items-center gap-3 text-gray-600">
@@ -138,7 +137,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
 
                 {isRecommended && (
                   <div className="bg-gradient-to-r from-[#00a884]/10 to-[#00c896]/10 p-4 text-center">
-                    <p className="text-[#00a884] text-sm font-medium">✓ Best Value for Money</p>
+                    <p className="text-[#00a884] text-sm font-medium">{TEXTS.pricing.bestValue}</p>
                   </div>
                 )}
               </div>
@@ -146,16 +145,15 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
           })}
         </div>
 
-        {/* Trust Section */}
         <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg">
-          <h3 className="text-xl font-bold text-gray-800 text-center mb-8">Mengapa Memilih Kami?</h3>
+          <h3 className="text-xl font-bold text-gray-800 text-center mb-8">{TEXTS.pricing.whyChoose}</h3>
           
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { icon: Shield, title: "Pembayaran Aman", desc: "Transaksi terenkripsi" },
-              { icon: Zap, title: "Aktivasi Instan", desc: "Langsung aktif setelah bayar" },
-              { icon: CreditCard, title: "Berbagai Metode", desc: "QRIS, Transfer, E-Wallet" },
-              { icon: Headphones, title: "Support 24/7", desc: "Siap membantu kapan saja" },
+              { icon: Shield, title: TEXTS.pricing.trustBadges.securePayment.title, desc: TEXTS.pricing.trustBadges.securePayment.desc },
+              { icon: Zap, title: TEXTS.pricing.trustBadges.instant.title, desc: TEXTS.pricing.trustBadges.instant.desc },
+              { icon: CreditCard, title: TEXTS.pricing.trustBadges.methods.title, desc: TEXTS.pricing.trustBadges.methods.desc },
+              { icon: Headphones, title: TEXTS.pricing.trustBadges.support.title, desc: TEXTS.pricing.trustBadges.support.desc },
             ].map((item, idx) => (
               <div key={idx} className="text-center">
                 <div className="w-14 h-14 bg-[#00a884]/10 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -168,10 +166,9 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
           </div>
         </div>
 
-        {/* FAQ Preview */}
         <div className="mt-12 text-center">
           <p className="text-gray-400 text-sm">
-            Ada pertanyaan? Hubungi kami di{' '}
+            {TEXTS.pricing.support}{' '}
             <a href="mailto:support@recover.web.id" className="text-[#00a884] hover:underline">
               support@recover.web.id
             </a>
@@ -179,10 +176,9 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
         </div>
       </div>
 
-      {/* Footer */}
       <div className="bg-gray-900 py-6 px-4">
         <div className="max-w-5xl mx-auto text-center text-gray-400 text-sm">
-          <p>© 2026 WhatsApp Clone. All rights reserved.</p>
+          <p>{TEXTS.pricing.footer}</p>
         </div>
       </div>
     </div>

@@ -1,21 +1,19 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import Sidebar from './components/Sidebar';
-import ChatWindow from './components/ChatWindow';
-import PricingPage from './components/PricingPage';
-import { CHAT_SESSIONS, ALL_CONTACTS } from './data/store';
-import { ChatSession, Message, User } from './types';
-import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './data/simulationUtils';
-import { getRandomInt, getRandomItem, generateTimestamp } from './data/utils/helpers';
+import Sidebar from './src/components/Sidebar';
+import ChatWindow from './src/components/ChatWindow';
+import PricingPage from './src/components/PricingPage';
+import { CHAT_SESSIONS, ALL_CONTACTS } from './src/data/store';
+import { ChatSession, Message, User } from './src/types';
+import { createIncomingMessage, createNewStatusUpdate, generateProfileChange } from './src/data/simulationUtils';
+import { getRandomInt, getRandomItem, generateTimestamp } from './src/data/utils/helpers';
 import { Lock, X, ShieldAlert } from 'lucide-react';
-import { COLORS, TIMING, TEXTS, APP_CONFIG } from './config';
+import { COLORS, TIMING, TEXTS, APP_CONFIG } from './src/config/config';
 import { useContentProtection } from './src/hooks/useContentProtection';
 
 function App() {
-  // Proteksi konten: mencegah select, copy, paste, cut, screenshot, inspect element
   useContentProtection();
   
-  // Load cached chats from localStorage or generate new ones
   const [chats, setChats] = useState<ChatSession[]>(() => {
     const cached = localStorage.getItem('wa_cloned_chats');
     if (cached) {
@@ -57,7 +55,6 @@ function App() {
     contactsRef.current = contacts;
   }, [chats, contacts]);
 
-  // Save chats to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('wa_cloned_chats', JSON.stringify(chats));
     localStorage.setItem('wa_cloned_contacts', JSON.stringify(contacts));
@@ -83,19 +80,16 @@ function App() {
         const eventType = getRandomInt(1, 9);
 
         if (eventType <= 6) {
-            // Get pinned chats for higher priority
             const pinnedChats = currentChats.filter(c => c.pinned);
             
-            // Special handling for secret chat - higher chance to receive messages
             const secretChat = currentChats.find(c => c.id === 'chat_secret_1');
-            const isSecretEvent = secretChat && getRandomInt(1, 100) <= 25; // 25% chance for secret chat
+            const isSecretEvent = secretChat && getRandomInt(1, 100) <= 25;
             
             let targetChat;
             
             if (isSecretEvent && secretChat) {
                 targetChat = secretChat;
             } else if (pinnedChats.length > 0 && getRandomInt(1, 100) <= 60) {
-                // 60% chance to message pinned contacts if any exist
                 const pinnedIndex = getRandomInt(0, pinnedChats.length - 1);
                 targetChat = pinnedChats[pinnedIndex];
             } else {
@@ -106,7 +100,6 @@ function App() {
             if (targetChat) {
                 let newMessage;
                 
-                // Special secret messages for secret chat
                 if (targetChat.id === 'chat_secret_1') {
                     const secretTexts = [
                         'Miss you 😘',
@@ -131,7 +124,6 @@ function App() {
                     newMessage = createIncomingMessage(targetChat);
                 }
                 
-                // Randomize message status to feel more alive (30% sent, 30% delivered, 40% read)
                 const statusRoll = getRandomInt(1, 100);
                 let messageStatus: 'sent' | 'delivered' | 'read' = 'sent';
                 if (statusRoll <= 30) {
@@ -143,18 +135,14 @@ function App() {
                 }
                 newMessage.status = messageStatus;
                 
-                // Randomize unread behavior - sometimes read immediately, sometimes not
                 const unreadRoll = getRandomInt(1, 100);
                 let newUnreadCount = targetChat.unreadCount;
                 
                 if (unreadRoll <= 40) {
-                    // 40% - langsung dibaca (tidak ada unread baru)
                     newUnreadCount = 0;
                 } else if (unreadRoll <= 75) {
-                    // 35% - delivered tapi belum dibaca
                     newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
                 } else {
-                    // 25% - baru dikirim, status hanya sent
                     newMessage.status = 'sent';
                     newUnreadCount = targetChat.id === activeChatId ? 0 : targetChat.unreadCount + 1;
                 }
@@ -171,16 +159,13 @@ function App() {
             }
 
         } else if (eventType <= 8) {
-            // Occasionally update old messages from delivered to read
             const targetChat = getRandomItem(currentChats as readonly ChatSession[]);
             if (targetChat && targetChat.messages.length > 0) {
-                // Find messages that are delivered but not read
                 const deliveredMessages = targetChat.messages.filter(
                     m => !m.isMine && (m.status === 'delivered' || m.status === 'sent')
                 );
                 
                 if (deliveredMessages.length > 0 && getRandomInt(1, 100) <= 40) {
-                    // 40% chance to mark a message as read
                     const msgToUpdate = getRandomItem(deliveredMessages);
                     const updatedMessages = targetChat.messages.map(m => 
                         m.id === msgToUpdate.id ? { ...m, status: 'read' as const } : m
@@ -301,7 +286,6 @@ function App() {
     }
   };
   
-  // Function to clear cached data
   const clearCache = () => {
     localStorage.removeItem('wa_cloned_chats');
     localStorage.removeItem('wa_cloned_contacts');
@@ -374,13 +358,10 @@ function App() {
       {showPaywall && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-300 p-4">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] max-h-[90vh] overflow-hidden relative animate-in zoom-in-95 duration-300 flex flex-col">
-                {/* Header with gradient */}
                 <div className="relative bg-gradient-to-br from-[#00a884] to-[#008f6f] px-6 pt-8 pb-6 text-center overflow-hidden flex-shrink-0">
-                    {/* Decorative circles */}
                     <div className="absolute top-[-30px] right-[-30px] w-40 h-40 bg-white/10 rounded-full"></div>
                     <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 bg-white/10 rounded-full"></div>
                     
-                    {/* Lock icon with pulse animation */}
                     <div className="relative inline-flex mb-3">
                         <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
                         <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -388,13 +369,12 @@ function App() {
                         </div>
                     </div>
                     
-                    <h2 className="text-2xl font-bold text-white mb-2 relative z-10">Buka Kunci Fitur Premium</h2>
+                    <h2 className="text-2xl font-bold text-white mb-2 relative z-10">{TEXTS.paywall.title}</h2>
                     <p className="text-white/90 text-sm relative z-10 max-w-[320px] mx-auto">
-                        Dapatkan akses penuh ke semua fitur privasi dan keamanan tanpa batasan
+                        {TEXTS.paywall.description}
                     </p>
                 </div>
                 
-                {/* Close button */}
                 <button 
                     onClick={() => setShowPaywall(false)}
                     className="absolute top-3 right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors z-20"
@@ -402,14 +382,13 @@ function App() {
                     <X size={18} />
                 </button>
                 
-                {/* Features list */}
                 <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex-shrink-0">
                     <div className="grid grid-cols-2 gap-2 text-sm">
                         {[
-                            { icon: "🔒", text: "Chat Pribadi" },
-                            { icon: "👁️", text: "Mode Privasi" },
-                            { icon: "✨", text: "Tanpa Iklan" },
-                            { icon: "⭐", text: "Prioritas Tinggi" }
+                            { icon: "🔒", text: TEXTS.paywall.features.privateChat },
+                            { icon: "👁️", text: TEXTS.paywall.features.privacyMode },
+                            { icon: "✨", text: TEXTS.paywall.features.noAds },
+                            { icon: "⭐", text: TEXTS.paywall.features.priority }
                         ].map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-gray-600">
                                 <span className="text-base">{feature.icon}</span>
@@ -420,20 +399,18 @@ function App() {
                 </div>
                 
                 <div className="p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    {/* Trust badges */}
                     <div className="flex items-center justify-center gap-4 mb-4 text-xs text-gray-400">
                         <div className="flex items-center gap-1">
                             <ShieldAlert size={14} />
-                            <span>Pembayaran Aman</span>
+                            <span>{TEXTS.paywall.trust.securePayment}</span>
                         </div>
                         <div className="w-px h-4 bg-gray-300"></div>
                         <div className="flex items-center gap-1">
                             <span>🔒</span>
-                            <span>Enkripsi Terjamin</span>
+                            <span>{TEXTS.paywall.trust.encryption}</span>
                         </div>
                     </div>
                     
-                    {/* View all packages button */}
                     <button 
                         onClick={() => {
                             setShowPaywall(false);
@@ -441,11 +418,10 @@ function App() {
                         }}
                         className="w-full py-3 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#00a884]/30 transition-all"
                     >
-                        Lihat Selengkapnya →
+                        {TEXTS.paywall.viewPackages}
                     </button>
                 </div>
                 
-                {/* Bottom decorative line */}
                 <div className="h-1 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00a884]"></div>
             </div>
         </div>

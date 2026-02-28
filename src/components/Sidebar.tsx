@@ -6,7 +6,7 @@ import ProfileDrawer from './ProfileDrawer';
 import StatusDrawer from './StatusDrawer';
 import SettingsDrawer from './SettingsDrawer';
 import NewChatDrawer from './NewChatDrawer';
-import { COLORS, TEXTS, URLS } from '../config';
+import { COLORS, TEXTS, URLS } from '../config/config';
 
 interface SidebarProps {
   chats: ChatSession[];
@@ -85,7 +85,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const archivedCount = chats.filter(c => c.archived).length;
 
   const sortedChats = [...displayChats].sort((a, b) => {
-    // Pinned chats always at top
     if (a.pinned && !b.pinned) return -1;
     if (!a.pinned && b.pinned) return 1;
     
@@ -114,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             if (pinnedChats.length < 3) {
                 onUpdateChat(chatId, { pinned: true });
             } else {
-                alert('Maksimal 3 chat yang dapat di-pin. Silakan lepas pin chat lain terlebih dahulu.');
+                alert(TEXTS.sidebar.maxPinError || 'Maksimal 3 chat yang dapat di-pin. Silakan lepas pin chat lain terlebih dahulu.');
             }
             break;
         case 'unpin': onUpdateChat(chatId, { pinned: false }); break;
@@ -228,30 +227,30 @@ const Sidebar: React.FC<SidebarProps> = ({
                       {isMainMenuOpen && (
                         <div className="absolute right-0 top-10 bg-white shadow-xl rounded-md py-2 z-50 w-52 border border-gray-100 origin-top-right">
                              <ul className="text-[#3b4a54] text-[14.5px]">
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Grup baru</li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Pesan berbintang</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.newGroup}</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.starredMessages}</li>
                                 <li 
                                     className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer"
                                     onClick={() => { setIsMainMenuOpen(false); setView('SETTINGS'); }}
                                 >
-                                    Setelan
+                                    {TEXTS.sidebar.settings}
                                 </li>
                                 {onClearCache && (
                                     <li 
                                         className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-orange-500"
                                         onClick={() => { setIsMainMenuOpen(false); onClearCache(); }}
                                     >
-                                        Reset Data 🔄
+                                        {TEXTS.sidebar.resetData}
                                     </li>
                                 )}
                                 <li 
                                     className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer flex items-center justify-between text-red-500 hover:text-red-600"
                                     onClick={() => { setIsMainMenuOpen(false); onLock(); }}
                                 >
-                                    <span>Kunci Layar</span>
+                                    <span>{TEXTS.sidebar.lockScreen}</span>
                                     <Lock size={16} />
                                 </li>
-                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">Keluar</li>
+                                <li className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.logout}</li>
                              </ul>
                         </div>
                       )}
@@ -273,7 +272,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       type="text" 
                       value={searchQuery}
                       onChange={(e) => !isInteractionLocked && setSearchQuery(e.target.value)}
-                      placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : (isUnreadFilter ? "Cari chat belum dibaca" : "Cari atau mulai chat baru")}
+                      placeholder={isInteractionLocked ? TEXTS.sidebar.searchDisabled : (isUnreadFilter ? TEXTS.sidebar.searchUnread : TEXTS.sidebar.searchPlaceholder)}
                       disabled={isInteractionLocked}
                       className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 h-full ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
                    />
@@ -282,7 +281,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => !isInteractionLocked && setIsUnreadFilter(!isUnreadFilter)}
                     disabled={isInteractionLocked}
                     className={`p-2 rounded-full transition ${isUnreadFilter ? 'bg-[#00a884] text-white shadow-sm' : 'text-[#54656f] hover:bg-gray-100'} ${isInteractionLocked ? 'cursor-not-allowed opacity-50' : ''}`}
-                    title="Filter chat belum dibaca"
+                    title={TEXTS.sidebar.filterUnread}
                 >
                     <Filter size={20} fill={isUnreadFilter ? "currentColor" : "none"} />
                 </button>
@@ -408,20 +407,20 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <ul className="text-[#3b4a54] text-[14.5px]">
                             {chat.pinned ? (
                                 <li onClick={(e) => handleAction(e, chat.id, 'unpin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer flex items-center gap-2">
-                                    <PinOff size={16} /> Lepas pin
+                                    <PinOff size={16} /> {TEXTS.sidebar.unpinChat}
                                 </li>
                             ) : (
                                 <li onClick={(e) => handleAction(e, chat.id, 'pin')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer flex items-center gap-2">
-                                    <Pin size={16} /> Pin chat
+                                    <Pin size={16} /> {TEXTS.sidebar.pinChat}
                                 </li>
                             )}
                             {chat.archived ? (
-                                <li onClick={(e) => handleAction(e, chat.id, 'unarchive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Buka arsip</li>
+                                <li onClick={(e) => handleAction(e, chat.id, 'unarchive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.unarchiveChat}</li>
                             ) : (
-                                <li onClick={(e) => handleAction(e, chat.id, 'archive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Arsipkan chat</li>
+                                <li onClick={(e) => handleAction(e, chat.id, 'archive')} className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.archiveChat}</li>
                             )}
-                            <li className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Tandai belum dibaca</li>
-                            <li className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">Hapus chat</li>
+                            <li className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.markUnread}</li>
+                            <li className="px-6 py-2 hover:bg-[#f0f2f5] cursor-pointer">{TEXTS.sidebar.deleteChat}</li>
                             </ul>
                     </div>
                 )}

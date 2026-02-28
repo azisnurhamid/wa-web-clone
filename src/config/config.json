@@ -67,7 +67,18 @@
       "title": "Akses Terbatas",
       "description": "Fitur Mode Privasi dan Kunci Chat sedang aktif. Lakukan pembayaran untuk menghilangkan batasan dan blur pada chat.",
       "button": "Bayar",
-      "later": "Nanti Saja"
+      "later": "Nanti Saja",
+      "features": {
+        "privateChat": "Chat Pribadi",
+        "privacyMode": "Mode Privasi",
+        "noAds": "Tanpa Iklan",
+        "priority": "Prioritas Tinggi"
+      },
+      "trust": {
+        "securePayment": "Pembayaran Aman",
+        "encryption": "Enkripsi Terjamin"
+      },
+      "viewPackages": "Lihat Selengkapnya →"
     },
     "privacy": {
       "enableBlur": "Aktifkan Blur Privasi",
@@ -90,7 +101,17 @@
       "noChatsFound": "Chat tidak ditemukan",
       "noArchivedChats": "Tidak ada chat yang diarsipkan",
       "encrypted": "Pesan Anda dilindungi enkripsi end-to-end",
-      "archivedCount": "archivedCount"
+      "archivedCount": "archivedCount",
+      "resetData": "Reset Data 🔄",
+      "pinned": "Chat di-pin",
+      "pinChat": "Pin chat",
+      "unpinChat": "Lepas pin",
+      "archiveChat": "Arsipkan chat",
+      "unarchiveChat": "Buka arsip",
+      "markUnread": "Tandai belum dibaca",
+      "deleteChat": "Hapus chat",
+      "menu": "Menu",
+      "maxPinError": "Maksimal 3 chat yang dapat di-pin. Silakan lepas pin chat lain terlebih dahulu."
     },
     "chatMenu": {
       "contactInfo": "Info kontak",
@@ -135,7 +156,9 @@
       "recent": "TERBARU",
       "viewed": "DILIHAT",
       "noStatus": "Tidak ada pembaruan status dari kontak Anda.",
-      "search": "Cari status"
+      "search": "Cari status",
+      "searchPlaceholder": "Cari status",
+      "disabled": "Dinonaktifkan"
     },
     "newChat": {
       "title": "Chat baru",
@@ -168,6 +191,88 @@
       "requestAccount": "Minta Info Akun",
       "help": "Bantuan",
       "helpSub": "Pusat bantuan, hubungi kami, kebijakan privasi"
+    },
+    "pricing": {
+      "title": "Paket Premium",
+      "subtitle": "Pilih paket yang sesuai dengan kebutuhan Anda dan nikmati pengalaman WhatsApp tanpa batasan",
+      "selectPackage": "Pilih Paket",
+      "features": "Fitur Included:",
+      "whyChoose": "Mengapa Memilih Kami?",
+      "mostPopular": "🔥 Paling Populer",
+      "bestValue": "✓ Best Value for Money",
+      "support": "Ada pertanyaan? Hubungi kami di",
+      "footer": "© 2026 WhatsApp Clone. All rights reserved.",
+      "featuresMonthly": {
+        "privateLock": "Kunci Chat Pribadi",
+        "privacyMode": "Mode Privasi Aktif",
+        "noLimit": "Tanpa Batasan Fitur",
+        "priority": "Dukungan Prioritas"
+      },
+      "featuresYearly": {
+        "privateLock": "Kunci Chat Pribadi",
+        "privacyMode": "Mode Privasi Aktif",
+        "noLimit": "Tanpa Batasan Fitur",
+        "priority": "Dukungan Prioritas",
+        "exclusive": "Akses Eksklusif",
+        "history": "Simpan Riwayat Lengkap"
+      },
+      "featuresUnlimited": {
+        "privateLock": "Kunci Chat Pribadi",
+        "privacyMode": "Mode Privasi Aktif",
+        "noLimit": "Tanpa Batasan Fitur",
+        "priority": "Dukungan Prioritas",
+        "exclusive": "Akses Eksklusif",
+        "unlimited": "Semua Fitur Unlimited",
+        "support": "Support 24/7"
+      },
+      "trustBadges": {
+        "securePayment": {
+          "title": "Pembayaran Aman",
+          "desc": "Transaksi terenkripsi"
+        },
+        "instant": {
+          "title": "Aktivasi Instan",
+          "desc": "Langsung aktif setelah bayar"
+        },
+        "methods": {
+          "title": "Berbagai Metode",
+          "desc": "QRIS, Transfer, E-Wallet"
+        },
+        "support": {
+          "title": "Support 24/7",
+          "desc": "Siap membantu kapan saja"
+        }
+      }
+    },
+    "payment": {
+      "title": "Metode Pembayaran",
+      "subtitle": "Pilih metode pembayaran yang方便",
+      "orderSummary": "Ringkasan Pesanan",
+      "total": "Total",
+      "selectMethod": "Pilih Metode Pembayaran",
+      "securePayment": "Pembayaran Aman",
+      "secureDesc": "Data Anda terenkripsi dan aman",
+      "processing": "Memproses Pembayaran...",
+      "pay": "Bayar",
+      "back": "Kembali",
+      "methods": {
+        "qris": {
+          "name": "QRIS",
+          "desc": "Scan QR dengan aplikasi banking"
+        },
+        "transfer": {
+          "name": "Transfer Bank",
+          "desc": "BCA, BRI, Mandiri,BNI"
+        },
+        "ewallet": {
+          "name": "E-Wallet",
+          "desc": "GoPay, OVO, DANA, ShopeePay"
+        },
+        "credit": {
+          "name": "Kartu Kredit",
+          "desc": "Visa, Mastercard, JCB"
+        }
+      }
     }
   },
   "urls": {

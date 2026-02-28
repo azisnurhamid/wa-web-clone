@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { User, StatusUpdate } from '../types';
-import { TEXTS, URLS, COLORS } from '../config';
+import { TEXTS, URLS, COLORS } from '../config/config';
 
 interface StatusDrawerProps {
   isOpen: boolean;
@@ -64,6 +64,12 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';
 
+  const StatusPlusIcon = () => (
+    <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
+        <Plus size={10} strokeWidth={4} />
+    </div>
+  );
+
   return (
     <>
     <div 
@@ -75,7 +81,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
           <button onClick={onClose} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />
           </button>
-          <h2 className="text-[19px] font-medium">Status</h2>
+          <h2 className="text-[19px] font-medium">{TEXTS.status.title}</h2>
         </div>
       </div>
 
@@ -95,20 +101,11 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                       alt="My Status" 
                       className="w-10 h-10 rounded-full object-cover opacity-80"
                   />
-                  {!isPrivacyMode && (
-                      <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
-                          <Plus size={10} strokeWidth={4} />
-                      </div>
-                  )}
-                  {!isPrivacyMode && (
-                      <div className="absolute -bottom-1 -right-1 bg-[#00a884] rounded-full border-2 border-white p-0.5 text-white">
-                          <Plus size={10} strokeWidth={4} />
-                      </div>
-                  )}
+                  {!isPrivacyMode && <StatusPlusIcon />}
               </div>
               <div>
                   <h3 className={`text-[17px] text-[#111b21] font-normal transition-all duration-300 ${blurClass}`}>{TEXTS.status.myStatus}</h3>
-                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{isInteractionLocked ? 'Dinonaktifkan' : TEXTS.status.addStatus}</p>
+                  <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{isInteractionLocked ? TEXTS.status.disabled : TEXTS.status.addStatus}</p>
               </div>
           </div>
 
@@ -119,7 +116,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
                     type="text" 
                     value={searchQuery}
                     onChange={(e) => !isInteractionLocked && setSearchQuery(e.target.value)}
-                    placeholder={isInteractionLocked ? "Pencarian dinonaktifkan" : "Cari status"}
+                    placeholder={isInteractionLocked ? TEXTS.status.disabled : TEXTS.status.searchPlaceholder}
                     disabled={isInteractionLocked}
                     className={`bg-transparent border-none outline-none text-sm w-full placeholder:text-[#54656f] text-gray-700 ${isInteractionLocked ? 'cursor-not-allowed' : ''}`}
                 />

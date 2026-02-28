@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List, User } from 'lucide-react';
-import { TEXTS } from '../config';
+import { TEXTS } from '../config/config';
 
 interface SettingsDrawerProps {
   isOpen: boolean;

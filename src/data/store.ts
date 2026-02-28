@@ -1,8 +1,6 @@
 
 import { ChatSession, User, Message } from '../types';
 import { getRandomInt, generateTimestamp, getSortableTimestamp, getRandomItem } from './utils/helpers';
-
-// AI-powered dynamic conversation generator
 const generateAIConversation = (user: User, isRomantic: boolean = false): ChatSession => {
     const now = Date.now();
     const messageCount = getRandomInt(5, 15);
@@ -65,7 +63,6 @@ const generateAIConversation = (user: User, isRomantic: boolean = false): ChatSe
     };
 };
 
-// Generate AI-powered romantic conversation
 const generateRomanticConversation = (user: User): ChatSession => {
     const now = Date.now();
     const romanticMessages = [
@@ -100,7 +97,6 @@ const generateRomanticConversation = (user: User): ChatSession => {
     };
 };
 
-// Generate AI-powered secret conversation
 const generateSecretConversation = (): ChatSession => {
     const now = Date.now();
     const secretNames = ['???', '🌙', '⭐', 'Misteri', 'Anonim'];
@@ -160,7 +156,6 @@ const TOTAL_ACTIVE_CHATS = 40;
 
 let allSessions: ChatSession[] = [];
 
-// Generate AI-powered special user (closest person - romantic partner)
 const createSpecialUser = (): ChatSession => {
     const specialUser: User = {
         id: `special_${Date.now()}`,
@@ -184,7 +179,6 @@ const createSpecialUser = (): ChatSession => {
     return generateRomanticConversation(specialUser);
 };
 
-// Generate all sessions using AI
 const generateAllSessions = () => {
     // 1. Create romantic partner (pinned)
     allSessions.push(createSpecialUser());
@@ -259,8 +253,6 @@ generateAllSessions();
 const specialSession = createSpecialUser();
 specialSession.pinned = true;
 allSessions.push(specialSession);
-
-// Create secret/affair contact
 const secretUser: User = {
     id: 'secret_1',
     name: '???',

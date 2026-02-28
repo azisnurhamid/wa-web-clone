@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { X, Check, CreditCard, Smartphone, Wallet, Building, ArrowLeft, Lock } from 'lucide-react';
-import { APP_CONFIG, COLORS } from '../config';
+import { APP_CONFIG, TEXTS } from '../config/config';
 
 interface PaymentPageProps {
   packageId: string;
@@ -15,15 +16,14 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
   const [isProcessing, setIsProcessing] = useState(false);
 
   const paymentMethods = [
-    { id: 'qris', name: 'QRIS', icon: Smartphone, desc: 'Scan QR dengan aplikasi banking' },
-    { id: 'transfer', name: 'Transfer Bank', icon: Building, desc: 'BCA, BRI, Mandiri,BNI' },
-    { id: 'ewallet', name: 'E-Wallet', icon: Wallet, desc: 'GoPay, OVO, DANA, ShopeePay' },
-    { id: 'credit', name: 'Kartu Kredit', icon: CreditCard, desc: 'Visa, Mastercard, JCB' },
+    { id: 'qris', name: TEXTS.payment.methods.qris.name, icon: Smartphone, desc: TEXTS.payment.methods.qris.desc },
+    { id: 'transfer', name: TEXTS.payment.methods.transfer.name, icon: Building, desc: TEXTS.payment.methods.transfer.desc },
+    { id: 'ewallet', name: TEXTS.payment.methods.ewallet.name, icon: Wallet, desc: TEXTS.payment.methods.ewallet.desc },
+    { id: 'credit', name: TEXTS.payment.methods.credit.name, icon: CreditCard, desc: TEXTS.payment.methods.credit.desc },
   ];
 
   const handlePayment = () => {
     setIsProcessing(true);
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       onSuccess();
@@ -32,7 +32,6 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
 
   return (
     <div className="fixed inset-0 z-[300] bg-gradient-to-br from-gray-900 to-gray-800 overflow-y-auto">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#00a884] to-[#00c896] py-6 px-4">
         <div className="max-w-lg mx-auto flex items-center gap-4">
           <button 
@@ -42,17 +41,15 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
             <ArrowLeft size={24} />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white">Metode Pembayaran</h1>
-            <p className="text-white/80 text-sm">Pilih metode pembayaran yang方便</p>
+            <h1 className="text-xl font-bold text-white">{TEXTS.payment.title}</h1>
+            <p className="text-white/80 text-sm">{TEXTS.payment.subtitle}</p>
           </div>
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-lg mx-auto p-4">
-        {/* Order Summary */}
         <div className="bg-white rounded-2xl p-5 shadow-lg mb-4">
-          <h2 className="font-bold text-gray-800 mb-4">Ringkasan Pesanan</h2>
+          <h2 className="font-bold text-gray-800 mb-4">{TEXTS.payment.orderSummary}</h2>
           
           <div className="flex items-center justify-between py-3 border-b border-gray-100">
             <div>
@@ -68,14 +65,13 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
           </div>
 
           <div className="pt-3 flex justify-between items-center">
-            <p className="font-semibold text-gray-800">Total</p>
+            <p className="font-semibold text-gray-800">{TEXTS.payment.total}</p>
             <p className="font-bold text-[#00a884] text-2xl">{selectedPackage.price}</p>
           </div>
         </div>
 
-        {/* Payment Methods */}
         <div className="bg-white rounded-2xl p-5 shadow-lg mb-4">
-          <h2 className="font-bold text-gray-800 mb-4">Pilih Metode Pembayaran</h2>
+          <h2 className="font-bold text-gray-800 mb-4">{TEXTS.payment.selectMethod}</h2>
           
           <div className="space-y-3">
             {paymentMethods.map((method) => (
@@ -109,16 +105,14 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
           </div>
         </div>
 
-        {/* Payment Info */}
         <div className="bg-blue-50 rounded-2xl p-4 mb-4 flex items-start gap-3">
           <Lock size={20} className="text-blue-500 mt-0.5" />
           <div>
-            <p className="font-semibold text-blue-800 text-sm">Pembayaran Aman</p>
-            <p className="text-blue-600 text-xs">Data Anda terenkripsi dan aman</p>
+            <p className="font-semibold text-blue-800 text-sm">{TEXTS.payment.securePayment}</p>
+            <p className="text-blue-600 text-xs">{TEXTS.payment.secureDesc}</p>
           </div>
         </div>
 
-        {/* Pay Button */}
         <button
           onClick={handlePayment}
           disabled={isProcessing}
@@ -134,19 +128,18 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ packageId, onBack, onSuccess 
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Memproses Pembayaran...
+              {TEXTS.payment.processing}
             </span>
           ) : (
-            `Bayar ${selectedPackage.price}`
+            `${TEXTS.payment.pay} ${selectedPackage.price}`
           )}
         </button>
 
-        {/* Cancel */}
         <button
           onClick={onBack}
           className="w-full py-3 mt-3 text-gray-500 font-medium hover:text-gray-700 transition-colors"
         >
-          Kembali
+          {TEXTS.payment.back}
         </button>
       </div>
     </div>

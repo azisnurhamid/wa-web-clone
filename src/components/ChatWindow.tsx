@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChatSession } from '../types';
 import { Search, MoreVertical, Smile, Paperclip, Mic, Send, X, FileText, Image as ImageIcon, Camera, User, BarChart2, Sticker, ArrowLeft } from 'lucide-react';
 import MessageBubble from './MessageBubble';
-import { COLORS, TEXTS, URLS } from '../config';
+import { COLORS, TEXTS, URLS } from '../config/config';
 
 interface ChatWindowProps {
   chat: ChatSession;
@@ -190,12 +190,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, is
                     </button>
                     
                     <div className={`absolute bottom-12 left-0 md:left-[-10px] flex flex-col gap-4 transition-all duration-200 ${showAttachMenu ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-75 invisible'}`}>
-                         <AttachItem color="bg-[#5157ae]" icon={<FileText size={20} fill="white" />} label="Dokumen" />
-                         <AttachItem color="bg-[#007bfc]" icon={<ImageIcon size={20} fill="white" />} label="Foto & video" />
-                         <AttachItem color="bg-[#d3396d]" icon={<Camera size={20} />} label="Kamera" />
-                         <AttachItem color="bg-[#0063cb]" icon={<User size={20} fill="white" />} label="Kontak" />
-                         <AttachItem color="bg-[#ffbc38]" icon={<BarChart2 size={20} />} label="Polling" />
-                         <AttachItem color="bg-[#0063cb]" icon={<Sticker size={20} fill="white" />} label="Stiker baru" />
+                         <AttachItem color="bg-[#5157ae]" icon={<FileText size={20} fill="white" />} label={TEXTS.chatWindow.attachments.document} />
+                         <AttachItem color="bg-[#007bfc]" icon={<ImageIcon size={20} fill="white" />} label={TEXTS.chatWindow.attachments.photoVideo} />
+                         <AttachItem color="bg-[#d3396d]" icon={<Camera size={20} />} label={TEXTS.chatWindow.attachments.camera} />
+                         <AttachItem color="bg-[#0063cb]" icon={<User size={20} fill="white" />} label={TEXTS.chatWindow.attachments.contact} />
+                         <AttachItem color="bg-[#ffbc38]" icon={<BarChart2 size={20} />} label={TEXTS.chatWindow.attachments.poll} />
+                         <AttachItem color="bg-[#0063cb]" icon={<Sticker size={20} fill="white" />} label={TEXTS.chatWindow.attachments.newSticker} />
                     </div>
                 </div>
             </div>
