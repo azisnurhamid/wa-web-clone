@@ -11,6 +11,7 @@
         "originalPrice": "Rp 80.000",
         "discount": "38%",
         "period": "per bulan",
+        "promoEndTime": "18:00",
         "recommended": false
       },
       {
@@ -20,6 +21,7 @@
         "originalPrice": "Rp 960.000",
         "discount": "53%",
         "period": "per tahun",
+        "promoEndTime": "21:00",
         "recommended": true
       },
       {
@@ -29,6 +31,7 @@
         "originalPrice": "Rp 1.500.000",
         "discount": "40%",
         "period": "seumur hidup",
+        "promoEndTime": null,
         "recommended": false
       }
     ]

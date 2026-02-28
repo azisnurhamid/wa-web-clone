@@ -11,7 +11,17 @@ interface PricingPageProps {
 const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) => {
   const packages = APP_CONFIG.app.packages || [];
   
-  const getPromoEndTime = () => {
+  const getPackageEndTime = (pkgEndTime: string | null | undefined) => {
+    if (!pkgEndTime) return null;
+    const now = new Date();
+    const [hours, minutes] = pkgEndTime.split(':').map(Number);
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(hours, minutes, 0, 0);
+    return tomorrow;
+  };
+  
+  const getDefaultPromoEndTime = () => {
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -19,9 +29,14 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
     return tomorrow;
   };
   
-  const promoEndTime = TEXTS.pricing.promoEndTime ? new Date(TEXTS.pricing.promoEndTime) : getPromoEndTime();
+  const defaultPromoEndTime = TEXTS.pricing.promoEndTime ? new Date(TEXTS.pricing.promoEndTime) : getDefaultPromoEndTime();
   const now = new Date();
-  const isPromoActive = promoEndTime && promoEndTime > now;
+  
+  const getPackagePromoStatus = (pkg: any) => {
+    const pkgEndTime = getPackageEndTime(pkg.promoEndTime);
+    const endTime = pkgEndTime || defaultPromoEndTime;
+    return { endTime, isActive: endTime > now };
+  };
   
   const formatRemainingTime = (endDate: Date) => {
     const diff = endDate.getTime() - now.getTime();
@@ -103,6 +118,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
           {packages.map((pkg: any, idx: number) => {
             const pkgFeatures = getFeatures(pkg.id);
             const isRecommended = pkg.recommended;
+            const { endTime: promoEndTime, isActive: isPromoActive } = getPackagePromoStatus(pkg);
 
             return (
               <div 
@@ -117,18 +133,18 @@ const PricingPage: React.FC<PricingPageProps> = ({ onClose, onSelectPackage }) =
                     <span>{TEXTS.pricing.promoTitle} • {formatRemainingTime(promoEndTime)}</span>
                   </div>
                 )}
-                {!isPromoActive && (
+                {!isPromoActive && pkg.promoEndTime && (
                   <div className="absolute top-0 left-0 right-0 bg-gray-400 text-white text-center py-1 font-semibold text-xs flex items-center justify-center gap-1">
                     <span>{TEXTS.pricing.promoEnded}</span>
                   </div>
                 )}
                 {isRecommended && (
-                  <div className={`absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm ${isPromoActive ? 'top-6' : ''}`}>
+                  <div className={`absolute top-0 left-0 right-0 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white text-center py-2 font-semibold text-sm ${(isPromoActive || pkg.promoEndTime) ? 'top-6' : ''}`}>
                     {TEXTS.pricing.mostPopular}
                   </div>
                 )}
 
-                <div className={`p-6 ${isRecommended ? 'pt-14' : 'pt-10'}`}>
+                <div className={`p-6 ${isRecommended ? 'pt-14' : (isPromoActive || pkg.promoEndTime) ? 'pt-10' : 'pt-6'}`}>
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">{pkg.period}</p>
 
