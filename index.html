@@ -7,7 +7,6 @@
     <meta http-equiv="Expires" content="0" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- SEO Meta Tags -->
     <title>WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal</title>
     <meta name="description" content="Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis." />
     <meta name="keywords" content="WhatsApp, pesan, panggilan, chatting, chat, kirim pesan, telepon, smartphone, android, ios, web" />
@@ -21,11 +20,9 @@
     <meta name="theme-color" content="#00a884" />
     <link rel="canonical" href="https://whatsapp.com/" />
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png" />
     <link rel="apple-touch-icon" href="https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png" />
     
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://whatsapp.com/" />
     <meta property="og:title" content="WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal" />
@@ -35,14 +32,12 @@
     <meta property="og:locale" content="id_ID" />
     <meta property="invite_link_type" content="website" />
     
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://whatsapp.com/" />
     <meta name="twitter:title" content="WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal" />
     <meta name="twitter:description" content="Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis." />
     <meta name="twitter:image" content="https://static.whatsapp.net/rsrc.php/v4/yo/r/J5gK5AgJ_L5.png" />
     
-    <!-- PWA -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -51,7 +46,6 @@
     <meta name="msapplication-TileColor" content="#00a884" />
     <meta name="msapplication-config" content="none" />
     
-    <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -73,12 +67,9 @@
     }
     </script>
     
-    <!-- Override console.warn before Tailwind loads -->
     <script>
-      // Store original console.warn
       const originalWarn = console.warn;
       console.warn = function(...args) {
-        // Suppress Tailwind CDN warning
         if (args[0] && args[0].includes && args[0].includes('cdn.tailwindcss.com')) {
           return;
         }
@@ -87,7 +78,6 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Restore console.warn after Tailwind
       console.warn = console.warn || function() {};
     </script>
     
@@ -106,7 +96,6 @@
         background: #94a3b8; 
       }
 
-      /* CSS untuk mencegah selection, copy, paste, cut */
       * {
         -webkit-user-select: none !important;
         -moz-user-select: none !important;
@@ -114,7 +103,6 @@
         user-select: none !important;
       }
 
-      /* Izinkan selection pada input dan textarea */
       input, textarea, [contenteditable="true"] {
         -webkit-user-select: text !important;
         -moz-user-select: text !important;
@@ -122,7 +110,6 @@
         user-select: text !important;
       }
 
-      /* Mencegah context menu */
       body {
         -webkit-touch-callout: none !important;
       }
