@@ -3,12 +3,6 @@ import { useEffect } from 'react';
 
 export const useContentProtection = () => {
   useEffect(() => {
-    // ============================================
-    // 1. PERLINDUNGAN TERHADAP WEBSITE COPIER
-    // (HTTrack, Wget, WebCopy, dll)
-    // ============================================
-    
-    // Blokir request dari tools otomatis
     const blockAutomatedRequests = () => {
       const userAgent = navigator.userAgent.toLowerCase();
       const blockedUserAgents = [
@@ -48,42 +42,30 @@ export const useContentProtection = () => {
       }
     };
     
-    // Detect dan blokir iframe embedding (mencegah cloned site di iframe)
     const preventIframeEmbedding = () => {
       try {
-        // Cek apakah halaman dibuka dalam iframe
         const inIframe = window.top !== window.self;
         if (inIframe && window.top.location.href !== window.self.location.href) {
-          // Redirect parent ke halaman saat ini
           window.top.location.replace(window.self.location.href);
         }
       } catch (e) {
-        // Access denied - halaman dalam iframe cross-origin
         console.log('Cross-origin iframe detected');
       }
     };
     
-    // Disable XMLHttpRequest dan fetch untuk monitoring
     const originalXHROpen = XMLHttpRequest.prototype.open;
     const originalXHRSend = XMLHttpRequest.prototype.send;
     const originalFetch = window.fetch;
     
     XMLHttpRequest.prototype.open = function(...args: any[]) {
-      // Allow normal requests but could add detection here
       return originalXHROpen.apply(this, args);
     };
     
     window.fetch = function(...args: any[]) {
-      // Allow normal requests
       return originalFetch.apply(this, args);
     };
     
-    // ============================================
-    // 2. PERLINDUNGAN SCREENSHOT/PRINTSCREEN
-    // ============================================
-    
     const preventPrintScreen = (e: KeyboardEvent) => {
-      // Blokir PrintScreen, Ctrl+P (Print), Ctrl+S (Save)
       if (
         e.key === 'PrintScreen' ||
         (e.ctrlKey && e.key.toLowerCase() === 'p') ||
@@ -95,16 +77,13 @@ export const useContentProtection = () => {
       }
     };
     
-    // Monitoring clipboard untuk screenshot detection
     const monitorClipboard = () => {
       setInterval(() => {
         if (navigator.clipboard && navigator.clipboard.read) {
           navigator.clipboard.read().then((items) => {
             for (const item of items) {
               if (item.types.includes('image/png')) {
-                // Detect potential screenshot
                 console.log('Potential screenshot attempt detected');
-                // Clear clipboard
                 navigator.clipboard.writeText('').catch(() => {});
               }
             }
@@ -113,7 +92,6 @@ export const useContentProtection = () => {
       }, 500);
     };
     
-    // Detect DevTools (bisa digunakan untuk inspect element/screenshot)
     const detectDevTools = () => {
       const threshold = 160;
       const checkDevTools = () => {
@@ -127,10 +105,6 @@ export const useContentProtection = () => {
       
       setInterval(checkDevTools, 1000);
     };
-    
-    // ============================================
-    // 3. PERLINDUNGAN COPY-PASTE TEKS
-    // ============================================
     
     const preventSelection = (e: Event) => {
       e.preventDefault();
@@ -181,15 +155,9 @@ export const useContentProtection = () => {
       return false;
     };
     
-    // ============================================
-    // JALANKAN SEMUA PERLINDUNGAN
-    // ============================================
-    
-    // Jalankan protection terhadap website copier
     blockAutomatedRequests();
     preventIframeEmbedding();
     
-    // Pasang event listeners
     document.addEventListener('selectstart', preventSelection);
     document.addEventListener('contextmenu', preventContextMenu);
     document.addEventListener('keydown', preventKeyboardShortcuts);
@@ -200,11 +168,9 @@ export const useContentProtection = () => {
     document.addEventListener('copy', preventSelection);
     document.addEventListener('paste', preventSelection);
     
-    // Monitoring
     monitorClipboard();
     detectDevTools();
     
-    // Cleanup
     return () => {
       document.removeEventListener('selectstart', preventSelection);
       document.removeEventListener('contextmenu', preventContextMenu);
