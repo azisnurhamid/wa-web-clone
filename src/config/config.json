@@ -82,7 +82,11 @@
         "securePayment": "Pembayaran Aman",
         "encryption": "Enkripsi Terjamin"
       },
-      "viewPackages": "Lihat Selengkapnya →"
+      "viewPackages": "Lihat Selengkapnya →",
+      "priceDisplay": "Rp 999.999",
+      "originalPrice": "Rp 2.000.000",
+      "discount": "Hemat 50%",
+      "promoEnds": "Promo berakhir dalam:"
     },
     "privacy": {
       "enableBlur": "Aktifkan Blur Privasi",
@@ -92,6 +96,7 @@
     },
     "sidebar": {
       "archived": "Diarsipkan",
+      "typing": "Mengetik...",
       "newChat": "Chat Baru",
       "newGroup": "Grup baru",
       "starredMessages": "Pesan berbintang",

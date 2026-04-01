@@ -42,8 +42,7 @@ function App() {
   const [isInteractionLocked, setIsInteractionLocked] = useState(true);
   const [showPaywall, setShowPaywall] = useState(false);
   
-  // Function to calculate seconds until midnight
-  const getSecondsUntilMidnight = (): number => {
+  const calculateSecondsUntilMidnight = (): number => {
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -51,7 +50,7 @@ function App() {
     return Math.floor((tomorrow.getTime() - now.getTime()) / 1000);
   };
   
-  const [countdown, setCountdown] = useState(getSecondsUntilMidnight);
+  const [countdown, setCountdown] = useState(calculateSecondsUntilMidnight);
   
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
@@ -87,8 +86,7 @@ function App() {
     const interval = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
-          // Reset at midnight
-          return getSecondsUntilMidnight();
+          return calculateSecondsUntilMidnight();
         }
         return prev - 1;
       });
@@ -661,11 +659,11 @@ function App() {
                 
                 <div className="px-6 py-4 text-center">
                     <div className="mb-2">
-                        <span className="text-3xl font-bold text-[#00a884]">Rp 999.999</span>
+                        <span className="text-3xl font-bold text-[#00a884]">{TEXTS.paywall.priceDisplay}</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
-                        <span className="text-lg text-gray-400 line-through">Rp 2.000.000</span>
-                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">Hemat 50%</span>
+                        <span className="text-lg text-gray-400 line-through">{TEXTS.paywall.originalPrice}</span>
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">{TEXTS.paywall.discount}</span>
                     </div>
                 </div>
                 
@@ -673,7 +671,7 @@ function App() {
                     <div className="px-6 py-3 bg-red-50 border-t border-red-100 flex items-center justify-center gap-2">
                         <Clock size={16} className="text-red-500" />
                         <span className="text-sm text-red-600 font-medium">
-                            Promo berakhir dalam: <span className="font-bold">{formatCountdown(countdown)}</span>
+                            {TEXTS.paywall.promoEnds} <span className="font-bold">{formatCountdown(countdown)}</span>
                         </span>
                     </div>
                 )}
