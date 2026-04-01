@@ -72,25 +72,11 @@ export const useContentProtection = () => {
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 's')
       ) {
         e.preventDefault();
-        navigator.clipboard.writeText('').catch(() => {});
         return false;
       }
     };
     
-    const monitorClipboard = () => {
-      setInterval(() => {
-        if (navigator.clipboard && navigator.clipboard.read) {
-          navigator.clipboard.read().then((items) => {
-            for (const item of items) {
-              if (item.types.includes('image/png')) {
-                console.log('Potential screenshot attempt detected');
-                navigator.clipboard.writeText('').catch(() => {});
-              }
-            }
-          }).catch(() => {});
-        }
-      }, 500);
-    };
+
     
     const detectDevTools = () => {
       const threshold = 160;
@@ -168,7 +154,6 @@ export const useContentProtection = () => {
     document.addEventListener('copy', preventSelection);
     document.addEventListener('paste', preventSelection);
     
-    monitorClipboard();
     detectDevTools();
     
     return () => {
