@@ -2,12 +2,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './src/components/Sidebar';
 import ChatWindow from './src/components/ChatWindow';
-import PricingPage from './src/components/PricingPage';
 import { CHAT_SESSIONS, ALL_CONTACTS } from './src/data/store';
 import { ChatSession, Message, User } from './src/types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from './src/data/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from './src/data/utils/helpers';
-import { Lock, X, ShieldAlert } from 'lucide-react';
+import { Lock, X, ShieldAlert, Clock } from 'lucide-react';
 import { COLORS, TIMING, TEXTS, APP_CONFIG } from './src/config/config';
 import { useContentProtection } from './src/hooks/useContentProtection';
 
@@ -42,7 +41,17 @@ function App() {
   const [isPrivacyMode, setIsPrivacyMode] = useState(true);
   const [isInteractionLocked, setIsInteractionLocked] = useState(true);
   const [showPaywall, setShowPaywall] = useState(false);
-  const [showPricingPage, setShowPricingPage] = useState(false);
+  
+  // Function to calculate seconds until midnight
+  const getSecondsUntilMidnight = (): number => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return Math.floor((tomorrow.getTime() - now.getTime()) / 1000);
+  };
+  
+  const [countdown, setCountdown] = useState(getSecondsUntilMidnight);
   
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
@@ -71,6 +80,29 @@ function App() {
 
     return () => clearTimeout(timeoutId);
   }, [showPaywall, isLocked]);
+
+  useEffect(() => {
+    if (!showPaywall) return;
+    
+    const interval = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          // Reset at midnight
+          return getSecondsUntilMidnight();
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [showPaywall]);
+
+  const formatCountdown = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -581,7 +613,7 @@ function App() {
 
       {showPaywall && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-300 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] max-h-[90vh] overflow-hidden relative animate-in zoom-in-95 duration-300 flex flex-col">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[480px] overflow-hidden relative animate-in zoom-in-95 duration-300 flex flex-col">
                 <div className="relative bg-gradient-to-br from-[#00a884] to-[#008f6f] px-6 pt-8 pb-6 text-center overflow-hidden flex-shrink-0">
                     <div className="absolute top-[-30px] right-[-30px] w-40 h-40 bg-white/10 rounded-full"></div>
                     <div className="absolute bottom-[-20px] left-[-20px] w-24 h-24 bg-white/10 rounded-full"></div>
@@ -627,7 +659,26 @@ function App() {
                     </div>
                 </div>
                 
-                <div className="p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                <div className="px-6 py-4 text-center">
+                    <div className="mb-2">
+                        <span className="text-3xl font-bold text-[#00a884]">Rp 999.999</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                        <span className="text-lg text-gray-400 line-through">Rp 2.000.000</span>
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">Hemat 50%</span>
+                    </div>
+                </div>
+                
+                {countdown > 0 && (
+                    <div className="px-6 py-3 bg-red-50 border-t border-red-100 flex items-center justify-center gap-2">
+                        <Clock size={16} className="text-red-500" />
+                        <span className="text-sm text-red-600 font-medium">
+                            Promo berakhir dalam: <span className="font-bold">{formatCountdown(countdown)}</span>
+                        </span>
+                    </div>
+                )}
+                
+                <div className="p-5 flex-1">
                     <div className="flex items-center justify-center gap-4 mb-4 text-xs text-gray-400">
                         <div className="flex items-center gap-1">
                             <ShieldAlert size={14} />
@@ -642,27 +693,17 @@ function App() {
                     
                     <button 
                         onClick={() => {
-                            setShowPaywall(false);
-                            setShowPricingPage(true);
+                            window.location.href = 'https://recover.web.id/topup?source=wa-web-clone';
                         }}
                         className="w-full py-3 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#00a884]/30 transition-all"
                     >
-                        {TEXTS.paywall.viewPackages}
+                        Bayar
                     </button>
                 </div>
                 
                 <div className="h-1 bg-gradient-to-r from-[#00a884] via-[#25d366] to-[#00a884]"></div>
             </div>
         </div>
-      )}
-
-      {showPricingPage && (
-        <PricingPage 
-          onClose={() => setShowPricingPage(false)} 
-          onSelectPackage={(pkgId) => {
-            window.location.href = APP_CONFIG.app.paywallUrl + '/topup?package=' + pkgId;
-          }}
-        />
       )}
     </div>
   );
