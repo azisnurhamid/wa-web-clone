@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "WhatsApp Web",
-    "paywallUrl": "https://recover.web.id",
+    "paywallUrl": "https://recover.web.id/topup?source=wa-web-clone",
+    "supportEmail": "support@recover.web.id",
     "price": "Rp 50.000",
     "packages": [
       {
@@ -46,6 +47,9 @@
   "colors": {
     "primary": "#00a884",
     "primaryHover": "#008f6f",
+    "whatsappGreen": "#25d366",
+    "secondaryGreen": "#00c896",
+    "darkText": "#41525d",
     "background": "#d1d7db",
     "chatBackground": "#efeae2",
     "sidebarBackground": "#f0f2f5",
@@ -221,7 +225,6 @@
       "mostPopular": "🔥 Paling Populer",
       "bestValue": "✓ Best Value for Money",
       "support": "Ada pertanyaan? Hubungi kami di",
-      "supportEmail": "support@recover.web.id",
       "footer": "© 2026 WhatsApp Clone. All rights reserved.",
       "featuresMonthly": {
         "privateLock": "Kunci Chat Pribadi",
@@ -294,6 +297,10 @@
           "desc": "Visa, Mastercard, JCB"
         }
       }
+    },
+    "whatsappButton": {
+      "tooltip": "Butuh bantuan? Klik icon ini",
+      "link": "https://wa.me/6283832745501"
     }
   },
   "urls": {

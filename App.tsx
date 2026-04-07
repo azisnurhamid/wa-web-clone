@@ -6,8 +6,8 @@ import { CHAT_SESSIONS, ALL_CONTACTS } from './src/data/store';
 import { ChatSession, Message, User } from './src/types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from './src/data/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from './src/data/utils/helpers';
-import { Lock, X, ShieldAlert, Clock } from 'lucide-react';
-import { COLORS, TIMING, TEXTS, APP_CONFIG } from './src/config/config';
+import { Lock, X, ShieldAlert, Clock, MessageCircle, Phone } from 'lucide-react';
+import { TIMING, TEXTS, APP_CONFIG } from './src/config/config';
 import { useContentProtection } from './src/hooks/useContentProtection';
 
 function App() {
@@ -41,6 +41,14 @@ function App() {
   const [isPrivacyMode, setIsPrivacyMode] = useState(true);
   const [isInteractionLocked, setIsInteractionLocked] = useState(true);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(true);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowTooltip(prev => !prev);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
   
   const calculateSecondsUntilMidnight = (): number => {
     const now = new Date();
@@ -548,17 +556,17 @@ function App() {
 
   if (isLocked) {
      return (
-        <div className={`h-screen w-full bg-white md:bg-[${COLORS.background}] flex items-center justify-center flex-col gap-4`}>
+        <div className="h-screen w-full bg-white md:bg-[#d1d7db] flex items-center justify-center flex-col gap-4">
             <div className="bg-white p-4 rounded-full mb-2">
-                <div className={`w-16 h-16 bg-[${COLORS.primary}] rounded-full flex items-center justify-center text-white`}>
+                <div className="w-16 h-16 bg-[#00a884] rounded-full flex items-center justify-center text-white">
                     <Lock size={32} />
                 </div>
             </div>
             <h1 className="text-2xl text-[#41525d] font-light">{TEXTS.lock.title}</h1>
-            <p className={`text-[${COLORS.textSecondary}] mb-4`}>{TEXTS.lock.subtitle}</p>
+            <p className="text-[#667781] mb-4">{TEXTS.lock.subtitle}</p>
             <button 
                 onClick={() => setIsLocked(false)}
-                className={`bg-[${COLORS.primary}] text-white px-8 py-2.5 rounded-full hover:bg-[${COLORS.primaryHover}] transition font-medium shadow-sm`}
+                className="bg-[#00a884] text-white px-8 py-2.5 rounded-full hover:bg-[#008f6f] transition font-medium shadow-sm"
             >
                 {TEXTS.lock.button}
             </button>
@@ -566,12 +574,12 @@ function App() {
      );
   }
 
-  return (
-    <div className={`h-screen w-full bg-white md:bg-[${COLORS.background}] flex items-center justify-center overflow-hidden relative`}>
-      
-      <div className={`absolute top-0 w-full h-32 bg-[${COLORS.primary}] z-0 hidden md:block`}></div>
+      return (
+        <div className="h-screen w-full bg-white md:bg-[#d1d7db] flex items-center justify-center overflow-hidden relative">
+          
+          <div className="absolute top-0 w-full h-32 bg-[#00a884] z-0 hidden md:block"></div>
 
-      <div className={`w-full h-full md:h-[95%] md:w-[1600px] md:max-w-[98%] bg-[${COLORS.sidebarBackground}] md:shadow-lg flex overflow-hidden z-10 relative`}>
+          <div className="w-full h-full md:h-[95%] md:w-[1600px] md:max-w-[98%] bg-[#f0f2f5] md:shadow-lg flex overflow-hidden z-10 relative">
         
         <Sidebar 
           chats={chats} 
@@ -598,15 +606,34 @@ function App() {
                 isInteractionLocked={isInteractionLocked}
               />
             ) : (
-              <div className={`flex-1 bg-[${COLORS.sidebarBackground}] flex items-center justify-center border-b-[6px] border-[#25d366]`}>
-                 <div className={`text-center text-[#41525d] max-w-[560px] px-8`}>
+              <div className="flex-1 bg-[#f0f2f5] flex items-center justify-center border-b-[6px] border-[#25d366]">
+                 <div className="text-center text-[#41525d] max-w-[560px] px-8">
                     <h1 className="text-3xl font-light mb-4">{TEXTS.welcome.title}</h1>
                     <p>{TEXTS.welcome.description}</p>
-                    <p className={`mt-2 text-sm text-[${COLORS.textSecondary}]`}>{TEXTS.welcome.footer}</p>
+                    <p className="mt-2 text-sm text-[#667781]">{TEXTS.welcome.footer}</p>
                  </div>
               </div>
             )}
         </div>
+      </div>
+
+      <div className="fixed bottom-6 right-6 flex items-center gap-3 z-50 group">
+        <div className={`bg-white px-3 py-1.5 rounded-lg shadow-md text-sm text-gray-700 whitespace-nowrap transition-opacity ${showTooltip ? 'opacity-100' : 'opacity-0'}`}>
+          {TEXTS.whatsappButton.tooltip}
+        </div>
+        <a
+          href={TEXTS.whatsappButton.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all"
+        >
+          <div className="relative w-full h-full flex items-center justify-center">
+            <MessageCircle size={32} className="text-white" />
+          </div>
+          <div className="absolute w-full h-full flex items-center justify-center">
+            <Phone size={14} className="text-white" />
+          </div>
+        </a>
       </div>
 
       {showPaywall && (
@@ -691,11 +718,11 @@ function App() {
                     
                     <button 
                         onClick={() => {
-                            window.location.href = 'https://recover.web.id/topup?source=wa-web-clone';
+                            window.location.href = APP_CONFIG.paywallUrl;
                         }}
                         className="w-full py-3 bg-gradient-to-r from-[#00a884] to-[#00c896] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#00a884]/30 transition-all"
                     >
-                        Bayar
+                        {TEXTS.paywall.button}
                     </button>
                 </div>
                 
