@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Users, UserPlus } from 'lucide-react';
-import { ChatSession } from '../types';
-import { TEXTS } from '../config/config';
+import { ChatSession } from '../../types';
+import { TEXTS } from '../../config/config';
 
 interface NewChatDrawerProps {
   isOpen: boolean;

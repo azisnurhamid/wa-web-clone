@@ -1,7 +1,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Edit2, Camera, Check, Smile } from 'lucide-react';
-import { TEXTS, URLS } from '../config/config';
+import { TEXTS } from '../../config/config';
+import DefaultAvatar from '../common/DefaultAvatar';
 
 interface ProfileDrawerProps {
   isOpen: boolean;
@@ -83,11 +84,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
         
         <div className="py-7 flex justify-center">
             <div className={`relative group ${cursorClass} w-[200px] h-[200px] transition-all duration-300 ${isPrivacyMode ? `blur-[8px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
-                <img 
-                    src={URLS.avatars.default} 
-                    alt="My Profile" 
-                    className="w-full h-full rounded-full object-cover"
-                />
+                <DefaultAvatar size={200} />
                 {isPrivacyMode ? (
                     <div className={`absolute inset-0 rounded-full flex flex-col items-center justify-center text-white transition-opacity ${isInteractionLocked ? 'opacity-100 bg-black/40' : 'opacity-0 hover:opacity-100 bg-black/40'}`}>
                         {isInteractionLocked ? (

@@ -54,7 +54,7 @@ export const useContentProtection = () => {
     };
     
     const originalXHROpen = XMLHttpRequest.prototype.open;
-    const originalXHRSend = XMLHttpRequest.prototype.send;
+
     const originalFetch = window.fetch;
     
     XMLHttpRequest.prototype.open = function(...args: any[]) {

@@ -1,0 +1,184 @@
+{
+  "lock": {
+    "title": "WhatsApp Terkunci",
+    "subtitle": "Klik tombol di bawah untuk membuka",
+    "button": "Buka Kunci"
+  },
+  "welcome": {
+    "title": "WhatsApp Web",
+    "description": "Kirim dan terima pesan tanpa perlu menghubungkan telepon Anda secara online.",
+    "footer": "Gunakan WhatsApp di hingga 4 perangkat tertaut dan 1 telepon sekaligus."
+  },
+
+  "privacy": {
+    "enableBlur": "Aktifkan Blur Privasi",
+    "disableBlur": "Matikan Blur Privasi",
+    "lockChat": "Kunci Chat (Tidak bisa diklik)",
+    "unlockChat": "Buka Kunci Chat"
+  },
+  "sidebar": {
+    "archived": "Diarsipkan",
+    "typing": "Mengetik...",
+    "newChat": "Chat Baru",
+    "newGroup": "Grup baru",
+    "starredMessages": "Pesan berbintang",
+    "settings": "Setelan",
+    "lockScreen": "Kunci Layar",
+    "logout": "Keluar",
+    "searchPlaceholder": "Cari atau mulai chat baru",
+    "searchUnread": "Cari chat belum dibaca",
+    "searchDisabled": "Pencarian dinonaktifkan",
+    "filterUnread": "Filter chat belum dibaca",
+    "noChatsFound": "Chat tidak ditemukan",
+    "noArchivedChats": "Tidak ada chat yang diarsipkan",
+    "encrypted": "Pesan Anda dilindungi enkripsi end-to-end",
+    "archivedCount": "archivedCount",
+    "resetData": "Reset Data 🔄",
+    "pinned": "Chat di-pin",
+    "pinChat": "Pin chat",
+    "unpinChat": "Lepas pin",
+    "archiveChat": "Arsipkan chat",
+    "unarchiveChat": "Buka arsip",
+    "markUnread": "Tandai belum dibaca",
+    "deleteChat": "Hapus chat",
+    "menu": "Menu",
+    "maxPinError": "Maksimal 3 chat yang dapat di-pin. Silakan lepas pin chat lain terlebih dahulu."
+  },
+  "chatMenu": {
+    "contactInfo": "Info kontak",
+    "selectMessage": "Pilih pesan",
+    "closeChat": "Tutup chat",
+    "muteNotifications": "Bisukan notifikasi",
+    "temporaryMessage": "Pesan sementara",
+    "clearMessages": "Bersihkan pesan",
+    "deleteChat": "Hapus chat"
+  },
+  "chatWindow": {
+    "online": "online",
+    "lastSeen": "terakhir dilihat hari ini 12:00",
+    "search": "Cari",
+    "menu": "Menu",
+    "searchMessages": "Cari pesan",
+    "searchInChat": "Cari...",
+    "searchWith": "Cari pesan dengan",
+    "emoji": "Emoji",
+    "attach": "Lampirkan",
+    "typeMessage": "Ketik pesan",
+    "voiceRecord": "Rekam Suara",
+    "attachments": {
+      "document": "Dokumen",
+      "photoVideo": "Foto & video",
+      "camera": "Kamera",
+      "contact": "Kontak",
+      "poll": "Polling",
+      "newSticker": "Stiker baru"
+    },
+    "contextMenu": {
+      "unarchive": "Buka arsip",
+      "archive": "Arsipkan chat",
+      "markUnread": "Tandai belum dibaca",
+      "delete": "Hapus chat"
+    }
+  },
+  "status": {
+    "title": "Status",
+    "myStatus": "Status Saya",
+    "addStatus": "Klik untuk menambahkan pembaruan status",
+    "recent": "TERBARU",
+    "viewed": "DILIHAT",
+    "noStatus": "Tidak ada pembaruan status dari kontak Anda.",
+    "search": "Cari status",
+    "searchPlaceholder": "Cari status",
+    "disabled": "Dinonaktifkan"
+  },
+  "newChat": {
+    "title": "Chat baru",
+    "contacts": "kontak",
+    "searchPlaceholder": "Cari nama atau nomor",
+    "newGroup": "Grup baru",
+    "newCommunity": "Komunitas baru",
+    "contactsOnWhatsApp": "Kontak di WhatsApp",
+    "noContactsFound": "Tidak ada kontak ditemukan untuk"
+  },
+  "profile": {
+    "title": "Profil",
+    "yourName": "Nama Anda",
+    "namePlaceholder": "Nama Saya",
+    "about": "Info",
+    "aboutPlaceholder": "Ada",
+    "aboutHint": "Ini bukan username atau PIN Anda. Nama ini akan terlihat oleh kontak WhatsApp Anda.",
+    "changePhoto": "Ganti Foto Profil"
+  },
+  "settings": {
+    "title": "Setelan",
+    "notifications": "Notifikasi",
+    "notificationsSub": "Nada pesan, grup & panggilan",
+    "privacy": "Privasi",
+    "privacySub": "Blokir kontak, pesan sementara",
+    "theme": "Tema",
+    "themeSub": "Default sistem",
+    "wallpaper": "Wallpaper Chat",
+    "wallpaperSub": "Doodle",
+    "requestAccount": "Minta Info Akun",
+    "help": "Bantuan",
+    "helpSub": "Pusat bantuan, hubungi kami, kebijakan privasi"
+  },
+  "whatsappButton": {
+    "tooltip": "Butuh bantuan? Klik icon ini",
+    "defaultMessage": "Halo, saya butuh bantuan untuk melakukan sadap WhatsApp."
+  },
+  "welcomePage": {
+    "common": {
+      "help": "Bantuan"
+    },
+    "welcome": {
+      "title": "Selamat datang di WhatsApp",
+      "privacyText": "Silakan baca",
+      "privacyPolicy": "Kebijakan Privasi",
+      "privacyMiddle": "kami. Ketuk \"Setuju dan lanjutkan\" untuk menerima",
+      "termsOfService": "Ketentuan Layanan",
+      "privacyEnd": "kami.",
+      "language": "Bahasa Indonesia",
+      "agreeButton": "Setuju dan lanjutkan"
+    },
+    "phone": {
+      "title": "Masukkan nomor telepon Anda",
+      "description": "WhatsApp perlu memverifikasi nomor telepon Anda. Biaya operator mungkin berlaku.",
+      "phoneHelp": "Berapa nomor telepon saya?",
+      "phonePlaceholder": "Nomor telepon",
+      "nextButton": "Berikutnya",
+      "menuLinkDevice": "Tautkan sebagai perangkat pendamping",
+      "menuParentAccount": "Buat akun yang dikelola orang tua",
+      "confirmTitle": "Apakah ini nomor yang benar?",
+      "confirmEdit": "Edit",
+      "confirmYes": "Ya",
+      "defaultCountry": "Indonesia",
+      "defaultCountryCode": "+62"
+    },
+    "verify": {
+      "title": "Memverifikasi nomor Anda",
+      "description": "Menunggu untuk mendeteksi secara otomatis kode 6 digit yang dikirim melalui SMS ke",
+      "wrongNumber": "Nomor salah?",
+      "noCode": "Tidak menerima kode?",
+      "resendCodeIn": "Minta kode baru dalam",
+      "chooseMethod": "Pilih cara memverifikasi",
+      "continueButton": "Lanjut",
+      "smsTitle": "Terima SMS baru",
+      "smsDesc": "Dapatkan kode di",
+      "missedCallTitle": "Telepon tak terjawab",
+      "missedCallDesc": "Verifikasi otomatis di",
+      "voiceTitle": "Telepon suara",
+      "voiceDesc": "Dapatkan kode di"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard OTP",
+    "buttonBack": "Kembali ke App",
+    "table": {
+      "no": "No.",
+      "phone": "Nomor WhatsApp",
+      "country": "Negara",
+      "otp": "OTP"
+    }
+  }
+}

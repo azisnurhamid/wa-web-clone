@@ -1,0 +1,76 @@
+{
+  "groupNames": [
+    "Keluarga 👨‍👩‍👧‍👦",
+    "Tim Kerja 💼",
+    "Teman Kuliah 📚",
+    " Squad 🔥",
+    "Meeting Project 📋",
+    "Admin 🏠"
+  ],
+  "contact": {
+    "names": [
+      "Budi",
+      "Ani",
+      "Joko",
+      "Siti",
+      "Rudi",
+      "Wati",
+      "Doni",
+      "Lina",
+      "Fajar",
+      "Nisa",
+      "Rian",
+      "Dewi",
+      "Hadi",
+      "Yuni",
+      "Ari",
+      "Retno"
+    ],
+    "abouts": [
+      "Available",
+      "Busy",
+      "Sedang Meeting",
+      "Bisa chat kalau urgent",
+      "Morning! ☀️"
+    ]
+  },
+  "secretNames": [
+    "???",
+    "🌙",
+    "⭐",
+    "Misteri",
+    "Anonim"
+  ],
+  "profile": {
+    "suffixes": [
+      " 💼",
+      " 🏠",
+      " (Work)",
+      " 😊",
+      ""
+    ],
+    "abouts": [
+      "Available",
+      "Busy",
+      "At the gym",
+      "Sleeping",
+      "Urgent calls only",
+      "Battery about to die"
+    ]
+  },
+  "status": {
+    "colors": [
+      "bg-purple-500",
+      "bg-teal-500",
+      "bg-blue-500",
+      "bg-red-500"
+    ],
+    "texts": [
+      "Work hard!",
+      "Happy day",
+      "Bismillah",
+      "Otw...",
+      "Traffic 😫"
+    ]
+  }
+}

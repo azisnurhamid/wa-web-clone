@@ -1,0 +1,17 @@
+{
+  "colors": {
+    "primary": "#00a884",
+    "primaryHover": "#008f6f",
+    "whatsappGreen": "#25d366",
+    "secondaryGreen": "#00c896",
+    "darkText": "#41525d",
+    "background": "#d1d7db",
+    "chatBackground": "#efeae2",
+    "sidebarBackground": "#f0f2f5",
+    "headerGreen": "#008069",
+    "textPrimary": "#111b21",
+    "textSecondary": "#667781",
+    "textMuted": "#54656f",
+    "border": "#e1dcd5"
+  }
+}

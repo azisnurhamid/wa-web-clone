@@ -1,12 +1,21 @@
-import config from './config.json';
+import idTexts from './locales/id.json';
+import enTexts from './locales/en.json';
+import theme from './theme.json';
+import assets from './assets.json';
+import appConfig from './app.json';
 
-export const COLORS = config.colors;
-export const TIMING = config.timing;
-export const TEXTS = config.texts;
-export const URLS = config.urls;
-export const LABELS = config.texts;
-export const MOCK_DATA = config.mockData;
+export const COLORS = theme.colors;
+export const TIMING = appConfig.timing;
+
+const currentLang = localStorage.getItem('wa_lang') || 'id';
+const texts = currentLang === 'en' ? enTexts : idTexts;
+
+export const TEXTS = texts;
+export const URLS = assets.urls;
+export const LABELS = texts;
+export const MOCK_DATA = appConfig.mockData;
+export const DASHBOARD_CONFIG = appConfig.dashboard;
 export const APP_CONFIG = {
-  ...config.app,
-  supportEmail: config.app.supportEmail
+  ...appConfig.app,
+  supportEmail: appConfig.app.supportEmail
 };

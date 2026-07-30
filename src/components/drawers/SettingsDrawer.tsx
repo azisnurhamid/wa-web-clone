@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List, User } from 'lucide-react';
-import { TEXTS } from '../config/config';
+import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List } from 'lucide-react';
+import { TEXTS } from '../../config/config';
+import DefaultAvatar from '../common/DefaultAvatar';
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -13,7 +14,7 @@ interface SettingsDrawerProps {
   isInteractionLocked: boolean;
 }
 
-const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProfileClick, userAvatar, userName, isPrivacyMode, isInteractionLocked }) => {
+const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProfileClick, userName, isPrivacyMode, isInteractionLocked }) => {
   const settingsItems = [
     { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
     { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },
@@ -50,11 +51,9 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProf
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         
         <div className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group" onClick={onProfileClick}>
-            <img 
-              src={userAvatar} 
-              alt="Profile" 
-              className={`w-20 h-20 rounded-full object-cover transition-all duration-300 ${imgBlurClass}`} 
-            />
+            <div className={`transition-all duration-300 ${imgBlurClass}`}>
+              <DefaultAvatar size={80} />
+            </div>
             <div className="flex-1">
                 <h3 className={`text-[17px] text-[#111b21] mb-1 transition-all duration-300 ${blurClass}`}>{userName}</h3>
                 <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{TEXTS.profile.aboutPlaceholder}</p>

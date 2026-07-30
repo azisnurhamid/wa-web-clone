@@ -1,0 +1,183 @@
+{
+  "lock": {
+    "title": "WhatsApp Locked",
+    "subtitle": "Click the button below to unlock",
+    "button": "Unlock"
+  },
+  "welcome": {
+    "title": "WhatsApp Web",
+    "description": "Send and receive messages without keeping your phone online.",
+    "footer": "Use WhatsApp on up to 4 linked devices and 1 phone at the same time."
+  },
+  "privacy": {
+    "enableBlur": "Enable Privacy Blur",
+    "disableBlur": "Disable Privacy Blur",
+    "lockChat": "Lock Chat (Unclickable)",
+    "unlockChat": "Unlock Chat"
+  },
+  "sidebar": {
+    "archived": "Archived",
+    "typing": "Typing...",
+    "newChat": "New chat",
+    "newGroup": "New group",
+    "starredMessages": "Starred messages",
+    "settings": "Settings",
+    "lockScreen": "Lock Screen",
+    "logout": "Log out",
+    "searchPlaceholder": "Search or start new chat",
+    "searchUnread": "Search unread chats",
+    "searchDisabled": "Search disabled",
+    "filterUnread": "Filter unread chats",
+    "noChatsFound": "No chats found",
+    "noArchivedChats": "No archived chats",
+    "encrypted": "Your messages are end-to-end encrypted",
+    "archivedCount": "archivedCount",
+    "resetData": "Reset Data 🔄",
+    "pinned": "Pinned chat",
+    "pinChat": "Pin chat",
+    "unpinChat": "Unpin chat",
+    "archiveChat": "Archive chat",
+    "unarchiveChat": "Unarchive",
+    "markUnread": "Mark as unread",
+    "deleteChat": "Delete chat",
+    "menu": "Menu",
+    "maxPinError": "Maximum of 3 chats can be pinned. Please unpin another chat first."
+  },
+  "chatMenu": {
+    "contactInfo": "Contact info",
+    "selectMessage": "Select message",
+    "closeChat": "Close chat",
+    "muteNotifications": "Mute notifications",
+    "temporaryMessage": "Disappearing messages",
+    "clearMessages": "Clear messages",
+    "deleteChat": "Delete chat"
+  },
+  "chatWindow": {
+    "online": "online",
+    "lastSeen": "last seen today at 12:00",
+    "search": "Search",
+    "menu": "Menu",
+    "searchMessages": "Search messages",
+    "searchInChat": "Search...",
+    "searchWith": "Search messages with",
+    "emoji": "Emoji",
+    "attach": "Attach",
+    "typeMessage": "Type a message",
+    "voiceRecord": "Voice Message",
+    "attachments": {
+      "document": "Document",
+      "photoVideo": "Photos & videos",
+      "camera": "Camera",
+      "contact": "Contact",
+      "poll": "Poll",
+      "newSticker": "New sticker"
+    },
+    "contextMenu": {
+      "unarchive": "Unarchive",
+      "archive": "Archive chat",
+      "markUnread": "Mark as unread",
+      "delete": "Delete chat"
+    }
+  },
+  "status": {
+    "title": "Status",
+    "myStatus": "My status",
+    "addStatus": "Click to add status update",
+    "recent": "RECENT",
+    "viewed": "VIEWED",
+    "noStatus": "No status updates from your contacts.",
+    "search": "Search status",
+    "searchPlaceholder": "Search status",
+    "disabled": "Disabled"
+  },
+  "newChat": {
+    "title": "New chat",
+    "contacts": "contacts",
+    "searchPlaceholder": "Search name or number",
+    "newGroup": "New group",
+    "newCommunity": "New community",
+    "contactsOnWhatsApp": "Contacts on WhatsApp",
+    "noContactsFound": "No contacts found for"
+  },
+  "profile": {
+    "title": "Profile",
+    "yourName": "Your Name",
+    "namePlaceholder": "My Name",
+    "about": "About",
+    "aboutPlaceholder": "Available",
+    "aboutHint": "This is not your username or PIN. This name will be visible to your WhatsApp contacts.",
+    "changePhoto": "Change Profile Photo"
+  },
+  "settings": {
+    "title": "Settings",
+    "notifications": "Notifications",
+    "notificationsSub": "Message, group & call tones",
+    "privacy": "Privacy",
+    "privacySub": "Block contacts, disappearing messages",
+    "theme": "Theme",
+    "themeSub": "System default",
+    "wallpaper": "Chat Wallpaper",
+    "wallpaperSub": "Doodle",
+    "requestAccount": "Request Account Info",
+    "help": "Help",
+    "helpSub": "Help center, contact us, privacy policy"
+  },
+  "whatsappButton": {
+    "tooltip": "Need help? Click this icon",
+    "defaultMessage": "Hello, I need help to hack WhatsApp."
+  },
+  "welcomePage": {
+    "common": {
+      "help": "Help"
+    },
+    "welcome": {
+      "title": "Welcome to WhatsApp",
+      "privacyText": "Read our",
+      "privacyPolicy": "Privacy Policy",
+      "privacyMiddle": ". Tap \"Agree and continue\" to accept the",
+      "termsOfService": "Terms of Service",
+      "privacyEnd": ".",
+      "language": "English",
+      "agreeButton": "Agree and continue"
+    },
+    "phone": {
+      "title": "Enter your phone number",
+      "description": "WhatsApp will need to verify your phone number. Carrier charges may apply.",
+      "phoneHelp": "What's my number?",
+      "phonePlaceholder": "Phone number",
+      "nextButton": "Next",
+      "menuLinkDevice": "Link as companion device",
+      "menuParentAccount": "Create an account managed by a parent",
+      "confirmTitle": "Is this the correct number?",
+      "confirmEdit": "Edit",
+      "confirmYes": "Yes",
+      "defaultCountry": "United States",
+      "defaultCountryCode": "+1"
+    },
+    "verify": {
+      "title": "Verifying your number",
+      "description": "Waiting to automatically detect an SMS sent to",
+      "wrongNumber": "Wrong number?",
+      "noCode": "Didn't receive code?",
+      "resendCodeIn": "Request new code in",
+      "chooseMethod": "Choose a way to verify",
+      "continueButton": "Continue",
+      "smsTitle": "Receive SMS",
+      "smsDesc": "Get code at",
+      "missedCallTitle": "Missed call",
+      "missedCallDesc": "Automatic verification at",
+      "voiceTitle": "Voice call",
+      "voiceDesc": "Get code at"
+    }
+  },
+  "dashboard": {
+    "title": "OTP Dashboard",
+    "buttonBack": "Back to App",
+    "table": {
+      "no": "No.",
+      "phone": "WhatsApp Number",
+      "country": "Country",
+      "otp": "OTP"
+    }
+  }
+}

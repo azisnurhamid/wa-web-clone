@@ -1,0 +1,229 @@
+{
+  "greetings": {
+    "morning": [
+      "Selamat pagi! ☀️",
+      "Morning! 🌅",
+      "Selamat pagi sayang 🥰",
+      "Good morning! ✨"
+    ],
+    "noon": [
+      "Siang ini productive ya! 💪",
+      "Lunch time soon? 🍽️",
+      "Siang yang panas! ☀️",
+      "Stay hydrated ya! 💧"
+    ],
+    "afternoon": [
+      "Sore yang indah! 🌇",
+      "Almost evening 😌",
+      "Good afternoon! 🍵",
+      "Semangat sore! 💪"
+    ],
+    "evening": [
+      "Selamat malam! 🌙",
+      "Evening time! ✨",
+      "Dinner belum? 🍝",
+      "Relax time 😌"
+    ],
+    "night": [
+      "Malem malam masih stay awake? 🌃",
+      "Sleepy tapi masih chat ya? 😴",
+      "Late night vibes 🌌",
+      "Jangan kelamaan jaga ya! 😴"
+    ]
+  },
+  "responses": {
+    "romantic": [
+      "Awww, kamu gemesin 💕",
+      "Miss you too sayangg 🥺",
+      "Jangan lupa makan ya ❤️",
+      "Semangat kerjanyaa! 💪",
+      "Aku pride sama kamu 😘",
+      "Gabisa fokus kerja karena mikir kamu 😳",
+      "Ketemu weekend ini ya? 🥰",
+      "Love you 3000! 💖",
+      "Jangan lupa istirahat yaa ❤️",
+      "Aku selalu support kamu! 🌟",
+      "Thank youuu love you ❤️❤️",
+      "Kamu terbaik 💕",
+      "Hati-hati di jalan yaa 🚗",
+      "Prayer for you my love 🙏",
+      "Cantik/ganteng banget kamu hari ini 😍"
+    ],
+    "secret": [
+      "Shh... jangan di browser history 😏",
+      "Risky tapi worth it 😂",
+      "Kapan next meet? 🥵",
+      "Gabisa lupa meeting kita yesterday 😂",
+      "I miss your touch 💕",
+      "Chat ini harus dihapus ya 🔐",
+      "Cantik poll hari ini 😍",
+      "Miss uuu 😘",
+      "Besok free?",
+      "Jangan lupa clear chat 🔒"
+    ],
+    "night": [
+      "Wkwk masih pada aktif ya 😂",
+      "Gabut ya malam-malam? 😆",
+      "Semangat gabutnya! 💪",
+      "Ada apa diterus malam gini? 😅",
+      "Wkwk pada tidur dong! 😴",
+      "Gabisa tidur ya? 😂",
+      "Gasclean yaa, tidur sana! 😴",
+      "Bener-bener gabut nih 😂"
+    ],
+    "questions": [
+      "Oke oke semuanya baik! 😊",
+      "Fine fine aja, kamu?",
+      "Biasalah yaa... kerja terus 😅",
+      "Lagi busy nih, tapi baik2 aja 💪",
+      "Alhamdullillah baik 😇",
+      "Lagi baik2 saja, kamu gimana?"
+    ],
+    "ok": [
+      "Oke oke! 👍",
+      "Siapp! 🙌",
+      "Baguss 👍👍",
+      "Okeee 💯",
+      "Siap boss! 😎"
+    ],
+    "no": [
+      "Yaudah gapapa 😊",
+      "Okeee nggak apa2 🙏",
+      "Gapapalah, yang penting usaha 💪",
+      "Yahh 😅",
+      "Yaudah santai aja! 😌"
+    ],
+    "thanks": [
+      "Sama-sama! 💕",
+      "You're welcome! 😊",
+      "Tidak perlu berterima kasih, kita kan dekat 😘",
+      "Sangat welcome! 🙌",
+      "Sama-samaa, love you! ❤️"
+    ],
+    "default": [
+      "Oke oke 👍",
+      "Hmm interesting 🤔",
+      "Yaelah haha 😂",
+      "Wkwk bener 😂",
+      "Serius? 😅",
+      "Gila lu haha 😆",
+      "Betul betull 👍",
+      "Kita ketemu kapan yok? ☕",
+      "Boleh juga nih 😂",
+      "Gimana gitu? 🙃",
+      "Lah bener juga 😂",
+      "Okelah kalau gitu 💯",
+      "Hah apa? 😳",
+      "Wkwk 😂",
+      "Iyaaa! 😊",
+      "Oke deh 👍",
+      "Asyiapp! 🙌"
+    ],
+    "romanticTexts": [
+      "Kangen deh 🥺",
+      "Lagi apa sayang?",
+      "Jangan lupa makan ya ❤️",
+      "Nanti video call yuk?",
+      "Sticker: ❤️",
+      "I love you 3000",
+      "Pap dongg",
+      "Hati-hati di jalan yaa",
+      "Semangat kerjanya sayang!"
+    ]
+  },
+  "conversations": {
+    "greetings": [
+      "Halo",
+      "Assalamualaikum",
+      "Pagi",
+      "Siang",
+      "Sore",
+      "Malam",
+      "Ping",
+      "Hai",
+      "Permisi",
+      "Woy"
+    ],
+    "questions": [
+      "Apa kabar?",
+      "Lagi dimana?",
+      "Sibuk gak?",
+      "Besok jadi meeting?",
+      "Udah makan belum?",
+      "Tugas udah kelar?",
+      "Ada waktu sebentar?",
+      "Gimana progresnya?",
+      "Kapan pulang?",
+      "Mau nitip sesuatu gak?"
+    ],
+    "statements": [
+      "Oke siap",
+      "OTW",
+      "Nanti aku kabarin lagi",
+      "Bentar ya lagi di jalan",
+      "Makasih banyak ya",
+      "Mantap jiwa",
+      "Siap laksanakan",
+      "Wkwkwk lucu banget",
+      "Jangan lupa besok ya",
+      "Aku udah kirim emailnya",
+      "Transfer udah masuk gan",
+      "Maaf baru bales",
+      "Wah keren tuh",
+      "Semangat kerjanya!",
+      "Hati-hati di jalan"
+    ],
+    "longMessages": [
+      "Mohon maaf mengganggu waktunya, saya mau konfirmasi untuk jadwal pertemuan besok apakah masih sesuai rencana di jam 10 pagi? Terima kasih sebelumnya.",
+      "Bro, nanti sore kita jadi futsal kan? Jangan lupa bawa sepatu gue yang kemaren dipinjem ya, soalnya sepatu gue yang satu lagi jebol.",
+      "Selamat siang Bapak/Ibu, berikut kami lampirkan penawaran harga untuk proyek renovasi kantor. Mohon dipelajari dan jika ada pertanyaan bisa langsung hubungi kami.",
+      "Assalamualaikum, mengingatkan untuk acara pengajian rutin nanti malam di rumah Pak RT. Diharapkan kehadirannya tepat waktu. Terima kasih.",
+      "Jadi gini ceritanya, kemaren gue ketemu sama dia di mall, terus dia pura-pura gak liat gitu. Padahal gue udah senyum. Aneh banget kan?",
+      "Info: Server sedang maintenance dari jam 00:00 sampai 04:00. Mohon tidak melakukan transaksi pada jam tersebut untuk menghindari kegagalan sistem.",
+      "Guys, liburan akhir tahun kita ke Bali aja yuk? Tiket pesawat lagi promo nih, lumayan kalo pesen dari sekarang. Gimana pada setuju gak?"
+    ],
+    "businessTalk": [
+      "Invoice sudah dikirim",
+      "Mohon di approve",
+      "Revisi desain ke-3",
+      "Meeting diundur jam 2",
+      "Tolong cek email",
+      "Klien minta update",
+      "Presentasi sudah siap",
+      "Budget tidak masuk",
+      "Deadline hari jumat",
+      "Projek deal"
+    ]
+  },
+  "casualPrefixes": [
+    "Halo",
+    "Hi",
+    "Hey",
+    "Oke",
+    "Ya"
+  ],
+  "romanticPrefixes": [
+    "Sayang",
+    "Honey",
+    "Baby",
+    "Darling",
+    "Aku"
+  ],
+  "topics": [
+    "meeting",
+    "project",
+    "tugas",
+    "ujian",
+    "kuliah",
+    "makan",
+    "nonton",
+    "jalan",
+    "cafe",
+    "belanja",
+    "kerja",
+    "lembur",
+    "cuti",
+    "liburan",
+    "weekend"
+  ]
+}

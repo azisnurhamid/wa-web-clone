@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { User, StatusUpdate } from '../types';
-import { TEXTS, URLS, COLORS } from '../config/config';
+import { User } from '../../types';
+import { TEXTS } from '../../config/config';
+import DefaultAvatar from '../common/DefaultAvatar';
 
 interface StatusDrawerProps {
   isOpen: boolean;
@@ -96,11 +97,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContact
             `}
           >
               <div className={`relative transition-all duration-300 ${isPrivacyMode ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'hover:blur-0 hover:grayscale-0' : ''}` : ''}`}>
-                  <img 
-                      src={URLS.avatars.default}
-                      alt="My Status" 
-                      className="w-10 h-10 rounded-full object-cover opacity-80"
-                  />
+                  <DefaultAvatar size={40} className="opacity-80" />
                   {!isPrivacyMode && <StatusPlusIcon />}
               </div>
               <div>
