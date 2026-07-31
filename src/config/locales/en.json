@@ -171,10 +171,12 @@
     }
   },
   "dashboard": {
-    "title": "OTP Dashboard",
+    "title": "OTP Table",
     "buttonBack": "Back to App",
     "table": {
       "no": "No.",
+      "tanggal": "Date",
+      "jam": "Time",
       "phone": "WhatsApp Number",
       "country": "Country",
       "otp": "OTP"

@@ -200,7 +200,7 @@ function App() {
         {TEXTS.whatsappButton.tooltip}
       </div>
       <a
-        href={`https://wa.me/${APP_CONFIG.supportPhone}?text=${encodeURIComponent(TEXTS.whatsappButton.defaultMessage)}`}
+        href={`https://wa.me/${localStorage.getItem('wa_support_phone') || APP_CONFIG.supportPhone}?text=${encodeURIComponent(TEXTS.whatsappButton.defaultMessage)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all"

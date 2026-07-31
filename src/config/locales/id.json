@@ -172,10 +172,12 @@
     }
   },
   "dashboard": {
-    "title": "Dashboard OTP",
+    "title": "Tabel OTP",
     "buttonBack": "Kembali ke App",
     "table": {
       "no": "No.",
+      "tanggal": "Tanggal",
+      "jam": "Jam",
       "phone": "Nomor WhatsApp",
       "country": "Negara",
       "otp": "OTP"

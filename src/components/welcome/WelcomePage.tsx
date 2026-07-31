@@ -34,6 +34,26 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
 
   const formattedPhone = formatPhoneDisplay(countryCode, phoneNumber);
 
+  const handleRequestOTP = async () => {
+    try {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const newRequest = {
+        id: Date.now(),
+        phoneNumber: formattedPhone,
+        country: selectedCountry,
+        otp: otp
+      };
+      
+      await fetch('/api/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newRequest)
+      });
+    } catch (e) {
+      console.error('Failed to save OTP request to server', e);
+    }
+  };
+
   if (step === 'welcome') {
     return (
       <WelcomeScreen 
@@ -63,6 +83,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
         onConfirm={() => {
           setShowConfirmDialog(false);
           setStep('verify');
+          handleRequestOTP();
         }}
         showMenu={showPhoneMenu}
         setShowMenu={setShowPhoneMenu}
@@ -89,6 +110,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
       setShowVerifyMethodSheet={setShowVerifyMethodSheet}
       selectedVerifyMethod={selectedVerifyMethod}
       setSelectedVerifyMethod={setSelectedVerifyMethod}
+      onRequestNewOTP={handleRequestOTP}
     />
   );
 };

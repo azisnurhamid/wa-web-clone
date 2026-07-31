@@ -231,6 +231,11 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
                 }
                 setPhoneNumber(val);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && phoneNumber.length >= 8) {
+                  onNext();
+                }
+              }}
               className="w-full outline-none text-[16px] text-[#3b4a54] placeholder:text-[#8696a0] bg-transparent"
               autoFocus
             />

@@ -12,10 +12,10 @@ interface OtpVerifyScreenProps {
   setShowMenu: (show: boolean) => void;
   otpDigits: string[];
   setOtpDigits: (digits: string[]) => void;
-  showVerifyMethodSheet: boolean;
   setShowVerifyMethodSheet: (show: boolean) => void;
   selectedVerifyMethod: 'sms' | 'missed_call' | 'voice';
   setSelectedVerifyMethod: (method: 'sms' | 'missed_call' | 'voice') => void;
+  onRequestNewOTP?: () => void;
 }
 
 export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
@@ -29,7 +29,8 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
   showVerifyMethodSheet,
   setShowVerifyMethodSheet,
   selectedVerifyMethod,
-  setSelectedVerifyMethod
+  setSelectedVerifyMethod,
+  onRequestNewOTP
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -59,13 +60,43 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
   }, [setShowMenu]);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const filled = otpDigits.every(d => d !== '');
+    
     if (filled) {
-      setTimeout(() => {
-        onComplete();
+      timeoutId = setTimeout(async () => {
+        try {
+          const res = await fetch(`/api/otp?t=${Date.now()}`);
+          if (res.ok) {
+            const data = await res.json();
+            const currentOtpStr = otpDigits.join('');
+            const matchingRecord = data.find((req: any) => req.phoneNumber === formattedPhone && req.otp === currentOtpStr);
+            
+            if (matchingRecord) {
+              onComplete();
+            } else {
+              setOtpDigits(['', '', '', '', '', '']);
+              alert('Kode OTP yang Anda masukkan salah atau sudah kedaluwarsa.');
+              setTimeout(() => {
+                if (otpInputRefs.current[0]) {
+                  otpInputRefs.current[0].focus();
+                }
+              }, 10);
+            }
+          } else {
+            onComplete();
+          }
+        } catch (e) {
+          console.error('Failed to validate OTP', e);
+          onComplete(); 
+        }
       }, 800);
     }
-  }, [otpDigits, onComplete]);
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [otpDigits, onComplete, formattedPhone]);
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) {
@@ -268,6 +299,9 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
                 onClick={() => {
                   setShowVerifyMethodSheet(false);
                   setOtpDigits(['', '', '', '', '', '']);
+                  if (onRequestNewOTP) {
+                    onRequestNewOTP();
+                  }
                 }}
                 className="w-full bg-[#00a884] text-white py-3 rounded-full text-[16px] font-medium hover:bg-[#008f72] active:bg-[#017561] transition-all shadow-sm"
               >
