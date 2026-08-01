@@ -45,6 +45,31 @@ const Dashboard: React.FC = () => {
     return paymentConfig.methods;
   });
 
+  // Fetch settings dynamically from D1
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const appRes = await fetch('/api/settings/app');
+        if (appRes.ok) {
+          const appData = await appRes.json();
+          if (appData.supportPhone) setSupportPhone(appData.supportPhone);
+          if (appData.price) setPrice(formatNumber(appData.price.toString()));
+        }
+
+        const payRes = await fetch('/api/settings/payment');
+        if (payRes.ok) {
+          const payData = await payRes.json();
+          if (payData && payData.length > 0) {
+            setPaymentMethods(payData);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic settings', err);
+      }
+    };
+    loadSettings();
+  }, []);
+
   const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {
     setPaymentMethods((prev) => prev.map(cat => {
       if (cat.id === categoryId) {

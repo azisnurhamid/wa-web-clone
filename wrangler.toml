@@ -1,0 +1,7 @@
+name = "wa-web-clone"
+compatibility_date = "2024-03-20"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wa-db"
+database_id = "00000000-0000-0000-0000-000000000000" # You must replace this after running `wrangler d1 create wa-db`

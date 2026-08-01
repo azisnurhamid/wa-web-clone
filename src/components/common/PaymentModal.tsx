@@ -28,8 +28,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   const [copied, setCopied] = useState(false);
 
   const [paymentMethodsData, setPaymentMethodsData] = useState(() => {
-    const stored = localStorage.getItem('wa_payment_methods');
-    return stored ? JSON.parse(stored) : paymentConfig.methods;
+    return paymentConfig.methods;
   });
 
   const PAYMENT_METHODS = paymentMethodsData
@@ -47,10 +46,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       setExpandedCategory(null);
       setCopied(false);
       
-      const stored = localStorage.getItem('wa_payment_methods');
-      if (stored) {
-        setPaymentMethodsData(JSON.parse(stored));
-      }
+      // Fetch dynamic payment methods
+      fetch('/api/settings/payment')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            setPaymentMethodsData(data);
+          }
+        })
+        .catch(err => console.error('Failed to load dynamic payment methods', err));
     }
   }, [isOpen]);
 
