@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
-import { STORAGE_KEYS } from '../../utils/constants';
+
 import { fetchOtpRecords } from '../../services/api';
 import { OtpTable } from './components/OtpTable';
 import { GeneralSettings } from './components/GeneralSettings';
@@ -30,9 +30,7 @@ const Dashboard: React.FC = () => {
   const [records, setRecords] = useState<OTPRecord[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
-  const [supportPhone, setSupportPhone] = useState(
-    localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone
-  );
+  const [supportPhone, setSupportPhone] = useState(APP_CONFIG.supportPhone);
 
   const formatNumber = (val: string) => {
     const raw = val.replace(/\D/g, '');
@@ -40,12 +38,11 @@ const Dashboard: React.FC = () => {
   };
 
   const [price, setPrice] = useState(
-    formatNumber(localStorage.getItem(STORAGE_KEYS.PRICE) || '300000')
+    formatNumber((APP_CONFIG as any).price || '300000')
   );
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodCategory[]>(() => {
-    const stored = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
-    return stored ? JSON.parse(stored) : paymentConfig.methods;
+    return paymentConfig.methods;
   });
 
   const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {
@@ -91,19 +88,43 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleSaveMethods = () => {
-    localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
+  const handleSaveMethods = async () => {
+    try {
+      await fetch('/api/settings/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentMethods)
+      });
+    } catch (e) {
+      console.error(e);
+    }
     alert(TEXTS.dashboard.alerts.paymentSaved);
   };
 
-  const handleSaveSupportPhone = () => {
-    localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
+  const handleSaveSupportPhone = async () => {
+    try {
+      await fetch('/api/settings/app', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ supportPhone })
+      });
+    } catch (e) {
+      console.error(e);
+    }
     alert(TEXTS.dashboard.alerts.supportPhoneSaved);
   };
 
-  const handleSavePrice = () => {
+  const handleSavePrice = async () => {
     const rawValue = price.replace(/\D/g, '');
-    localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
+    try {
+      await fetch('/api/settings/app', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ price: rawValue || '0' })
+      });
+    } catch (e) {
+      console.error(e);
+    }
     alert(TEXTS.dashboard.alerts.priceSaved);
   };
 

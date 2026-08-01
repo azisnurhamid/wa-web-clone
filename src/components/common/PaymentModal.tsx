@@ -21,7 +21,7 @@ const getIcon = (iconName: string, className: string) => {
 
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: propAmount }) => {
-  const amount = propAmount ?? parseInt(localStorage.getItem('wa_price') || '300000', 10);
+  const amount = propAmount ?? parseInt((APP_CONFIG as any).price || '300000', 10);
   const [step, setStep] = useState<'summary' | 'method' | 'detail' | 'success'>('summary');
   const [selectedMethod, setSelectedMethod] = useState<any>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);

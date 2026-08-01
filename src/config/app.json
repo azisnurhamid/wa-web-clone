@@ -2,7 +2,8 @@
   "app": {
     "name": "WhatsApp Web",
     "supportEmail": "support@recover.web.id",
-    "supportPhone": "6288980083295"
+    "supportPhone": "6288980083295",
+    "price": "400000"
   },
   "timing": {
     "simulationInitialDelay": 1000,

@@ -91,6 +91,56 @@ export default defineConfig(({ mode }) => {
                 res.end(JSON.stringify(data));
                 return;
               }
+
+              if (req.url?.startsWith('/api/settings/payment') && req.method === 'POST') {
+                let body = '';
+                req.on('data', chunk => {
+                  body += chunk.toString();
+                });
+                req.on('end', () => {
+                  try {
+                    const newMethods = JSON.parse(body);
+                    const payPath = path.resolve(__dirname, 'src/config/payment.json');
+                    let payData = JSON.parse(fs.readFileSync(payPath, 'utf-8'));
+                    payData.methods = newMethods;
+                    fs.writeFileSync(payPath, JSON.stringify(payData, null, 2));
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ success: true }));
+                  } catch (err) {
+                    res.statusCode = 500;
+                    res.end(JSON.stringify({ error: err.message }));
+                  }
+                });
+                return;
+              }
+
+              if (req.url?.startsWith('/api/settings/app') && req.method === 'POST') {
+                let body = '';
+                req.on('data', chunk => {
+                  body += chunk.toString();
+                });
+                req.on('end', () => {
+                  try {
+                    const payload = JSON.parse(body);
+                    const appPath = path.resolve(__dirname, 'src/config/app.json');
+                    let appData = JSON.parse(fs.readFileSync(appPath, 'utf-8'));
+                    if (payload.supportPhone !== undefined) {
+                       appData.app.supportPhone = payload.supportPhone;
+                    }
+                    if (payload.price !== undefined) {
+                       appData.app.price = payload.price;
+                    }
+                    fs.writeFileSync(appPath, JSON.stringify(appData, null, 2));
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ success: true }));
+                  } catch (err) {
+                    res.statusCode = 500;
+                    res.end(JSON.stringify({ error: err.message }));
+                  }
+                });
+                return;
+              }
+
               next();
             });
           }
