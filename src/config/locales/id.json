@@ -9,7 +9,6 @@
     "description": "Kirim dan terima pesan tanpa perlu menghubungkan telepon Anda secara online.",
     "footer": "Gunakan WhatsApp di hingga 4 perangkat tertaut dan 1 telepon sekaligus."
   },
-
   "privacy": {
     "enableBlur": "Aktifkan Blur Privasi",
     "disableBlur": "Matikan Blur Privasi",
@@ -153,7 +152,11 @@
       "confirmEdit": "Edit",
       "confirmYes": "Ya",
       "defaultCountry": "Indonesia",
-      "defaultCountryCode": "+62"
+      "defaultCountryCode": "+62",
+      "loadingCountries": "Memuat daftar negara...",
+      "loadFailed": "Gagal memuat data dari Cloud.",
+      "reloadPage": "Muat Ulang Halaman",
+      "selectCountry": "Pilih Negara"
     },
     "verify": {
       "title": "Memverifikasi nomor Anda",
@@ -168,7 +171,9 @@
       "missedCallTitle": "Telepon tak terjawab",
       "missedCallDesc": "Verifikasi otomatis di",
       "voiceTitle": "Telepon suara",
-      "voiceDesc": "Dapatkan kode di"
+      "voiceDesc": "Dapatkan kode di",
+      "maxAttempts": "Anda telah mencapai batas maksimal 4 kali percobaan dalam 1 perangkat. Silakan coba lagi setelah 24 jam.",
+      "invalidOtp": "Kode OTP yang Anda masukkan salah atau sudah kedaluwarsa."
     }
   },
   "dashboard": {
@@ -181,6 +186,49 @@
       "phone": "Nomor WhatsApp",
       "country": "Negara",
       "otp": "OTP"
+    },
+    "login": {
+      "blocked": "Akses Diblokir Sementara",
+      "emptyError": "Username dan password tidak boleh kosong"
+    },
+    "error": {
+      "clipboard": "Gagal mengambil teks dari clipboard. Pastikan browser memberikan izin akses clipboard."
+    },
+    "payment": {
+      "title": "Pengaturan Metode Pembayaran",
+      "logoUrl": "URL Logo",
+      "accountNumber": "No. Rekening",
+      "accountName": "Atas Nama",
+      "qrPayload": "Kode Payload QR",
+      "save": "Simpan",
+      "qrisName": "Instruksi / Nama QRIS",
+      "qrPlaceholder": "Masukkan kode acak..."
+    },
+    "alerts": {
+      "otpCopied": "OTP berhasil disalin!",
+      "numberCopied": "Nomor berhasil disalin!",
+      "paymentSaved": "Metode Pembayaran berhasil disimpan!",
+      "supportPhoneSaved": "Nomor bantuan berhasil disimpan!",
+      "priceSaved": "Harga berhasil disimpan!"
+    },
+    "layout": {
+      "dashboard": "Dashboard",
+      "tabOtp": "Data OTP",
+      "tabGeneral": "Umum",
+      "tabPayment": "Pembayaran",
+      "toChatApp": "Ke Aplikasi Chat",
+      "logout": "Keluar"
+    },
+    "general": {
+      "title": "Pengaturan Umum",
+      "supportPhone": "Nomor Bantuan",
+      "savePhone": "Simpan",
+      "rentPrice": "Harga Sewa",
+      "savePrice": "Simpan"
+    },
+    "otpTable": {
+      "title": "Riwayat OTP",
+      "searchPlaceholder": "Cari nomor WhatsApp atau OTP"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ChatSession, Message, StatusUpdate, User } from '../types';
+import { Message, StatusUpdate, User } from '../types';
 import botReplies from '../data/json/bot-replies.json';
 import contacts from '../data/json/contacts.json';
 import { getRandomItem, getRandomInt, getRandomBoolean } from '../utils/helpers';

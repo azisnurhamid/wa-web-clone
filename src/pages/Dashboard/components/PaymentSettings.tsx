@@ -1,5 +1,6 @@
 import React from 'react';
 import { ClipboardPaste } from 'lucide-react';
+import { TEXTS } from '../../../config/config';
 import { PaymentMethodCategory, PaymentMethodOption } from '../../../types';
 
 interface PaymentSettingsProps {
@@ -18,13 +19,13 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 border-b border-gray-200 bg-[#00a884] flex justify-between items-center">
-        <h2 className="text-lg font-bold text-white">Pengaturan Metode Pembayaran</h2>
+        <h2 className="text-lg font-bold text-white">{TEXTS.dashboard.payment.title}</h2>
         <div className="flex space-x-2">
           <button
             onClick={handleSaveMethods}
             className="bg-white text-[#00a884] px-4 py-2 rounded text-sm hover:bg-gray-100 transition font-medium shadow-sm"
           >
-            Simpan Metode
+            {TEXTS.dashboard.payment.save}
           </button>
         </div>
       </div>
@@ -55,7 +56,7 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                       </label>
                     </div>
                     <div className="mb-2">
-                      <label className="text-xs text-gray-500">URL Logo</label>
+                      <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.logoUrl}</label>
                       <div className="relative">
                         <input
                           type="text"
@@ -76,13 +77,15 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                     {!opt.isQris ? (
                       <div className="space-y-2">
                         <div>
-                          <label className="text-xs text-gray-500">No. Rekening</label>
+                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.accountNumber}</label>
                           <div className="relative">
                             <input
                               type="text"
+                              inputMode="numeric"
+                              pattern="[0-9]*"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.account}
-                              onChange={e => handleMethodChange(cat.id, opt.id, 'account', e.target.value)}
+                              onChange={e => handleMethodChange(cat.id, opt.id, 'account', e.target.value.replace(/\D/g, ''))}
                             />
                             <button
                               onClick={() => handlePaste(cat.id, opt.id, 'account')}
@@ -94,7 +97,7 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs text-gray-500">Atas Nama</label>
+                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.accountName}</label>
                           <div className="relative">
                             <input
                               type="text"
@@ -115,14 +118,14 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                     ) : (
                       <div className="space-y-2">
                         <div>
-                          <label className="text-xs text-gray-500">Kode Payload QR</label>
+                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.qrPayload}</label>
                           <div className="relative">
                             <input
                               type="text"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.account}
                               onChange={e => handleMethodChange(cat.id, opt.id, 'account', e.target.value)}
-                              placeholder="Masukkan kode acak..."
+                              placeholder={TEXTS.dashboard.payment.qrPlaceholder}
                             />
                             <button
                               onClick={() => handlePaste(cat.id, opt.id, 'account')}
@@ -134,7 +137,7 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs text-gray-500">Instruksi / Nama QRIS</label>
+                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.qrisName}</label>
                           <div className="relative">
                             <input
                               type="text"

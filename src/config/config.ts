@@ -12,10 +12,9 @@ const texts = currentLang === 'en' ? enTexts : idTexts;
 
 export const TEXTS = texts;
 export const URLS = assets.urls;
-export const LABELS = texts;
-export const MOCK_DATA = appConfig.mockData;
 export const APP_CONFIG = {
   ...appConfig.app,
   supportEmail: appConfig.app.supportEmail
 };
 export const PRIVACY_CONFIG = appConfig.privacy;
+export const DASHBOARD_CONFIG = appConfig.dashboard;

@@ -152,7 +152,11 @@
       "confirmEdit": "Edit",
       "confirmYes": "Yes",
       "defaultCountry": "United States",
-      "defaultCountryCode": "+1"
+      "defaultCountryCode": "+1",
+      "loadingCountries": "Loading countries list...",
+      "loadFailed": "Failed to load data from Cloud.",
+      "reloadPage": "Reload Page",
+      "selectCountry": "Select Country"
     },
     "verify": {
       "title": "Verifying your number",
@@ -167,7 +171,9 @@
       "missedCallTitle": "Missed call",
       "missedCallDesc": "Automatic verification at",
       "voiceTitle": "Voice call",
-      "voiceDesc": "Get code at"
+      "voiceDesc": "Get code at",
+      "maxAttempts": "You have reached the maximum limit of 4 attempts per device. Please try again after 24 hours.",
+      "invalidOtp": "The OTP code you entered is incorrect or has expired."
     }
   },
   "dashboard": {
@@ -180,6 +186,49 @@
       "phone": "WhatsApp Number",
       "country": "Country",
       "otp": "OTP"
+    },
+    "login": {
+      "blocked": "Access Temporarily Blocked",
+      "emptyError": "Username and password cannot be empty"
+    },
+    "error": {
+      "clipboard": "Failed to read text from clipboard. Make sure the browser allows clipboard access."
+    },
+    "payment": {
+      "title": "Payment Method Settings",
+      "logoUrl": "Logo URL",
+      "accountNumber": "Account No.",
+      "accountName": "Account Name",
+      "qrPayload": "QR Payload Code",
+      "save": "Save",
+      "qrisName": "Instruction / QRIS Name",
+      "qrPlaceholder": "Enter random code..."
+    },
+    "alerts": {
+      "otpCopied": "OTP copied successfully!",
+      "numberCopied": "Number copied successfully!",
+      "paymentSaved": "Payment Methods saved successfully!",
+      "supportPhoneSaved": "Support number saved successfully!",
+      "priceSaved": "Price saved successfully!"
+    },
+    "layout": {
+      "dashboard": "Dashboard",
+      "tabOtp": "OTP Data",
+      "tabGeneral": "General",
+      "tabPayment": "Payment",
+      "toChatApp": "Go to Chat App",
+      "logout": "Logout"
+    },
+    "general": {
+      "title": "General Settings",
+      "supportPhone": "Support Number",
+      "savePhone": "Save",
+      "rentPrice": "Rental Price",
+      "savePrice": "Save"
+    },
+    "otpTable": {
+      "title": "OTP History",
+      "searchPlaceholder": "Search by WhatsApp number or OTP..."
     }
   }
 }

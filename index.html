@@ -8,36 +8,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <title>WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal</title>
-    <meta name="description" content="Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis." />
-    <meta name="keywords" content="WhatsApp, pesan, panggilan, chatting, chat, kirim pesan, telepon, smartphone, android, ios, web" />
-    <meta name="author" content="WhatsApp LLC" />
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <meta name="keywords" content="<%= keywords %>" />
+    <meta name="author" content="<%= author %>" />
     <meta name="robots" content="index, follow" />
     <meta name="googlebot" content="index, follow" />
     <meta name="language" content="Indonesian" />
     <meta name="revisit-after" content="1 days" />
     <meta name="distribution" content="global" />
     <meta name="rating" content="general" />
-    <meta name="theme-color" content="#00a884" />
-    <link rel="canonical" href="https://whatsapp.com/" />
+    <meta name="theme-color" content="<%= themeColor %>" />
+    <link rel="canonical" href="<%= url.canonical %>" />
     
-    <link rel="icon" type="image/png" href="https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png" />
-    <link rel="apple-touch-icon" href="https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png" />
+    <link rel="icon" type="image/svg+xml" href="<%= url.favicon %>" />
+    <link rel="apple-touch-icon" href="<%= url.favicon %>" />
     
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://whatsapp.com/" />
-    <meta property="og:title" content="WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal" />
-    <meta property="og:description" content="Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis." />
-    <meta property="og:image" content="https://static.whatsapp.net/rsrc.php/v4/yo/r/J5gK5AgJ_L5.png" />
-    <meta property="og:site_name" content="WhatsApp.com" />
-    <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content="<%= url.canonical %>" />
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:image" content="<%= url.ogImage %>" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="<%= siteName %>" />
+    <meta property="og:site_name" content="<%= siteName %>" />
+    <meta property="og:locale" content="<%= locale %>" />
     <meta property="invite_link_type" content="website" />
     
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://whatsapp.com/" />
-    <meta name="twitter:title" content="WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal" />
-    <meta name="twitter:description" content="Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis." />
-    <meta name="twitter:image" content="https://static.whatsapp.net/rsrc.php/v4/yo/r/J5gK5AgJ_L5.png" />
+    <meta name="twitter:site" content="@WhatsApp" />
+    <meta name="twitter:creator" content="@WhatsApp" />
+    <meta name="twitter:url" content="<%= url.canonical %>" />
+    <meta name="twitter:title" content="<%= title %>" />
+    <meta name="twitter:description" content="<%= description %>" />
+    <meta name="twitter:image" content="<%= url.ogImage %>" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
     
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -85,6 +92,7 @@
     <style>
       ::-webkit-scrollbar {
         width: 6px;
+        height: 6px;
       }
       ::-webkit-scrollbar-track {
         background: transparent; 
@@ -120,7 +128,7 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Unregister all service workers
+      
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
           for (var registration of registrations) {
@@ -128,7 +136,7 @@
           }
         });
       }
-      // Clear caches API
+      
       if ('caches' in window) {
         caches.keys().then(function(names) {
           for (var name of names) {

@@ -76,7 +76,7 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
               onComplete();
             } else {
               setOtpDigits(['', '', '', '', '', '']);
-              alert('Kode OTP yang Anda masukkan salah atau sudah kedaluwarsa.');
+              alert(T.verify.invalidOtp);
               setTimeout(() => {
                 if (otpInputRefs.current[0]) {
                   otpInputRefs.current[0].focus();

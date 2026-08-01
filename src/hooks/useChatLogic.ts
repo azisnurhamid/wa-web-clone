@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { ChatSession, Message } from '../types';
 import { generateAIResponse } from '../services/simulationUtils';
 import { getRandomInt } from '../utils/helpers';

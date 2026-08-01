@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, ChevronDown } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { TEXTS, URLS } from '../../config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -49,7 +49,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
     const fetchCountries = async () => {
       try {
         setLoadingCountries(true);
-        const res = await fetch('https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json');
+        const res = await fetch(URLS.api.countries);
         if (!res.ok) throw new Error('Failed to fetch');
         
         const data = await res.json();
@@ -165,11 +165,11 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
           {showCountryDropdown && (
             <div className="absolute top-full left-0 right-0 max-w-[280px] mx-auto bg-white border border-gray-200 rounded-md shadow-lg z-40 max-h-[240px] overflow-y-auto custom-scrollbar">
               {loadingCountries ? (
-                <div className="px-4 py-3 text-[14px] text-gray-500 text-center">Memuat daftar negara...</div>
+                <div className="px-4 py-3 text-[14px] text-gray-500 text-center">{T.phone.loadingCountries}</div>
               ) : countriesList.length === 0 ? (
                 <div className="px-4 py-3 text-[14px] text-red-500 text-center">
-                  Gagal memuat data dari Cloud.<br/>
-                  <button onClick={() => window.location.reload()} className="text-blue-500 underline mt-2">Muat Ulang Halaman</button>
+                  {T.phone.loadFailed}<br/>
+                  <button onClick={() => window.location.reload()} className="text-blue-500 underline mt-2">{T.phone.reloadPage}</button>
                 </div>
               ) : (
                 countriesList.map((country: { name: string; code: string }, index: number) => (
@@ -196,6 +196,8 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
             <span className="text-[#667781]">+</span>
             <input
               type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={countryCode.replace('+', '')}
               onChange={(e) => {
                 const val = e.target.value.replace(/\D/g, '');
@@ -207,7 +209,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
                   if (match) {
                     setSelectedCountry(match.name);
                   } else if (val === '') {
-                    setSelectedCountry('Pilih Negara');
+                    setSelectedCountry(T.phone.selectCountry);
                   }
                 }
               }}
@@ -217,6 +219,8 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
           <div className="flex-1 border-b-2 border-[#00a884] pb-2">
             <input
               type="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
               placeholder={T.phone.phonePlaceholder}
               value={(() => {
                 const digits = phoneNumber.replace(/\D/g, '');

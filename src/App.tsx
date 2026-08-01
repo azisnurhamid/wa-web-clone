@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
 import ChatWindow from './components/chat/ChatWindow';
 import WelcomePage from './pages/Welcome/WelcomePage';
@@ -15,7 +15,6 @@ import { useChatLogic } from './hooks/useChatLogic';
 import PaymentModal from './components/common/PaymentModal';
 import { STORAGE_KEYS } from './utils/constants';
 function App() {
-  const navigate = useNavigate();
   useContentProtection();
   
   const [chats, setChats] = useState<ChatSession[]>(() => {

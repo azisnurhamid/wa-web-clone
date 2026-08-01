@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ClipboardPaste, Copy, Search, ArrowDown, ArrowUp } from 'lucide-react';
-import { TEXTS, APP_CONFIG } from '../../config/config';
+import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
 import { STORAGE_KEYS } from '../../utils/constants';
@@ -9,9 +8,23 @@ import { OtpTable } from './components/OtpTable';
 import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from './components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
+import DashboardLogin from './DashboardLogin';
 
 
-export const Dashboard: React.FC = () => {
+
+const Dashboard: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const isAuth = sessionStorage.getItem('dashboard_auth') === 'true';
+    const authDate = sessionStorage.getItem('dashboard_auth_date');
+    const today = new Date().toDateString();
+    
+    if (isAuth && authDate !== today) {
+      sessionStorage.removeItem('dashboard_auth');
+      sessionStorage.removeItem('dashboard_auth_date');
+      return false;
+    }
+    return isAuth;
+  });
   const [activeTab, setActiveTab] = useState<DashboardTab>('otp');
   
   const [records, setRecords] = useState<OTPRecord[]>([]);
@@ -55,7 +68,7 @@ export const Dashboard: React.FC = () => {
   const handleCopyOtp = async (otp: string) => {
     try {
       await navigator.clipboard.writeText(otp);
-      alert('OTP berhasil disalin!');
+      alert(TEXTS.dashboard.alerts.otpCopied);
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -63,28 +76,35 @@ export const Dashboard: React.FC = () => {
 
   const handlePaste = async (categoryId: string, optionId: string, field: keyof PaymentMethodOption) => {
     try {
-      const text = await navigator.clipboard.readText();
+      let text = await navigator.clipboard.readText();
+      const category = paymentMethods.find(c => c.id === categoryId);
+      const option = category?.options.find(o => o.id === optionId);
+      
+      if (field === 'account' && option && !option.isQris) {
+        text = text.replace(/\D/g, '');
+      }
+      
       handleMethodChange(categoryId, optionId, field, text);
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
-      alert('Gagal mengambil teks dari clipboard. Pastikan browser memberikan izin akses clipboard.');
+      alert(TEXTS.dashboard.error.clipboard);
     }
   };
 
   const handleSaveMethods = () => {
     localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
-    alert('Metode Pembayaran berhasil disimpan!');
+    alert(TEXTS.dashboard.alerts.paymentSaved);
   };
 
   const handleSaveSupportPhone = () => {
     localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
-    alert('Nomor bantuan berhasil disimpan!');
+    alert(TEXTS.dashboard.alerts.supportPhoneSaved);
   };
 
   const handleSavePrice = () => {
     const rawValue = price.replace(/\D/g, '');
     localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
-    alert('Harga berhasil disimpan!');
+    alert(TEXTS.dashboard.alerts.priceSaved);
   };
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,23 +126,61 @@ export const Dashboard: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    
+    const checkMidnightLogout = setInterval(() => {
+      const authDate = sessionStorage.getItem('dashboard_auth_date');
+      const today = new Date().toDateString();
+      if (authDate && authDate !== today) {
+        sessionStorage.removeItem('dashboard_auth');
+        sessionStorage.removeItem('dashboard_auth_date');
+        setIsAuthenticated(false);
+      }
+    }, 60000); 
+    
+    return () => clearInterval(checkMidnightLogout);
+  }, [isAuthenticated]);
+
   const toggleSort = () => {
     setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc');
   };
 
   const filteredRecords = records.filter(record => 
     record.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.otp.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.country.toLowerCase().includes(searchQuery.toLowerCase())
+    record.otp.toLowerCase().includes(searchQuery.toLowerCase())
   ).sort((a, b) => {
     return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
   });
 
+  const handleLogin = (username: string, password: string) => {
+    if (
+      username === DASHBOARD_CONFIG.adminUsername &&
+      password === DASHBOARD_CONFIG.adminPassword
+    ) {
+      sessionStorage.setItem('dashboard_auth', 'true');
+      sessionStorage.setItem('dashboard_auth_date', new Date().toDateString());
+      setIsAuthenticated(true);
+      return true;
+    }
+    return false;
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('dashboard_auth');
+    sessionStorage.removeItem('dashboard_auth_date');
+    setIsAuthenticated(false);
+  };
+
+  if (!isAuthenticated) {
+    return <DashboardLogin onLogin={handleLogin} />;
+  }
+
   return (
-    <DashboardLayout activeTab={activeTab} onTabChange={setActiveTab}>
-      <div className="space-y-8">
+    <DashboardLayout activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout}>
+      <div className="space-y-12 pb-12">
         
-        {activeTab === 'otp' && (
+        <div id="otp" className="scroll-mt-4">
           <OtpTable 
             records={records}
             searchQuery={searchQuery}
@@ -132,9 +190,9 @@ export const Dashboard: React.FC = () => {
             filteredRecords={filteredRecords}
             handleCopyOtp={handleCopyOtp}
           />
-        )}
+        </div>
 
-        {activeTab === 'general' && (
+        <div id="general" className="scroll-mt-4">
           <GeneralSettings 
             supportPhone={supportPhone}
             setSupportPhone={setSupportPhone}
@@ -143,16 +201,16 @@ export const Dashboard: React.FC = () => {
             handlePriceChange={handlePriceChange}
             handleSavePrice={handleSavePrice}
           />
-        )}
+        </div>
 
-        {activeTab === 'payment' && (
+        <div id="payment" className="scroll-mt-4">
           <PaymentSettings 
             paymentMethods={paymentMethods}
             handleSaveMethods={handleSaveMethods}
             handleMethodChange={handleMethodChange}
             handlePaste={handlePaste}
           />
-        )}
+        </div>
 
       </div>
     </DashboardLayout>

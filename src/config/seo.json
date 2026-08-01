@@ -1,0 +1,14 @@
+{
+  "title": "WhatsApp | Berkirim Pesan dan Panggilan Pribadi Gratis yang Aman dan Andal",
+  "description": "Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal, serta tersedia untuk telepon di seluruh dunia secara gratis.",
+  "keywords": "WhatsApp, pesan, panggilan, chatting, chat, kirim pesan, telepon, smartphone, android, ios, web",
+  "author": "WhatsApp LLC",
+  "themeColor": "#00a884",
+  "locale": "id_ID",
+  "siteName": "WhatsApp.com",
+  "urls": {
+    "canonical": "https://whatsapp.com/",
+    "favicon": "/favicon.svg",
+    "ogImage": "https://static.whatsapp.net/rsrc.php/v4/yo/r/J5gK5AgJ_L5.png"
+  }
+}

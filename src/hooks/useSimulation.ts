@@ -81,7 +81,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
               };
             } else {
-              newMessage = createIncomingMessage(activeChat);
+              newMessage = createIncomingMessage();
             }
 
             const statusRoll = getRandomInt(1, 100);
@@ -189,7 +189,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
               };
             } else {
-              newMessage = createIncomingMessage(targetChat);
+              newMessage = createIncomingMessage();
             }
 
             const statusRoll = getRandomInt(1, 100);

@@ -3,6 +3,7 @@ import botReplies from './json/bot-replies.json';
 import contacts from './json/contacts.json';
 import scenarios from './json/scenarios.json';
 import { getRandomInt, generateTimestamp, getSortableTimestamp, getRandomItem } from '../utils/helpers';
+import { URLS } from '../config/config';
 
 const generateAIConversation = (user: User, isRomantic: boolean = false): ChatSession => {
     const now = Date.now();
@@ -70,7 +71,7 @@ const generateSecretConversation = (): ChatSession => {
     const user: User = {
         id: `secret_${now}`,
         name: getRandomItem(secretNames),
-        avatar: `https://picsum.photos/seed/${now}/200/200`,
+        avatar: `${URLS.avatars.seed}${now}/200/200`,
         isOnline: getRandomInt(1, 100) <= 60,
         about: getRandomInt(1, 100) <= 50 ? 'Online' : 'Terakhir dilihat baru saja',
         phoneNumber: 'Nomor tidak dikenal'
@@ -120,7 +121,7 @@ const generateAllSessions = () => {
         const groupUser: User = {
             id: `group_${i}_${Date.now()}`,
             name: groupName,
-            avatar: `https://picsum.photos/seed/group${i}/200/200`,
+            avatar: `${URLS.avatars.seed}group${i}/200/200`,
             isOnline: false,
             about: `${getRandomInt(5, 50)} peserta`,
             statusUpdates: []
@@ -139,7 +140,7 @@ const generateAllSessions = () => {
         const contact: User = {
             id: `contact_${i}_${Date.now()}`,
             name: name,
-            avatar: `https://picsum.photos/seed/contact${i}/200/200`,
+            avatar: `${URLS.avatars.seed}contact${i}/200/200`,
             isOnline: getRandomInt(1, 100) <= 30,
             about: getRandomItem(contacts.contact.abouts),
             statusUpdates: []
@@ -156,7 +157,7 @@ const generateAllSessions = () => {
         const contact: User = {
             id: `archived_${i}_${Date.now()}`,
             name: name,
-            avatar: `https://picsum.photos/seed/archived${i}/200/200`,
+            avatar: `${URLS.avatars.seed}archived${i}/200/200`,
             isOnline: false,
             about: 'Archived'
         };
@@ -172,7 +173,7 @@ generateAllSessions();
 const secretUser: User = {
     id: 'secret_1',
     name: '???',
-    avatar: 'https://picsum.photos/id/177/200/200',
+    avatar: URLS.avatars.id177,
     isOnline: true,
     about: 'Online',
     phoneNumber: 'Tidak dikenal',

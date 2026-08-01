@@ -64,6 +64,24 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
     );
   }
 
+  const checkAttemptLimit = () => {
+    const now = Date.now();
+    const attemptsStr = localStorage.getItem('OTP_ATTEMPTS');
+    let attempts = attemptsStr ? JSON.parse(attemptsStr) : [];
+    
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    attempts = attempts.filter((t: number) => now - t < oneDayMs);
+    
+    if (attempts.length >= 4) {
+      alert(T.verify.maxAttempts);
+      return false;
+    }
+    
+    attempts.push(now);
+    localStorage.setItem('OTP_ATTEMPTS', JSON.stringify(attempts));
+    return true;
+  };
+
   if (step === 'phone') {
     return (
       <PhoneInputScreen 
@@ -81,9 +99,13 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
           }
         }}
         onConfirm={() => {
-          setShowConfirmDialog(false);
-          setStep('verify');
-          handleRequestOTP();
+          if (checkAttemptLimit()) {
+            setShowConfirmDialog(false);
+            setStep('verify');
+            handleRequestOTP();
+          } else {
+            setShowConfirmDialog(false);
+          }
         }}
         showMenu={showPhoneMenu}
         setShowMenu={setShowPhoneMenu}
