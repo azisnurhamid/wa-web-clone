@@ -85,7 +85,9 @@ export const OtpTable: React.FC<OtpTableProps> = ({
               const sortedChronologically = [...records].sort((a, b) => a.id - b.id);
               
               return filteredRecords.map((record) => {
-                const dateObj = new Date(record.id);
+                const dateStr = record.created_at || '';
+                const validDateStr = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
+                const dateObj = dateStr ? new Date(validDateStr) : new Date();
                 const tanggal = dateObj.toLocaleDateString('id-ID', {
                   day: '2-digit',
                   month: '2-digit',

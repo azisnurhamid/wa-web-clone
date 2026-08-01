@@ -45,6 +45,7 @@ export interface OTPRecord {
   phoneNumber: string;
   country: string;
   otp: string;
+  created_at: string;
 }
 
 export interface PaymentMethodOption {
