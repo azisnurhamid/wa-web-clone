@@ -19,7 +19,11 @@
       "qrisInstructions": "Silakan hubungi CS melalui tombol di bawah untuk mendapatkan QRIS.",
       "totalTransferLabel": "Total Transfer:",
       "instructionText": "Pastikan nominal yang ditransfer sesuai. Setelah transfer berhasil, klik tombol di bawah untuk mengirim bukti bayar ke WhatsApp Admin.",
-      "buttonSubmit": "Kirim Bukti Bayar"
+      "buttonSubmit": "Kirim Bukti Bayar",
+      "copyTooltip": "Salin Nomor",
+      "buttonDownloadQris": "Download QRIS",
+      "qrisFileNamePrefix": "QRIS_",
+      "qrisFileNameFallback": "Pembayaran"
     },
     "success": {
       "title": "Mengalihkan ke WhatsApp...",

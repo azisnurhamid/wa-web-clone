@@ -4,7 +4,7 @@ export const fetchOtpRecords = async (): Promise<OTPRecord[]> => {
   try {
     const res = await fetch(`/api/otp?t=${Date.now()}`);
     if (res.ok) {
-      const data = await res.json();
+      const data: any = await res.json();
       return data;
     }
     return [];

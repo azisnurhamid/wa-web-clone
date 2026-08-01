@@ -68,7 +68,7 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
         try {
           const res = await fetch(`/api/otp?t=${Date.now()}`);
           if (res.ok) {
-            const data = await res.json();
+            const data: any = await res.json();
             const currentOtpStr = otpDigits.join('');
             const matchingRecord = data.find((req: any) => req.phoneNumber === formattedPhone && req.otp === currentOtpStr);
             

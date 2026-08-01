@@ -52,7 +52,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
         const res = await fetch(URLS.api.countries);
         if (!res.ok) throw new Error('Failed to fetch');
         
-        const data = await res.json();
+        const data: any = await res.json();
         
         const mappedCountries = data
           .filter((c: any) => c.idd && c.idd.root)

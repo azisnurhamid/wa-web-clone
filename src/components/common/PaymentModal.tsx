@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building2, Wallet, QrCode, CheckCircle2, Copy } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
+import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building2, Wallet, QrCode, CheckCircle2, Copy, Download } from 'lucide-react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { APP_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
 
@@ -45,12 +45,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       setSelectedMethod(null);
       setExpandedCategory(null);
       setCopied(false);
-      
-      // Fetch dynamic payment methods
       fetch('/api/settings/payment')
         .then(res => res.json())
         .then(data => {
-          if (data && data.length > 0) {
+          if (Array.isArray(data) && data.length > 0) {
             setPaymentMethodsData(data);
           }
         })
@@ -256,7 +254,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                     <button 
                       onClick={handleCopyAccount}
                       className="p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors shrink-0"
-                      title="Salin Nomor"
+                      title={paymentConfig.text.detail.copyTooltip}
                     >
                       {copied ? <CheckCircle2 className="w-5 h-5 text-[#00a884]" /> : <Copy className="w-5 h-5 text-gray-400" />}
                     </button>
@@ -269,15 +267,38 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
               {selectedMethod.isQris && (
                 <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 mb-6 text-center">
                   {selectedMethod.account && selectedMethod.account !== '-' ? (
-                    <div className="bg-white p-4 rounded-xl inline-block mx-auto border border-gray-200 mb-4 shadow-sm">
-                      <QRCodeSVG value={selectedMethod.account} size={180} />
-                    </div>
+                    <>
+                      <div className="bg-white p-4 rounded-xl inline-block mx-auto border border-gray-200 mb-4 shadow-sm">
+                        <QRCodeCanvas id="qris-canvas" value={selectedMethod.account} size={180} />
+                      </div>
+                      <p className="text-gray-800 font-medium mb-4">{selectedMethod.owner}</p>
+                      <button 
+                        onClick={() => {
+                          const canvas = document.getElementById('qris-canvas') as HTMLCanvasElement;
+                          if (canvas) {
+                            const url = canvas.toDataURL('image/png');
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `${paymentConfig.text.detail.qrisFileNamePrefix}${selectedMethod.name || paymentConfig.text.detail.qrisFileNameFallback}.png`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }
+                        }}
+                        className="mx-auto flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg transition-colors text-sm font-medium shadow-sm"
+                      >
+                        <Download className="w-4 h-4" />
+                        {paymentConfig.text.detail.buttonDownloadQris}
+                      </button>
+                    </>
                   ) : (
-                    <div className="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center border border-gray-200 mb-3">
-                      <QrCode className="w-8 h-8 text-purple-600" />
-                    </div>
+                    <>
+                      <div className="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center border border-gray-200 mb-3">
+                        <QrCode className="w-8 h-8 text-purple-600" />
+                      </div>
+                      <p className="text-gray-800 font-medium">{selectedMethod.owner}</p>
+                    </>
                   )}
-                  <p className="text-gray-800 font-medium">{selectedMethod.owner}</p>
                 </div>
               )}
 
