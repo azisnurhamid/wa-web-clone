@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Edit2, Camera, Check, Smile } from 'lucide-react';
-import { useConfig } from '../../config/config';
+import { TEXTS } from '../../config/config';
 import DefaultAvatar from '../common/DefaultAvatar';
 
 interface ProfileDrawerProps {
@@ -12,7 +12,6 @@ interface ProfileDrawerProps {
 }
 
 const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivacyMode, isInteractionLocked }) => {
-  const { TEXTS } = useConfig();
   const [name, setName] = useState(TEXTS.profile.namePlaceholder);
   const [about, setAbout] = useState(TEXTS.profile.aboutPlaceholder);
   

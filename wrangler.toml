@@ -1,7 +1,0 @@
-name = "wa-web-clone"
-compatibility_date = "2024-03-29"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "wa-web-clone-db"
-database_id = "497edbfb-64b5-4639-82ff-162cb0a2756d"

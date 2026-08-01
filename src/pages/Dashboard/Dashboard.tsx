@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useConfig } from '../../config/config';
-import { useData } from '../../context/DataProvider';
+import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
+import paymentConfig from '../../config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
 import { STORAGE_KEYS } from '../../utils/constants';
-import { fetchOtpRecords, fetchSettings, saveSetting } from '../../services/api';
+import { fetchOtpRecords } from '../../services/api';
 import { OtpTable } from './components/OtpTable';
 import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from './components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
 import DashboardLogin from './DashboardLogin';
 
-const Dashboard: React.FC = () => {
-  const { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } = useConfig();
-  const { data } = useData();
 
+
+const Dashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const isAuth = sessionStorage.getItem('dashboard_auth') === 'true';
     const authDate = sessionStorage.getItem('dashboard_auth_date');
@@ -32,7 +31,7 @@ const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [supportPhone, setSupportPhone] = useState(
-    localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG?.supportPhone || ''
+    localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone
   );
 
   const formatNumber = (val: string) => {
@@ -46,29 +45,24 @@ const Dashboard: React.FC = () => {
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodCategory[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
-    return stored ? JSON.parse(stored) : (data?.payment?.methods || []);
+    return stored ? JSON.parse(stored) : paymentConfig.methods;
   });
 
   const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {
-    setPaymentMethods((prev) => {
-      const updated = prev.map(cat => {
-        if (cat.id === categoryId) {
-          return {
-            ...cat,
-            options: cat.options.map((opt) => {
-              if (opt.id === optionId) {
-                const finalValue = field === 'logo' && typeof value === 'string' ? value.trim() : value;
-                return { ...opt, [field]: finalValue };
-              }
-              return opt;
-            })
-          };
-        }
-        return cat;
-      });
-      localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(updated));
-      return updated;
-    });
+    setPaymentMethods((prev) => prev.map(cat => {
+      if (cat.id === categoryId) {
+        return {
+          ...cat,
+          options: cat.options.map((opt) => {
+            if (opt.id === optionId) {
+              return { ...opt, [field]: value };
+            }
+            return opt;
+          })
+        };
+      }
+      return cat;
+    }));
   };
 
   const handleCopyOtp = async (otp: string) => {
@@ -97,22 +91,19 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleSaveMethods = async () => {
+  const handleSaveMethods = () => {
     localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
-    await saveSetting('payment_methods', JSON.stringify(paymentMethods));
     alert(TEXTS.dashboard.alerts.paymentSaved);
   };
 
-  const handleSaveSupportPhone = async () => {
+  const handleSaveSupportPhone = () => {
     localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
-    await saveSetting('support_phone', supportPhone);
     alert(TEXTS.dashboard.alerts.supportPhoneSaved);
   };
 
-  const handleSavePrice = async () => {
+  const handleSavePrice = () => {
     const rawValue = price.replace(/\D/g, '');
     localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
-    await saveSetting('price', rawValue || '0');
     alert(TEXTS.dashboard.alerts.priceSaved);
   };
 
@@ -126,28 +117,7 @@ const Dashboard: React.FC = () => {
       setRecords(data);
     };
     
-    const loadSettings = async () => {
-      const settings = await fetchSettings();
-      if (Array.isArray(settings)) {
-        settings.forEach((setting: any) => {
-          if (setting.key === 'payment_methods') {
-            try {
-               setPaymentMethods(JSON.parse(setting.value));
-               localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, setting.value);
-            } catch (e) {}
-          } else if (setting.key === 'support_phone') {
-            setSupportPhone(setting.value);
-            localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, setting.value);
-          } else if (setting.key === 'price') {
-            setPrice(formatNumber(setting.value));
-            localStorage.setItem(STORAGE_KEYS.PRICE, setting.value);
-          }
-        });
-      }
-    };
-
     loadRecords();
-    loadSettings();
     
     const interval = setInterval(loadRecords, 2000);
 

@@ -47,21 +47,21 @@
         {
           "id": "mandiri",
           "name": "Mandiri",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Bank_Mandiri_logo_2016.svg",
           "account": "137000928374",
           "owner": "PT WHATSAPP CLONE"
         },
         {
           "id": "bni",
           "name": "BNI",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg",
           "account": "0983214562",
           "owner": "PT WHATSAPP CLONE"
         },
         {
           "id": "bri",
           "name": "BRI",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9a/BRI_2025_%28with_full_name%29.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/BRI_2020.svg",
           "account": "034201000983301",
           "owner": "PT WHATSAPP CLONE"
         },
@@ -75,14 +75,14 @@
         {
           "id": "permata",
           "name": "Permata",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Permata_Bank_%282024%29.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f8/PermataBank_logo.svg",
           "account": "1234567890",
           "owner": "PT WHATSAPP CLONE"
         },
         {
           "id": "bsi",
           "name": "BSI",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Bank_Syariah_Indonesia.svg",
           "account": "1234567890",
           "owner": "PT WHATSAPP CLONE"
         }
@@ -104,7 +104,7 @@
         {
           "id": "ovo",
           "name": "OVO",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_OVO_Lippo_Group.png",
           "account": "081234567890",
           "owner": "WHATSAPP CLONE"
         },
@@ -118,7 +118,7 @@
         {
           "id": "shopeepay",
           "name": "ShopeePay",
-          "logo": "https://shopeepay.co.id/assets/spp-logo-C03WIzdh.svg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
           "account": "081234567890",
           "owner": "WHATSAPP CLONE"
         },

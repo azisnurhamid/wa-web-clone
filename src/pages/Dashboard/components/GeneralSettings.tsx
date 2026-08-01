@@ -1,5 +1,5 @@
 import React from 'react';
-import { useConfig } from '../../../config/config';
+import { TEXTS } from '../../../config/config';
 
 interface GeneralSettingsProps {
   supportPhone: string;
@@ -18,7 +18,6 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
   handlePriceChange,
   handleSavePrice
 }) => {
-  const { TEXTS } = useConfig();
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-4 sm:px-6 py-3 border-b border-gray-200 bg-[#00a884]">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, MoreVertical, ArrowLeft } from 'lucide-react';
 import { ChatSession } from '../../types';
-import { useConfig } from '../../config/config';
+import { TEXTS } from '../../config/config';
 
 interface ChatHeaderProps {
   chat: ChatSession;
@@ -26,7 +26,6 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   setShowChatMenu,
   chatMenuRef
 }) => {
-  const { TEXTS } = useConfig();
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';

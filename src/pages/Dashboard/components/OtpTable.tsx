@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search, ArrowDown, ArrowUp, Copy } from 'lucide-react';
-import { useConfig } from '../../../config/config';
+import { TEXTS } from '../../../config/config';
 import { OTPRecord } from '../../../types';
 
 interface OtpTableProps {
@@ -22,7 +22,6 @@ export const OtpTable: React.FC<OtpTableProps> = ({
   filteredRecords,
   handleCopyOtp
 }) => {
-  const { TEXTS } = useConfig();
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 bg-[#00a884] border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">

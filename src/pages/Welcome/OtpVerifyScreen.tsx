@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, MessageSquare, PhoneOff, Phone as PhoneIcon } from 'lucide-react';
-import { useConfig } from '../../config/config';
+import { TEXTS } from '../../config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -32,7 +32,6 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
   setSelectedVerifyMethod,
   onRequestNewOTP
 }) => {
-  const { TEXTS } = useConfig();
   const menuRef = useRef<HTMLDivElement>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [countdown, setCountdown] = useState(80);

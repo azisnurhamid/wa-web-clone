@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MessageSquarePlus, MoreVertical, Donut, Eye, EyeOff, MessageSquareLock } from 'lucide-react';
 import DefaultAvatar from '../common/DefaultAvatar';
-import { useConfig } from '../../config/config';
+import { COLORS, TEXTS } from '../../config/config';
 
 interface SidebarHeaderProps {
   isPrivacyMode: boolean;
@@ -18,7 +18,6 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onToggleInteractionLock,
   setView
 }) => {
-  const { COLORS, TEXTS } = useConfig();
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
   const mainMenuRef = useRef<HTMLDivElement>(null);
 

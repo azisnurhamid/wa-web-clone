@@ -1,7 +1,9 @@
 import { Message, StatusUpdate, User } from '../types';
+import botReplies from '../data/json/bot-replies.json';
+import contacts from '../data/json/contacts.json';
 import { getRandomItem, getRandomInt, getRandomBoolean } from '../utils/helpers';
 
-export const generateAIResponse = (userMessage: string, isSecretChat: boolean, botReplies: any): string => {
+export const generateAIResponse = (userMessage: string, isSecretChat: boolean): string => {
   const message = userMessage.toLowerCase();
   const now = new Date();
   const hour = now.getHours();
@@ -21,6 +23,8 @@ export const generateAIResponse = (userMessage: string, isSecretChat: boolean, b
   };
   
   const isAIAvailable = hour >= 6 && hour <= 23;
+  
+
   
   if (isSecretChat) {
     return getRandomItem(botReplies.responses.secret);
@@ -57,7 +61,8 @@ export const generateAIResponse = (userMessage: string, isSecretChat: boolean, b
   return getRandomItem(botReplies.responses.default);
 };
 
-const getRandomMessageText = (botReplies: any): string => {
+const getRandomMessageText = (): string => {
+  
   const category = getRandomInt(1, 4);
   switch (category) {
     case 1: return getRandomItem(botReplies.conversations.greetings);
@@ -68,17 +73,17 @@ const getRandomMessageText = (botReplies: any): string => {
   }
 };
 
-export const createIncomingMessage = (botReplies: any): Message => {
+export const createIncomingMessage = (): Message => {
   return {
     id: `msg_auto_${Date.now()}`,
-    text: getRandomMessageText(botReplies),
+    text: getRandomMessageText(),
     timestamp: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'),
     isMine: false,
     status: 'read',
   };
 };
 
-export const createNewStatusUpdate = (contacts: any): StatusUpdate => {
+export const createNewStatusUpdate = (): StatusUpdate => {
    const isImage = getRandomBoolean(0.6);
    const statusColors = contacts.status.colors;
    
@@ -94,7 +99,7 @@ export const createNewStatusUpdate = (contacts: any): StatusUpdate => {
    };
 };
 
-export const generateProfileChange = (user: User, contacts: any): Partial<User> => {
+export const generateProfileChange = (user: User): Partial<User> => {
     if (getRandomBoolean(0.5)) {
         const currentName = user.name;
         const suffixes = contacts.profile.suffixes;

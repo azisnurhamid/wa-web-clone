@@ -5,7 +5,7 @@ import ProfileDrawer from '../drawers/ProfileDrawer';
 import StatusDrawer from '../drawers/StatusDrawer';
 import SettingsDrawer from '../drawers/SettingsDrawer';
 import NewChatDrawer from '../drawers/NewChatDrawer';
-import { useConfig } from '../../config/config';
+import { TEXTS, URLS } from '../../config/config';
 import { SidebarHeader } from './SidebarHeader';
 import { ChatList } from './ChatList';
 
@@ -36,7 +36,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     onToggleInteractionLock,
     className = '' 
 }) => {
-  const { TEXTS, URLS } = useConfig();
   const [view, setView] = useState<SidebarView>('MAIN');
   const [searchQuery, setSearchQuery] = useState('');
   const [isUnreadFilter, setIsUnreadFilter] = useState(false);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChatSession } from '../../types';
 import MessageBubble from '../common/MessageBubble';
-import { useConfig } from '../../config/config';
+import { URLS } from '../../config/config';
 
 interface ChatMessagesProps {
   chat: ChatSession;
@@ -16,7 +16,6 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
   isInteractionLocked,
   messagesEndRef
 }) => {
-  const { URLS } = useConfig();
   return (
     <div 
       className="flex-1 overflow-y-auto px-[3%] md:px-[6%] py-4 custom-scrollbar relative"

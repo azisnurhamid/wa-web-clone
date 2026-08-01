@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClipboardPaste } from 'lucide-react';
-import { useConfig } from '../../../config/config';
+import { TEXTS } from '../../../config/config';
 import { PaymentMethodCategory, PaymentMethodOption } from '../../../types';
 
 interface PaymentSettingsProps {
@@ -16,7 +16,6 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
   handleMethodChange,
   handlePaste
 }) => {
-  const { TEXTS } = useConfig();
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 border-b border-gray-200 bg-[#00a884] flex justify-between items-center">

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, ChevronDown, Globe } from 'lucide-react';
-import { useConfig } from '../../config/config';
+import { TEXTS } from '../../config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -11,7 +11,6 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, setShowMenu }) => {
-  const { TEXTS } = useConfig();
   const menuRef = useRef<HTMLDivElement>(null);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const [showLangMenu, setShowLangMenu] = useState(false);

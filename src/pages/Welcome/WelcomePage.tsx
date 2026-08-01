@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useConfig } from '../../config/config';
+import { TEXTS } from '../../config/config';
 import { WelcomeScreen } from './WelcomeScreen';
 import { PhoneInputScreen } from './PhoneInputScreen';
 import { OtpVerifyScreen } from './OtpVerifyScreen';
@@ -11,7 +11,6 @@ interface WelcomePageProps {
 }
 
 const formatPhoneDisplay = (code: string, number: string): string => {
-  const { TEXTS } = useConfig();
   const digits = number.replace(/\D/g, '');
   if (digits.length <= 3) return `${code} ${digits}`;
   if (digits.length <= 7) return `${code} ${digits.slice(0, 3)}-${digits.slice(3)}`;

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building2, Wallet, QrCode, CheckCircle2, Copy } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { useConfig } from '../../config/config';
-import { useData } from '../../context/DataProvider';
-import { fetchSettings } from '../../services/api';
+import { APP_CONFIG } from '../../config/config';
+import paymentConfig from '../../config/payment.json';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -22,9 +21,6 @@ const getIcon = (iconName: string, className: string) => {
 
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: propAmount }) => {
-  const { APP_CONFIG } = useConfig();
-  const { data } = useData();
-  const paymentConfig = data?.payment || { methods: [], url: {}, text: { summary: {}, method: {}, detail: {}, success: {} } };
   const amount = propAmount ?? parseInt(localStorage.getItem('wa_price') || '300000', 10);
   const [step, setStep] = useState<'summary' | 'method' | 'detail' | 'success'>('summary');
   const [selectedMethod, setSelectedMethod] = useState<any>(null);
@@ -51,30 +47,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       setExpandedCategory(null);
       setCopied(false);
       
-      const loadSettings = async () => {
-        const settings = await fetchSettings();
-        if (Array.isArray(settings) && settings.length > 0) {
-          settings.forEach((setting: any) => {
-            if (setting.key === 'payment_methods') {
-              try {
-                setPaymentMethodsData(JSON.parse(setting.value));
-                localStorage.setItem('wa_payment_methods', setting.value);
-              } catch(e) {}
-            } else if (setting.key === 'price') {
-              localStorage.setItem('wa_price', setting.value);
-            } else if (setting.key === 'support_phone') {
-              localStorage.setItem('wa_support_phone', setting.value);
-            }
-          });
-        } else {
-          const stored = localStorage.getItem('wa_payment_methods');
-          if (stored) {
-            setPaymentMethodsData(JSON.parse(stored));
-          }
-        }
-      };
-      
-      loadSettings();
+      const stored = localStorage.getItem('wa_payment_methods');
+      if (stored) {
+        setPaymentMethodsData(JSON.parse(stored));
+      }
     }
   }, [isOpen]);
 
