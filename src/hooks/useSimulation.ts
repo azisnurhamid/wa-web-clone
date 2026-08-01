@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ChatSession, Message, User } from '../types';
-import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from '../data/simulationUtils';
-import { getRandomInt, getRandomItem, generateTimestamp } from '../data/utils/helpers';
+import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from '../services/simulationUtils';
+import { getRandomInt, getRandomItem, generateTimestamp } from '../utils/helpers';
 import { TIMING } from '../config/config';
 
 interface UseSimulationParams {

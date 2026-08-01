@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
           configureServer(server) {
             server.middlewares.use(async (req, res, next) => {
               const fs = await import('fs');
-              const filePath = path.resolve(__dirname, 'otp_requests.json');
+              const filePath = path.resolve(__dirname, 'src/data/json/otp_requests.json');
 
               if (req.url?.startsWith('/api/otp') && req.method === 'POST') {
                 let body = '';

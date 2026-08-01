@@ -2,7 +2,7 @@ import { ChatSession, User, Message } from '../types';
 import botReplies from './json/bot-replies.json';
 import contacts from './json/contacts.json';
 import scenarios from './json/scenarios.json';
-import { getRandomInt, generateTimestamp, getSortableTimestamp, getRandomItem } from './utils/helpers';
+import { getRandomInt, generateTimestamp, getSortableTimestamp, getRandomItem } from '../utils/helpers';
 
 const generateAIConversation = (user: User, isRomantic: boolean = false): ChatSession => {
     const now = Date.now();

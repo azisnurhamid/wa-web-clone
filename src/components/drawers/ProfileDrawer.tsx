@@ -87,9 +87,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({ isOpen, onClose, isPrivac
                 <DefaultAvatar size={200} />
                 {isPrivacyMode ? (
                     <div className={`absolute inset-0 rounded-full flex flex-col items-center justify-center text-white transition-opacity ${isInteractionLocked ? 'opacity-100 bg-black/40' : 'opacity-0 hover:opacity-100 bg-black/40'}`}>
-                        {isInteractionLocked ? (
-                            <Edit2 size={32} className="text-red-500" />
-                        ) : (
+                        {isInteractionLocked ? null : (
                             <>
                                 <Camera size={24} className="mb-2" />
                                 <span className="text-xs uppercase text-center w-24">{TEXTS.profile.changePhoto}</span>

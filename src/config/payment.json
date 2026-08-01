@@ -1,0 +1,151 @@
+{
+  "text": {
+    "summary": {
+      "title": "Akses Terkunci",
+      "subtitle": "Anda perlu melakukan pembayaran untuk membuka fitur ini.",
+      "totalLabel": "Total Tagihan",
+      "buttonSelect": "Pilih Metode Pembayaran",
+      "buttonLater": "Nanti Saja"
+    },
+    "method": {
+      "title": "Metode Pembayaran",
+      "totalLabel": "Total Tagihan"
+    },
+    "detail": {
+      "title": "Detail Pembayaran",
+      "selectedMethod": "Metode Terpilih",
+      "accountLabel": "No. Rekening / Tujuan",
+      "ownerLabel": "Atas Nama",
+      "qrisInstructions": "Silakan hubungi CS melalui tombol di bawah untuk mendapatkan QRIS.",
+      "totalTransferLabel": "Total Transfer:",
+      "instructionText": "Pastikan nominal yang ditransfer sesuai. Setelah transfer berhasil, klik tombol di bawah untuk mengirim bukti bayar ke WhatsApp Admin.",
+      "buttonSubmit": "Kirim Bukti Bayar"
+    },
+    "success": {
+      "title": "Mengalihkan ke WhatsApp...",
+      "subtitle": "Silakan lampirkan bukti pembayaran Anda di ruang obrolan WhatsApp yang terbuka."
+    }
+  },
+  "url": {
+    "whatsappTemplate": "https://wa.me/{phone}?text={message}",
+    "messageTemplate": "Halo, saya ingin konfirmasi pembayaran.\n\n*Detail Pembayaran:*\nMetode: {method}\nTotal: {amount}\n\nBerikut saya lampirkan bukti pembayarannya:"
+  },
+  "methods": [
+    {
+      "id": "bank_transfer",
+      "category": "Bank Transfer",
+      "icon": "Building2",
+      "iconColor": "text-blue-500",
+      "options": [
+        {
+          "id": "bca",
+          "name": "BCA",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg",
+          "account": "8732194382",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "mandiri",
+          "name": "Mandiri",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Bank_Mandiri_logo_2016.svg",
+          "account": "137000928374",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "bni",
+          "name": "BNI",
+          "logo": "https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg",
+          "account": "0983214562",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "bri",
+          "name": "BRI",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/BRI_2020.svg",
+          "account": "034201000983301",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "cimb",
+          "name": "CIMB Niaga",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/3/38/CIMB_Niaga_logo.svg",
+          "account": "1234567890",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "permata",
+          "name": "Permata",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f8/PermataBank_logo.svg",
+          "account": "1234567890",
+          "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "bsi",
+          "name": "BSI",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Bank_Syariah_Indonesia.svg",
+          "account": "1234567890",
+          "owner": "PT WHATSAPP CLONE"
+        }
+      ]
+    },
+    {
+      "id": "ewallet",
+      "category": "E-Wallet",
+      "icon": "Wallet",
+      "iconColor": "text-green-500",
+      "options": [
+        {
+          "id": "gopay",
+          "name": "GoPay",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg",
+          "account": "081234567890",
+          "owner": "WHATSAPP CLONE"
+        },
+        {
+          "id": "ovo",
+          "name": "OVO",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_OVO_Lippo_Group.png",
+          "account": "081234567890",
+          "owner": "WHATSAPP CLONE"
+        },
+        {
+          "id": "dana",
+          "name": "DANA",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg",
+          "account": "081234567890",
+          "owner": "WHATSAPP CLONE"
+        },
+        {
+          "id": "shopeepay",
+          "name": "ShopeePay",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg",
+          "account": "081234567890",
+          "owner": "WHATSAPP CLONE"
+        },
+        {
+          "id": "linkaja",
+          "name": "LinkAja",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/8/85/LinkAja.svg",
+          "account": "081234567890",
+          "owner": "WHATSAPP CLONE"
+        }
+      ]
+    },
+    {
+      "id": "qris",
+      "category": "QRIS",
+      "icon": "QrCode",
+      "iconColor": "text-purple-500",
+      "options": [
+        {
+          "id": "qris",
+          "name": "QRIS",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg",
+          "account": "00020101021126610014COM.GO-JEK.WWW01189360091439870635940210G9870635940303UMI51440014ID.CO.QRIS.WWW0215ID10264822097680303UMI5204899953033605802ID5925RecoverID, Digital & Krea6013JAKARTA BARAT61051152062070703A0163048A4C",
+          "owner": "RecoverID, Digital & Kreatif",
+          "isQris": true
+        }
+      ]
+    }
+  ]
+}

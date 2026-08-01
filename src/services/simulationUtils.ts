@@ -1,7 +1,7 @@
 import { ChatSession, Message, StatusUpdate, User } from '../types';
-import botReplies from './json/bot-replies.json';
-import contacts from './json/contacts.json';
-import { getRandomItem, getRandomInt, getRandomBoolean } from './utils/helpers';
+import botReplies from '../data/json/bot-replies.json';
+import contacts from '../data/json/contacts.json';
+import { getRandomItem, getRandomInt, getRandomBoolean } from '../utils/helpers';
 
 export const generateAIResponse = (userMessage: string, isSecretChat: boolean): string => {
   const message = userMessage.toLowerCase();
@@ -73,7 +73,7 @@ const getRandomMessageText = (): string => {
   }
 };
 
-export const createIncomingMessage = (chat: ChatSession): Message => {
+export const createIncomingMessage = (): Message => {
   return {
     id: `msg_auto_${Date.now()}`,
     text: getRandomMessageText(),

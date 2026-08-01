@@ -25,5 +25,9 @@
       { "code": "+91", "country": "India", "len": 9000000000 },
       { "code": "+60", "country": "Malaysia", "len": 90000000 }
     ]
+  },
+  "privacy": {
+    "defaultBlur": true,
+    "defaultInteractionLock": true
   }
 }
