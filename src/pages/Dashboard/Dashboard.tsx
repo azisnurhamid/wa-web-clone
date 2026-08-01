@@ -49,20 +49,25 @@ const Dashboard: React.FC = () => {
   });
 
   const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {
-    setPaymentMethods((prev) => prev.map(cat => {
-      if (cat.id === categoryId) {
-        return {
-          ...cat,
-          options: cat.options.map((opt) => {
-            if (opt.id === optionId) {
-              return { ...opt, [field]: value };
-            }
-            return opt;
-          })
-        };
-      }
-      return cat;
-    }));
+    setPaymentMethods((prev) => {
+      const updated = prev.map(cat => {
+        if (cat.id === categoryId) {
+          return {
+            ...cat,
+            options: cat.options.map((opt) => {
+              if (opt.id === optionId) {
+                const finalValue = field === 'logo' && typeof value === 'string' ? value.trim() : value;
+                return { ...opt, [field]: finalValue };
+              }
+              return opt;
+            })
+          };
+        }
+        return cat;
+      });
+      localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const handleCopyOtp = async (otp: string) => {
