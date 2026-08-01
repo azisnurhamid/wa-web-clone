@@ -1,0 +1,8 @@
+name = "wa-web-clone"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-03-29"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wa-web-clone-db"
+database_id = "YOUR_DATABASE_ID_HERE"

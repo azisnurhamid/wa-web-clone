@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS otp_requests;
+
+CREATE TABLE otp_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    phoneNumber TEXT NOT NULL,
+    country TEXT NOT NULL,
+    otp TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
