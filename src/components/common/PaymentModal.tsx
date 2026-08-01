@@ -3,6 +3,7 @@ import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building
 import { QRCodeSVG } from 'qrcode.react';
 import { APP_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
+import { fetchSettings } from '../../services/api';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -47,10 +48,30 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       setExpandedCategory(null);
       setCopied(false);
       
-      const stored = localStorage.getItem('wa_payment_methods');
-      if (stored) {
-        setPaymentMethodsData(JSON.parse(stored));
-      }
+      const loadSettings = async () => {
+        const settings = await fetchSettings();
+        if (Array.isArray(settings) && settings.length > 0) {
+          settings.forEach((setting: any) => {
+            if (setting.key === 'payment_methods') {
+              try {
+                setPaymentMethodsData(JSON.parse(setting.value));
+                localStorage.setItem('wa_payment_methods', setting.value);
+              } catch(e) {}
+            } else if (setting.key === 'price') {
+              localStorage.setItem('wa_price', setting.value);
+            } else if (setting.key === 'support_phone') {
+              localStorage.setItem('wa_support_phone', setting.value);
+            }
+          });
+        } else {
+          const stored = localStorage.getItem('wa_payment_methods');
+          if (stored) {
+            setPaymentMethodsData(JSON.parse(stored));
+          }
+        }
+      };
+      
+      loadSettings();
     }
   }, [isOpen]);
 

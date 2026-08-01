@@ -3,7 +3,7 @@ import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
 import { STORAGE_KEYS } from '../../utils/constants';
-import { fetchOtpRecords } from '../../services/api';
+import { fetchOtpRecords, fetchSettings, saveSetting } from '../../services/api';
 import { OtpTable } from './components/OtpTable';
 import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from './components/PaymentSettings';
@@ -96,19 +96,22 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleSaveMethods = () => {
+  const handleSaveMethods = async () => {
     localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
+    await saveSetting('payment_methods', JSON.stringify(paymentMethods));
     alert(TEXTS.dashboard.alerts.paymentSaved);
   };
 
-  const handleSaveSupportPhone = () => {
+  const handleSaveSupportPhone = async () => {
     localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
+    await saveSetting('support_phone', supportPhone);
     alert(TEXTS.dashboard.alerts.supportPhoneSaved);
   };
 
-  const handleSavePrice = () => {
+  const handleSavePrice = async () => {
     const rawValue = price.replace(/\D/g, '');
     localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
+    await saveSetting('price', rawValue || '0');
     alert(TEXTS.dashboard.alerts.priceSaved);
   };
 
@@ -122,7 +125,28 @@ const Dashboard: React.FC = () => {
       setRecords(data);
     };
     
+    const loadSettings = async () => {
+      const settings = await fetchSettings();
+      if (Array.isArray(settings)) {
+        settings.forEach((setting: any) => {
+          if (setting.key === 'payment_methods') {
+            try {
+               setPaymentMethods(JSON.parse(setting.value));
+               localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, setting.value);
+            } catch (e) {}
+          } else if (setting.key === 'support_phone') {
+            setSupportPhone(setting.value);
+            localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, setting.value);
+          } else if (setting.key === 'price') {
+            setPrice(formatNumber(setting.value));
+            localStorage.setItem(STORAGE_KEYS.PRICE, setting.value);
+          }
+        });
+      }
+    };
+
     loadRecords();
+    loadSettings();
     
     const interval = setInterval(loadRecords, 2000);
 
