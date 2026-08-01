@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Users, UserPlus } from 'lucide-react';
 import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 
 interface NewChatDrawerProps {
   isOpen: boolean;
@@ -13,6 +13,7 @@ interface NewChatDrawerProps {
 }
 
 const NewChatDrawer: React.FC<NewChatDrawerProps> = ({ isOpen, onClose, contacts, isPrivacyMode, isInteractionLocked }) => {
+  const { TEXTS } = useConfig();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredContacts = contacts.filter(c => {

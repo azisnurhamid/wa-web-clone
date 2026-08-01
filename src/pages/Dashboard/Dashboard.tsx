@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
-import paymentConfig from '../../config/payment.json';
+import { useConfig } from '../../config/config';
+import { useData } from '../../context/DataProvider';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
 import { STORAGE_KEYS } from '../../utils/constants';
 import { fetchOtpRecords, fetchSettings, saveSetting } from '../../services/api';
@@ -10,9 +10,10 @@ import { PaymentSettings } from './components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
 import DashboardLogin from './DashboardLogin';
 
-
-
 const Dashboard: React.FC = () => {
+  const { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } = useConfig();
+  const { data } = useData();
+
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const isAuth = sessionStorage.getItem('dashboard_auth') === 'true';
     const authDate = sessionStorage.getItem('dashboard_auth_date');
@@ -31,7 +32,7 @@ const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [supportPhone, setSupportPhone] = useState(
-    localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone
+    localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG?.supportPhone || ''
   );
 
   const formatNumber = (val: string) => {
@@ -45,7 +46,7 @@ const Dashboard: React.FC = () => {
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodCategory[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
-    return stored ? JSON.parse(stored) : paymentConfig.methods;
+    return stored ? JSON.parse(stored) : (data?.payment?.methods || []);
   });
 
   const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {

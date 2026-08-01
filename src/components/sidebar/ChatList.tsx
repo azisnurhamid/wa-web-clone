@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Archive } from 'lucide-react';
 import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 import { ChatListItem } from './ChatListItem';
 
 interface ChatListProps {
@@ -41,6 +41,7 @@ export const ChatList: React.FC<ChatListProps> = ({
   onStatusClick,
   menuRef
 }) => {
+  const { TEXTS } = useConfig();
   const blurClass = isPrivacyMode 
     ? `blur-[5px] ${!isInteractionLocked ? 'hover:blur-0' : ''}` 
     : '';

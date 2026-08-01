@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { ChatSession, Message, User } from '../types';
 import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from '../services/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from '../utils/helpers';
-import { TIMING } from '../config/config';
+import { useConfig } from '../config/config';
+import { useData } from '../context/DataProvider';
 
 interface UseSimulationParams {
   chats: ChatSession[];
@@ -13,6 +14,8 @@ interface UseSimulationParams {
 }
 
 export function useSimulation({ chats, contacts, activeChatId, setChats, setContacts }: UseSimulationParams) {
+  const { TIMING } = useConfig();
+  const { data } = useData();
   const chatsRef = useRef(chats);
   const contactsRef = useRef(contacts);
 
@@ -81,7 +84,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
               };
             } else {
-              newMessage = createIncomingMessage();
+              newMessage = createIncomingMessage(data?.botReplies);
             }
 
             const statusRoll = getRandomInt(1, 100);
@@ -111,7 +114,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
             setTimeout(() => {
               if (!isMounted) return;
               const isSecretChat = activeChat.id === 'chat_secret_1' || activeChat.user.name === '???';
-              const aiResponse = generateAIResponse(newMessage.text, isSecretChat);
+              const aiResponse = generateAIResponse(newMessage.text, isSecretChat, data?.botReplies);
               const aiMessage: Message = {
                 id: `ai_auto_${Date.now()}`,
                 text: aiResponse,
@@ -189,7 +192,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
               };
             } else {
-              newMessage = createIncomingMessage();
+              newMessage = createIncomingMessage(data?.botReplies);
             }
 
             const statusRoll = getRandomInt(1, 100);
@@ -232,7 +235,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
               setTimeout(() => {
                 if (!isMounted) return;
                 const isSecretChat = targetChat.id === 'chat_secret_1' || targetChat.user.name === '???';
-                const aiResponse = generateAIResponse(newMessage.text, isSecretChat);
+                const aiResponse = generateAIResponse(newMessage.text, isSecretChat, data?.botReplies);
                 const aiMessage: Message = {
                   id: `ai_auto_${Date.now()}`,
                   text: aiResponse,
@@ -277,7 +280,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
 
         const targetContact = getRandomItem(currentContacts as readonly User[]);
         if (targetContact) {
-          const newStatus = createNewStatusUpdate();
+          const newStatus = createNewStatusUpdate(data?.contacts);
           const updatedContact = {
             ...targetContact,
             statusUpdates: targetContact.statusUpdates ? [...targetContact.statusUpdates, newStatus] : [newStatus]
@@ -289,7 +292,7 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
       } else {
         const targetContact = getRandomItem(currentContacts as readonly User[]);
         if (targetContact) {
-          const updates = generateProfileChange(targetContact);
+          const updates = generateProfileChange(targetContact, data?.contacts);
           const updatedContact = { ...targetContact, ...updates };
 
           setContacts(prev => prev.map(u => u.id === targetContact.id ? updatedContact : u));

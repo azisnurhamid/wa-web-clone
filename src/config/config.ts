@@ -1,20 +1,39 @@
-import idTexts from './locales/id.json';
-import enTexts from './locales/en.json';
-import theme from './theme.json';
-import assets from './assets.json';
-import appConfig from './app.json';
+import { useData } from '../context/DataProvider';
 
-export const COLORS = theme.colors;
-export const TIMING = appConfig.timing;
+export const useConfig = () => {
+  const { data, loading, error } = useData();
 
-const currentLang = localStorage.getItem('wa_lang') || 'id';
-const texts = currentLang === 'en' ? enTexts : idTexts;
+  if (loading || !data) {
+    return {
+      COLORS: {},
+      TIMING: {
+        typingDelayMin: 1000,
+        typingDelayMax: 3000,
+        onlineDurationMin: 5000,
+        onlineDurationMax: 15000,
+        statusInterval: 60000
+      },
+      TEXTS: {} as any,
+      URLS: {} as any,
+      APP_CONFIG: {} as any,
+      PRIVACY_CONFIG: {} as any,
+      DASHBOARD_CONFIG: {} as any
+    };
+  }
 
-export const TEXTS = texts;
-export const URLS = assets.urls;
-export const APP_CONFIG = {
-  ...appConfig.app,
-  supportEmail: appConfig.app.supportEmail
+  const currentLang = localStorage.getItem('wa_lang') || 'id';
+  const texts = currentLang === 'en' ? data.locales.en : data.locales.id;
+
+  return {
+    COLORS: data.theme.colors,
+    TIMING: data.app.timing,
+    TEXTS: texts,
+    URLS: data.assets.urls,
+    APP_CONFIG: {
+      ...data.app.app,
+      supportEmail: data.app.app.supportEmail
+    },
+    PRIVACY_CONFIG: data.app.privacy,
+    DASHBOARD_CONFIG: data.app.dashboard
+  };
 };
-export const PRIVACY_CONFIG = appConfig.privacy;
-export const DASHBOARD_CONFIG = appConfig.dashboard;

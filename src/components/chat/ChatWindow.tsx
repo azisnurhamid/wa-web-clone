@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessages } from './ChatMessages';
 import { ChatInput } from './ChatInput';
@@ -15,6 +15,7 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onBack, isPrivacyMode, isInteractionLocked }) => {
+  const { TEXTS } = useConfig();
   const [inputText, setInputText] = useState('');
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const [showSearchSidebar, setShowSearchSidebar] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Database, Settings, CreditCard, MessageCircle, LayoutDashboard, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { TEXTS } from '../../../config/config';
+import { useConfig } from '../../../config/config';
 
 export type DashboardTab = 'otp' | 'general' | 'payment';
 
@@ -18,6 +18,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   onLogout,
   children
 }) => {
+  const { TEXTS } = useConfig();
   const navigate = useNavigate();
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);

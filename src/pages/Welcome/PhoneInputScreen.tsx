@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, ChevronDown } from 'lucide-react';
-import { TEXTS, URLS } from '../../config/config';
+import { useConfig } from '../../config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -39,6 +39,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
   setShowCountryDropdown,
   formattedPhone
 }) => {
+  const { TEXTS, URLS } = useConfig();
   const menuRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   

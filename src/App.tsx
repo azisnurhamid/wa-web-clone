@@ -5,16 +5,20 @@ import Sidebar from './components/sidebar/Sidebar';
 import ChatWindow from './components/chat/ChatWindow';
 import WelcomePage from './pages/Welcome/WelcomePage';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { CHAT_SESSIONS, ALL_CONTACTS } from './data/mockData';
+import { generateMockData } from './data/mockData';
 import { ChatSession, User } from './types';
 import { Lock, MessageCircle, Phone } from 'lucide-react';
-import { TEXTS, APP_CONFIG, PRIVACY_CONFIG } from './config/config';
+import { useConfig } from './config/config';
 import { useContentProtection } from './hooks/useContentProtection';
 import { useSimulation } from './hooks/useSimulation';
 import { useChatLogic } from './hooks/useChatLogic';
 import PaymentModal from './components/common/PaymentModal';
 import { STORAGE_KEYS } from './utils/constants';
+import { useData } from './context/DataProvider';
+
 function App() {
+  const { data, loading, error } = useData();
+  const { TEXTS, APP_CONFIG, PRIVACY_CONFIG, URLS } = useConfig();
   useContentProtection();
   
   const [chats, setChats] = useState<ChatSession[]>(() => {
@@ -22,11 +26,9 @@ function App() {
     if (cached) {
       try {
         return JSON.parse(cached);
-      } catch {
-        return CHAT_SESSIONS;
-      }
+      } catch {}
     }
-    return CHAT_SESSIONS;
+    return [];
   });
   
   const [contacts, setContacts] = useState<User[]>(() => {
@@ -34,16 +36,30 @@ function App() {
     if (cached) {
       try {
         return JSON.parse(cached);
-      } catch {
-        return ALL_CONTACTS;
-      }
+      } catch {}
     }
-    return ALL_CONTACTS;
+    return [];
   });
+
+  useEffect(() => {
+    if (data && chats.length === 0 && contacts.length === 0) {
+      const mock = generateMockData(data.botReplies, data.contacts, data.scenarios, URLS);
+      setChats(mock.CHAT_SESSIONS);
+      setContacts(mock.ALL_CONTACTS);
+    }
+  }, [data, chats.length, contacts.length, URLS]);
   
   const [isLocked, setIsLocked] = useState(false);
-  const [isPrivacyMode, setIsPrivacyMode] = useState(PRIVACY_CONFIG.defaultBlur);
-  const [isInteractionLocked, setIsInteractionLocked] = useState(PRIVACY_CONFIG.defaultInteractionLock);
+  const [isPrivacyMode, setIsPrivacyMode] = useState(false);
+  const [isInteractionLocked, setIsInteractionLocked] = useState(false);
+  
+  useEffect(() => {
+    if (PRIVACY_CONFIG) {
+        setIsPrivacyMode(PRIVACY_CONFIG.defaultBlur || false);
+        setIsInteractionLocked(PRIVACY_CONFIG.defaultInteractionLock || false);
+    }
+  }, [PRIVACY_CONFIG]);
+
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -61,13 +77,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
-    localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
+    if (chats.length > 0 && contacts.length > 0) {
+        localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
+        localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
+    }
   }, [chats, contacts]);
 
   useSimulation({ chats, contacts, activeChatId, setChats, setContacts });
-
-
 
   const { handleSendMessage, handleSelectChat, handleUpdateChat } = useChatLogic({
     chats,
@@ -106,15 +122,21 @@ function App() {
     window.location.reload();
   };
 
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center bg-[#f0f2f5]"><div className="w-10 h-10 border-4 border-[#00a884] border-t-transparent rounded-full animate-spin"></div></div>;
+  }
 
+  if (error) {
+    return <div className="flex h-screen items-center justify-center bg-[#f0f2f5] text-red-500">Failed to load data: {error.message}</div>;
+  }
 
   const whatsappButton = (
     <div className="fixed bottom-6 right-6 flex items-center gap-3 z-50 group">
       <div className={`bg-white px-3 py-1.5 rounded-lg shadow-md text-sm text-gray-700 whitespace-nowrap transition-opacity ${showTooltip ? 'opacity-100' : 'opacity-0'}`}>
-        {TEXTS.whatsappButton.tooltip}
+        {TEXTS?.whatsappButton?.tooltip}
       </div>
       <a
-        href={`https://wa.me/${localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone}?text=${encodeURIComponent(TEXTS.whatsappButton.defaultMessage)}`}
+        href={`https://wa.me/${localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG?.supportPhone}?text=${encodeURIComponent(TEXTS?.whatsappButton?.defaultMessage || '')}`}
         target="_blank"
         rel="noopener noreferrer"
         className="w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all"
@@ -151,13 +173,13 @@ function App() {
                 <Lock size={32} />
               </div>
             </div>
-            <h1 className="text-2xl text-[#41525d] font-light">{TEXTS.lock.title}</h1>
-            <p className="text-[#667781] mb-4">{TEXTS.lock.subtitle}</p>
+            <h1 className="text-2xl text-[#41525d] font-light">{TEXTS?.lock?.title}</h1>
+            <p className="text-[#667781] mb-4">{TEXTS?.lock?.subtitle}</p>
             <button 
               onClick={() => setIsLocked(false)}
               className="bg-[#00a884] text-white px-8 py-2.5 rounded-full hover:bg-[#008f6f] transition font-medium shadow-sm"
             >
-              {TEXTS.lock.button}
+              {TEXTS?.lock?.button}
             </button>
           </div>
           {whatsappButton}
@@ -200,9 +222,9 @@ function App() {
             ) : (
               <div className="flex-1 bg-[#f0f2f5] flex items-center justify-center border-b-[6px] border-[#25d366]">
                 <div className="text-center text-[#41525d] max-w-[560px] px-8">
-                  <h1 className="text-3xl font-light mb-4">{TEXTS.welcome.title}</h1>
-                  <p>{TEXTS.welcome.description}</p>
-                  <p className="mt-2 text-sm text-[#667781]">{TEXTS.welcome.footer}</p>
+                  <h1 className="text-3xl font-light mb-4">{TEXTS?.welcome?.title}</h1>
+                  <p>{TEXTS?.welcome?.description}</p>
+                  <p className="mt-2 text-sm text-[#667781]">{TEXTS?.welcome?.footer}</p>
                 </div>
               </div>
             )}

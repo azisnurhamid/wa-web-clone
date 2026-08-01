@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { User } from '../../types';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 import DefaultAvatar from '../common/DefaultAvatar';
 
 interface StatusDrawerProps {
@@ -14,6 +14,7 @@ interface StatusDrawerProps {
 }
 
 const StatusDrawer: React.FC<StatusDrawerProps> = ({ isOpen, onClose, allContacts, isPrivacyMode, isInteractionLocked }) => {
+  const { TEXTS } = useConfig();
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [activeStatusIndex, setActiveStatusIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building2, Wallet, QrCode, CheckCircle2, Copy } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { APP_CONFIG } from '../../config/config';
-import paymentConfig from '../../config/payment.json';
+import { useConfig } from '../../config/config';
+import { useData } from '../../context/DataProvider';
 import { fetchSettings } from '../../services/api';
 
 interface PaymentModalProps {
@@ -22,6 +22,9 @@ const getIcon = (iconName: string, className: string) => {
 
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: propAmount }) => {
+  const { APP_CONFIG } = useConfig();
+  const { data } = useData();
+  const paymentConfig = data?.payment || { methods: [], url: {}, text: { summary: {}, method: {}, detail: {}, success: {} } };
   const amount = propAmount ?? parseInt(localStorage.getItem('wa_price') || '300000', 10);
   const [step, setStep] = useState<'summary' | 'method' | 'detail' | 'success'>('summary');
   const [selectedMethod, setSelectedMethod] = useState<any>(null);

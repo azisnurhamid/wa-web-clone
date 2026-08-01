@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, LogIn, AlertCircle } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 
 interface DashboardLoginProps {
   onLogin: (username: string, password: string) => boolean;
 }
 
 const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
+  const { TEXTS } = useConfig();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

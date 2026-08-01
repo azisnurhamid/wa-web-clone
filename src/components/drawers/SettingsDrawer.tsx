@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 import DefaultAvatar from '../common/DefaultAvatar';
 
 interface SettingsDrawerProps {
@@ -15,6 +15,7 @@ interface SettingsDrawerProps {
 }
 
 const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProfileClick, userName, isPrivacyMode, isInteractionLocked }) => {
+  const { TEXTS } = useConfig();
   const settingsItems = [
     { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
     { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },

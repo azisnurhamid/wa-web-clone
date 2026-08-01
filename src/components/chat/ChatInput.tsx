@@ -1,6 +1,6 @@
 import React from 'react';
 import { Smile, Paperclip, Mic, Send, FileText, Image as ImageIcon, Camera, User, BarChart2, Sticker } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { useConfig } from '../../config/config';
 
 interface ChatInputProps {
   inputText: string;
@@ -23,6 +23,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   handleKeyPress,
   handleSend
 }) => {
+  const { TEXTS } = useConfig();
   return (
     <div className="min-h-[62px] bg-[#f0f2f5] px-2 md:px-4 py-2 flex items-center gap-2 md:gap-4 z-10 border-t border-gray-200 relative">
       <div className="flex gap-2 md:gap-4 text-[#54656f] items-center">
