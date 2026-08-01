@@ -4,4 +4,4 @@ compatibility_date = "2024-03-20"
 [[d1_databases]]
 binding = "DB"
 database_name = "wa-db"
-database_id = "00000000-0000-0000-0000-000000000000" # You must replace this after running `wrangler d1 create wa-db`
+database_id = "ae1f1b44-d518-4a36-a2e9-f5e355e8f4c1"
