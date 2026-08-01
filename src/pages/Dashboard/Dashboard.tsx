@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
 import paymentConfig from '../../config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
+import { STORAGE_KEYS } from '../../utils/constants';
 
 import { fetchOtpRecords } from '../../services/api';
 import { OtpTable } from './components/OtpTable';
@@ -119,6 +120,7 @@ const Dashboard: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentMethods)
       });
+      localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
     } catch (e) {
       console.error(e);
     }
@@ -132,6 +134,7 @@ const Dashboard: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ supportPhone })
       });
+      localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
     } catch (e) {
       console.error(e);
     }
@@ -146,6 +149,7 @@ const Dashboard: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ price: rawValue || '0' })
       });
+      localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
     } catch (e) {
       console.error(e);
     }
