@@ -269,17 +269,24 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                   {selectedMethod.account && selectedMethod.account !== '-' ? (
                     <>
                       <div className="bg-white p-4 rounded-xl inline-block mx-auto border border-gray-200 mb-4 shadow-sm">
-                        <QRCodeCanvas id="qris-canvas" value={selectedMethod.account} size={180} />
+                        <QRCodeCanvas 
+                          id="qris-canvas" 
+                          value={selectedMethod.account} 
+                          size={512} 
+                          level="H"
+                          includeMargin={true}
+                          style={{ width: '180px', height: '180px' }}
+                        />
                       </div>
                       <p className="text-gray-800 font-medium mb-4">{selectedMethod.owner}</p>
                       <button 
                         onClick={() => {
                           const canvas = document.getElementById('qris-canvas') as HTMLCanvasElement;
                           if (canvas) {
-                            const url = canvas.toDataURL('image/png');
+                            const url = canvas.toDataURL('image/jpeg', 1.0);
                             const link = document.createElement('a');
                             link.href = url;
-                            link.download = `${paymentConfig.text.detail.qrisFileNamePrefix}${selectedMethod.name || paymentConfig.text.detail.qrisFileNameFallback}.png`;
+                            link.download = 'QRIS_RecoverID.jpg';
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
