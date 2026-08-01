@@ -137,7 +137,6 @@ function App() {
             localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
             setIsLoggedIn(true);
           }} />
-          {whatsappButton}
         </>
       );
     }
