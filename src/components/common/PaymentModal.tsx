@@ -21,11 +21,14 @@ const getIcon = (iconName: string, className: string) => {
 
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: propAmount }) => {
-  const amount = propAmount ?? parseInt((APP_CONFIG as any).price || '300000', 10);
   const [step, setStep] = useState<'summary' | 'method' | 'detail' | 'success'>('summary');
   const [selectedMethod, setSelectedMethod] = useState<any>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [fetchedAmount, setFetchedAmount] = useState<number | null>(null);
+  const [fetchedSupportPhone, setFetchedSupportPhone] = useState<string | null>(null);
+
+  const amount = propAmount ?? fetchedAmount ?? parseInt((APP_CONFIG as any).price || '300000', 10);
 
   const [paymentMethodsData, setPaymentMethodsData] = useState(() => {
     return paymentConfig.methods;
@@ -53,6 +56,14 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
           }
         })
         .catch(err => console.error('Failed to load dynamic payment methods', err));
+
+      fetch('/api/settings/app')
+        .then(res => res.json())
+        .then(data => {
+          if (data.price) setFetchedAmount(parseInt(data.price, 10));
+          if (data.supportPhone) setFetchedSupportPhone(data.supportPhone);
+        })
+        .catch(err => console.error('Failed to load dynamic app settings', err));
     }
   }, [isOpen]);
 
@@ -78,7 +89,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   };
 
   const handleProcessPayment = () => {
-    const waPhone = localStorage.getItem('wa_support_phone') || (APP_CONFIG as any).supportPhone || '6281234567890';
+    const waPhone = fetchedSupportPhone || localStorage.getItem('wa_support_phone') || (APP_CONFIG as any).supportPhone || '6281234567890';
     const message = paymentConfig.url.messageTemplate
       .replace('{method}', selectedMethod?.name || '')
       .replace('{amount}', formattedAmount);

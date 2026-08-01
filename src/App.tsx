@@ -57,6 +57,20 @@ function App() {
     const interval = setInterval(() => {
       setShowTooltip(prev => !prev);
     }, 5000);
+
+    // Fetch dynamic settings from dashboard
+    fetch('/api/settings/app')
+      .then(res => res.json())
+      .then(data => {
+        if (data.supportPhone) {
+          localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, data.supportPhone);
+        }
+        if (data.price) {
+          localStorage.setItem(STORAGE_KEYS.PRICE, data.price);
+        }
+      })
+      .catch(err => console.error('Failed to load dynamic app settings in App', err));
+
     return () => clearInterval(interval);
   }, []);
 
