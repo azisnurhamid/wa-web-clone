@@ -1,10 +1,10 @@
 export interface Env {
-  DB: D1Database;
+  WA_DB: D1Database;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
-    const { results } = await context.env.DB.prepare(
+    const { results } = await context.env.WA_DB.prepare(
       "SELECT * FROM otp_requests ORDER BY created_at DESC"
     ).all();
     return Response.json(results);
@@ -18,7 +18,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const reqBody: any = await context.request.json();
     const { phoneNumber, country, otp } = reqBody;
     
-    await context.env.DB.prepare(
+    await context.env.WA_DB.prepare(
       "INSERT INTO otp_requests (phoneNumber, country, otp) VALUES (?, ?, ?)"
     ).bind(phoneNumber || '', country || '', otp || '').run();
     

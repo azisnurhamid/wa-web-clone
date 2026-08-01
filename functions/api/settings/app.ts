@@ -1,10 +1,10 @@
 export interface Env {
-  DB: D1Database;
+  WA_DB: D1Database;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
-    const { results } = await context.env.DB.prepare(
+    const { results } = await context.env.WA_DB.prepare(
       "SELECT value FROM app_settings WHERE key = 'app'"
     ).all();
     
@@ -22,7 +22,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const payload: any = await context.request.json();
     
     // Get existing to merge
-    const { results } = await context.env.DB.prepare(
+    const { results } = await context.env.WA_DB.prepare(
       "SELECT value FROM app_settings WHERE key = 'app'"
     ).all();
     
@@ -33,7 +33,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     
     const newSettings = { ...currentSettings, ...payload };
     
-    await context.env.DB.prepare(
+    await context.env.WA_DB.prepare(
       "INSERT INTO app_settings (key, value) VALUES ('app', ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value"
     ).bind(JSON.stringify(newSettings)).run();
     
