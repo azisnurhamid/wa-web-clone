@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, ChevronDown } from 'lucide-react';
-import { TEXTS, URLS } from '../../config/config';
+import { TEXTS, URLS } from '@/config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -37,12 +37,12 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
   setShowMenu,
   showCountryDropdown,
   setShowCountryDropdown,
-  formattedPhone
+  formattedPhone,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  const [countriesList, setCountriesList] = useState<{name: string, code: string}[]>([]);
+
+  const [countriesList, setCountriesList] = useState<{ name: string; code: string }[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(false);
 
   useEffect(() => {
@@ -51,21 +51,21 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
         setLoadingCountries(true);
         const res = await fetch(URLS.api.countries);
         if (!res.ok) throw new Error('Failed to fetch');
-        
+
         const data: any = await res.json();
-        
+
         const mappedCountries = data
           .filter((c: any) => c.idd && c.idd.root)
           .map((c: any) => {
             const root = c.idd.root;
-            const suffix = (c.idd.suffixes && c.idd.suffixes.length > 0) ? c.idd.suffixes[0] : '';
+            const suffix = c.idd.suffixes && c.idd.suffixes.length > 0 ? c.idd.suffixes[0] : '';
             return {
               name: c.name.common,
-              code: root + suffix
+              code: root + suffix,
             };
           })
           .sort((a: any, b: any) => a.name.localeCompare(b.name));
-          
+
         setCountriesList(mappedCountries);
       } catch (error) {
         console.error('Error fetching countries:', error);
@@ -74,7 +74,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
         setLoadingCountries(false);
       }
     };
-    
+
     fetchCountries();
   }, []);
 
@@ -99,9 +99,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
             <p className="text-[15px] text-[#3b4a54] mb-4 leading-relaxed">
               {T.phone.confirmTitle}
             </p>
-            <p className="text-[20px] text-[#1e2e36] font-medium mb-6">
-              {formattedPhone}
-            </p>
+            <p className="text-[20px] text-[#1e2e36] font-medium mb-6">{formattedPhone}</p>
             <div className="flex justify-end gap-8">
               <button
                 onClick={() => setShowConfirmDialog(false)}
@@ -144,9 +142,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
       </div>
 
       <div className="flex-1 flex flex-col px-6 pt-4">
-        <h1 className="text-[22px] text-[#1e2e36] font-bold mb-3">
-          {T.phone.title}
-        </h1>
+        <h1 className="text-[22px] text-[#1e2e36] font-bold mb-3">{T.phone.title}</h1>
 
         <p className="text-[14.5px] text-[#667781] leading-[20px] mb-6">
           {T.phone.description}{' '}
@@ -165,11 +161,19 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
           {showCountryDropdown && (
             <div className="absolute top-full left-0 right-0 max-w-[280px] mx-auto bg-white border border-gray-200 rounded-md shadow-lg z-40 max-h-[240px] overflow-y-auto custom-scrollbar">
               {loadingCountries ? (
-                <div className="px-4 py-3 text-[14px] text-gray-500 text-center">{T.phone.loadingCountries}</div>
+                <div className="px-4 py-3 text-[14px] text-gray-500 text-center">
+                  {T.phone.loadingCountries}
+                </div>
               ) : countriesList.length === 0 ? (
                 <div className="px-4 py-3 text-[14px] text-red-500 text-center">
-                  {T.phone.loadFailed}<br/>
-                  <button onClick={() => window.location.reload()} className="text-blue-500 underline mt-2">{T.phone.reloadPage}</button>
+                  {T.phone.loadFailed}
+                  <br />
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="text-blue-500 underline mt-2"
+                  >
+                    {T.phone.reloadPage}
+                  </button>
                 </div>
               ) : (
                 countriesList.map((country: { name: string; code: string }, index: number) => (
@@ -183,7 +187,9 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
                     }}
                   >
                     <span className="truncate mr-2">{country.name}</span>
-                    <span className="text-[#667781] text-[13px] whitespace-nowrap">{country.code}</span>
+                    <span className="text-[#667781] text-[13px] whitespace-nowrap">
+                      {country.code}
+                    </span>
                   </button>
                 ))
               )}
@@ -203,9 +209,9 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
                 const val = e.target.value.replace(/\D/g, '');
                 const newCode = '+' + val;
                 setCountryCode(newCode);
-                
+
                 if (countriesList.length > 0) {
-                  const match = countriesList.find(c => c.code === newCode);
+                  const match = countriesList.find((c) => c.code === newCode);
                   if (match) {
                     setSelectedCountry(match.name);
                   } else if (val === '') {
@@ -251,10 +257,11 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
         <button
           onClick={onNext}
           disabled={phoneNumber.length < 8}
-          className={`w-full max-w-[360px] py-3 rounded-full text-[16px] font-medium transition-all ${phoneNumber.length >= 8
+          className={`w-full max-w-[360px] py-3 rounded-full text-[16px] font-medium transition-all ${
+            phoneNumber.length >= 8
               ? 'bg-[#00a884] text-white hover:bg-[#008f72] active:bg-[#017561] shadow-sm'
               : 'bg-[#f0f2f5] text-[#8696a0] cursor-default'
-            }`}
+          }`}
         >
           {T.phone.nextButton}
         </button>

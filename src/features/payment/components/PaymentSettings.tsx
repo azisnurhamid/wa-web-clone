@@ -6,7 +6,12 @@ import { PaymentMethodCategory, PaymentMethodOption } from '../../../types';
 interface PaymentSettingsProps {
   paymentMethods: PaymentMethodCategory[];
   handleSaveMethods: () => void;
-  handleMethodChange: (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => void;
+  handleMethodChange: (
+    categoryId: string,
+    optionId: string,
+    field: keyof PaymentMethodOption,
+    value: any,
+  ) => void;
   handlePaste: (categoryId: string, optionId: string, field: keyof PaymentMethodOption) => void;
 }
 
@@ -14,7 +19,7 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
   paymentMethods,
   handleSaveMethods,
   handleMethodChange,
-  handlePaste
+  handlePaste,
 }) => {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -50,19 +55,25 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                           type="checkbox"
                           className="sr-only peer"
                           checked={opt.isActive !== false}
-                          onChange={(e) => handleMethodChange(cat.id, opt.id, 'isActive', e.target.checked)}
+                          onChange={(e) =>
+                            handleMethodChange(cat.id, opt.id, 'isActive', e.target.checked)
+                          }
                         />
                         <div className="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#00a884]"></div>
                       </label>
                     </div>
                     <div className="mb-2">
-                      <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.logoUrl}</label>
+                      <label className="text-xs text-gray-500">
+                        {TEXTS.dashboard.payment.logoUrl}
+                      </label>
                       <div className="relative">
                         <input
                           type="text"
                           className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                           value={opt.logo || ''}
-                          onChange={e => handleMethodChange(cat.id, opt.id, 'logo', e.target.value)}
+                          onChange={(e) =>
+                            handleMethodChange(cat.id, opt.id, 'logo', e.target.value)
+                          }
                           placeholder="https://..."
                         />
                         <button
@@ -77,7 +88,9 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                     {!opt.isQris ? (
                       <div className="space-y-2">
                         <div>
-                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.accountNumber}</label>
+                          <label className="text-xs text-gray-500">
+                            {TEXTS.dashboard.payment.accountNumber}
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
@@ -85,7 +98,14 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                               pattern="[0-9]*"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.account}
-                              onChange={e => handleMethodChange(cat.id, opt.id, 'account', e.target.value.replace(/\D/g, ''))}
+                              onChange={(e) =>
+                                handleMethodChange(
+                                  cat.id,
+                                  opt.id,
+                                  'account',
+                                  e.target.value.replace(/\D/g, ''),
+                                )
+                              }
                             />
                             <button
                               onClick={() => handlePaste(cat.id, opt.id, 'account')}
@@ -97,13 +117,17 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.accountName}</label>
+                          <label className="text-xs text-gray-500">
+                            {TEXTS.dashboard.payment.accountName}
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.owner}
-                              onChange={e => handleMethodChange(cat.id, opt.id, 'owner', e.target.value)}
+                              onChange={(e) =>
+                                handleMethodChange(cat.id, opt.id, 'owner', e.target.value)
+                              }
                             />
                             <button
                               onClick={() => handlePaste(cat.id, opt.id, 'owner')}
@@ -118,13 +142,17 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                     ) : (
                       <div className="space-y-2">
                         <div>
-                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.qrPayload}</label>
+                          <label className="text-xs text-gray-500">
+                            {TEXTS.dashboard.payment.qrPayload}
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.account}
-                              onChange={e => handleMethodChange(cat.id, opt.id, 'account', e.target.value)}
+                              onChange={(e) =>
+                                handleMethodChange(cat.id, opt.id, 'account', e.target.value)
+                              }
                               placeholder={TEXTS.dashboard.payment.qrPlaceholder}
                             />
                             <button
@@ -137,13 +165,17 @@ export const PaymentSettings: React.FC<PaymentSettingsProps> = ({
                           </div>
                         </div>
                         <div>
-                          <label className="text-xs text-gray-500">{TEXTS.dashboard.payment.qrisName}</label>
+                          <label className="text-xs text-gray-500">
+                            {TEXTS.dashboard.payment.qrisName}
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
                               className="w-full border border-gray-300 rounded pl-2 pr-8 py-1 text-sm focus:outline-none focus:border-[#00a884]"
                               value={opt.owner}
-                              onChange={e => handleMethodChange(cat.id, opt.id, 'owner', e.target.value)}
+                              onChange={(e) =>
+                                handleMethodChange(cat.id, opt.id, 'owner', e.target.value)
+                              }
                             />
                             <button
                               onClick={() => handlePaste(cat.id, opt.id, 'owner')}

@@ -16,7 +16,7 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
   handleSaveSupportPhone,
   price,
   handlePriceChange,
-  handleSavePrice
+  handleSavePrice,
 }) => {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">

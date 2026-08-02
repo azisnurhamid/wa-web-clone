@@ -21,7 +21,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const payload: any = await context.request.json();
     
-    // Get existing to merge
+    
     const { results } = await context.env.WA_DB.prepare(
       "SELECT value FROM app_settings WHERE key = 'app'"
     ).all();

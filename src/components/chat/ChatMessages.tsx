@@ -14,26 +14,26 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
   chat,
   isPrivacyMode,
   isInteractionLocked,
-  messagesEndRef
+  messagesEndRef,
 }) => {
   return (
-    <div 
+    <div
       className="flex-1 overflow-y-auto px-[3%] md:px-[6%] py-4 custom-scrollbar relative"
       style={{
         backgroundImage: `url("${URLS.background.chat}")`,
         backgroundRepeat: 'repeat',
-        backgroundSize: '400px'
+        backgroundSize: '400px',
       }}
     >
       <div className="absolute inset-0 bg-[#efeae2] opacity-40 pointer-events-none"></div>
 
       <div className="relative z-0">
         {chat.messages.map((msg) => (
-          <MessageBubble 
-            key={msg.id} 
-            message={msg} 
+          <MessageBubble
+            key={msg.id}
+            message={msg}
             isPrivacyMode={isPrivacyMode}
-            isInteractionLocked={isInteractionLocked} 
+            isInteractionLocked={isInteractionLocked}
           />
         ))}
         {chat.isTyping && (
@@ -43,9 +43,18 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
             </div>
             <div className="bg-white px-4 py-3 rounded-lg rounded-tl-none shadow-sm">
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                <span
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: '0ms' }}
+                ></span>
+                <span
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: '150ms' }}
+                ></span>
+                <span
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: '300ms' }}
+                ></span>
               </div>
             </div>
           </div>

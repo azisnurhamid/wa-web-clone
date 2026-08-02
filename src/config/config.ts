@@ -14,7 +14,7 @@ export const TEXTS = texts;
 export const URLS = assets.urls;
 export const APP_CONFIG = {
   ...appConfig.app,
-  supportEmail: appConfig.app.supportEmail
+  supportEmail: appConfig.app.supportEmail,
 };
 export const PRIVACY_CONFIG = appConfig.privacy;
 export const DASHBOARD_CONFIG = appConfig.dashboard;

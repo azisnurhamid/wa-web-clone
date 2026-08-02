@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { ChatSession, Message, User } from '../types';
-import { createIncomingMessage, createNewStatusUpdate, generateProfileChange, generateAIResponse } from '../services/simulationUtils';
+import {
+  createIncomingMessage,
+  createNewStatusUpdate,
+  generateProfileChange,
+  generateAIResponse,
+} from '../services/simulationUtils';
 import { getRandomInt, getRandomItem, generateTimestamp } from '../utils/helpers';
 import { TIMING } from '../config/config';
 
@@ -12,7 +17,13 @@ interface UseSimulationParams {
   setContacts: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
-export function useSimulation({ chats, contacts, activeChatId, setChats, setContacts }: UseSimulationParams) {
+export function useSimulation({
+  chats,
+  contacts,
+  activeChatId,
+  setChats,
+  setContacts,
+}: UseSimulationParams) {
   const chatsRef = useRef(chats);
   const contactsRef = useRef(contacts);
 
@@ -47,11 +58,11 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
       const currentContacts = contactsRef.current;
 
       if (activeChatId) {
-        const activeChat = currentChats.find(c => c.id === activeChatId);
+        const activeChat = currentChats.find((c) => c.id === activeChatId);
         if (activeChat) {
-          setChats(currentChats.map(c =>
-            c.id === activeChat.id ? { ...c, isTyping: true } : c
-          ));
+          setChats(
+            currentChats.map((c) => (c.id === activeChat.id ? { ...c, isTyping: true } : c)),
+          );
 
           const typingDuration = getRandomInt(1000, 2000);
 
@@ -71,14 +82,14 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 'Chat kita bahaya kalau ketahuan 😅',
                 'Cantik kamu hari ini 😍',
                 'Besok mau cafe?',
-                'Jangan lupa hapus chat ini ya 🔐'
+                'Jangan lupa hapus chat ini ya 🔐',
               ];
               newMessage = {
                 id: `msg_secret_${Date.now()}`,
                 text: getRandomItem(secretTexts),
                 timestamp: generateTimestamp(0),
                 isMine: false,
-                status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read',
               };
             } else {
               newMessage = createIncomingMessage();
@@ -101,34 +112,35 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
               lastMessage: newMessage.text,
               lastMessageTime: newMessage.timestamp,
               unreadCount: 0,
-              isTyping: false
+              isTyping: false,
             };
 
-            setChats(currentChats.map(c => c.id === activeChat.id ? updatedChat : c));
+            setChats(currentChats.map((c) => (c.id === activeChat.id ? updatedChat : c)));
 
             const busyMultiplier = getBusyHourMultiplier();
             const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
             setTimeout(() => {
               if (!isMounted) return;
-              const isSecretChat = activeChat.id === 'chat_secret_1' || activeChat.user.name === '???';
+              const isSecretChat =
+                activeChat.id === 'chat_secret_1' || activeChat.user.name === '???';
               const aiResponse = generateAIResponse(newMessage.text, isSecretChat);
               const aiMessage: Message = {
                 id: `ai_auto_${Date.now()}`,
                 text: aiResponse,
                 timestamp: generateTimestamp(0),
                 isMine: true,
-                status: 'delivered'
+                status: 'delivered',
               };
-              setChats(prev => {
-                const chat = prev.find(c => c.id === activeChat.id);
+              setChats((prev) => {
+                const chat = prev.find((c) => c.id === activeChat.id);
                 if (!chat) return prev;
                 const updatedChatWithAI = {
                   ...chat,
                   messages: [...chat.messages, aiMessage],
                   lastMessage: aiResponse,
-                  lastMessageTime: aiMessage.timestamp
+                  lastMessageTime: aiMessage.timestamp,
                 };
-                return prev.map(c => c.id === activeChat.id ? updatedChatWithAI : c);
+                return prev.map((c) => (c.id === activeChat.id ? updatedChatWithAI : c));
               });
             }, aiReplyDelay);
 
@@ -142,8 +154,8 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
       const eventType = getRandomInt(1, 7);
 
       if (eventType <= 6) {
-        const pinnedChats = currentChats.filter(c => c.pinned);
-        const secretChat = currentChats.find(c => c.id === 'chat_secret_1');
+        const pinnedChats = currentChats.filter((c) => c.pinned);
+        const secretChat = currentChats.find((c) => c.id === 'chat_secret_1');
         const isSecretEvent = secretChat && getRandomInt(1, 100) <= 25;
 
         let targetChat;
@@ -159,9 +171,9 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
         }
 
         if (targetChat) {
-          setChats(currentChats.map(c =>
-            c.id === targetChat.id ? { ...c, isTyping: true } : c
-          ));
+          setChats(
+            currentChats.map((c) => (c.id === targetChat.id ? { ...c, isTyping: true } : c)),
+          );
 
           const typingDuration = getRandomInt(1000, 2500);
 
@@ -179,14 +191,14 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
                 'Chat kita bahaya kalau ketahuan 😅',
                 'Cantik kamu hari ini 😍',
                 'Besok mau cafe?',
-                'Jangan lupa hapus chat ini ya 🔐'
+                'Jangan lupa hapus chat ini ya 🔐',
               ];
               newMessage = {
                 id: `msg_secret_${Date.now()}`,
                 text: getRandomItem(secretTexts),
                 timestamp: generateTimestamp(0),
                 isMine: false,
-                status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read'
+                status: getRandomInt(1, 100) <= 50 ? 'delivered' : 'read',
               };
             } else {
               newMessage = createIncomingMessage();
@@ -221,35 +233,36 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
               lastMessage: newMessage.text,
               lastMessageTime: newMessage.timestamp,
               unreadCount: newUnreadCount,
-              isTyping: false
+              isTyping: false,
             };
 
-            setChats(currentChats.map(c => c.id === targetChat.id ? updatedChat : c));
+            setChats(currentChats.map((c) => (c.id === targetChat.id ? updatedChat : c)));
 
             if (targetChat.id === activeChatId) {
               const busyMultiplier = getBusyHourMultiplier();
               const aiReplyDelay = Math.floor(getRandomInt(1500, 3500) * busyMultiplier);
               setTimeout(() => {
                 if (!isMounted) return;
-                const isSecretChat = targetChat.id === 'chat_secret_1' || targetChat.user.name === '???';
+                const isSecretChat =
+                  targetChat.id === 'chat_secret_1' || targetChat.user.name === '???';
                 const aiResponse = generateAIResponse(newMessage.text, isSecretChat);
                 const aiMessage: Message = {
                   id: `ai_auto_${Date.now()}`,
                   text: aiResponse,
                   timestamp: generateTimestamp(0),
                   isMine: true,
-                  status: 'delivered'
+                  status: 'delivered',
                 };
-                setChats(prev => {
-                  const chat = prev.find(c => c.id === targetChat.id);
+                setChats((prev) => {
+                  const chat = prev.find((c) => c.id === targetChat.id);
                   if (!chat) return prev;
                   const updatedChatWithAI = {
                     ...chat,
                     messages: [...chat.messages, aiMessage],
                     lastMessage: aiResponse,
-                    lastMessageTime: aiMessage.timestamp
+                    lastMessageTime: aiMessage.timestamp,
                   };
-                  return prev.map(c => c.id === targetChat.id ? updatedChatWithAI : c);
+                  return prev.map((c) => (c.id === targetChat.id ? updatedChatWithAI : c));
                 });
               }, aiReplyDelay);
             }
@@ -259,18 +272,20 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
         const targetChat = getRandomItem(currentChats as readonly ChatSession[]);
         if (targetChat && targetChat.messages.length > 0) {
           const deliveredMessages = targetChat.messages.filter(
-            m => !m.isMine && (m.status === 'delivered' || m.status === 'sent')
+            (m) => !m.isMine && (m.status === 'delivered' || m.status === 'sent'),
           );
 
           if (deliveredMessages.length > 0 && getRandomInt(1, 100) <= 40) {
             const msgToUpdate = getRandomItem(deliveredMessages);
-            const updatedMessages = targetChat.messages.map(m =>
-              m.id === msgToUpdate.id ? { ...m, status: 'read' as const } : m
+            const updatedMessages = targetChat.messages.map((m) =>
+              m.id === msgToUpdate.id ? { ...m, status: 'read' as const } : m,
             );
 
-            setChats(currentChats.map(c =>
-              c.id === targetChat.id ? { ...c, messages: updatedMessages } : c
-            ));
+            setChats(
+              currentChats.map((c) =>
+                c.id === targetChat.id ? { ...c, messages: updatedMessages } : c,
+              ),
+            );
             return;
           }
         }
@@ -280,11 +295,15 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
           const newStatus = createNewStatusUpdate();
           const updatedContact = {
             ...targetContact,
-            statusUpdates: targetContact.statusUpdates ? [...targetContact.statusUpdates, newStatus] : [newStatus]
+            statusUpdates: targetContact.statusUpdates
+              ? [...targetContact.statusUpdates, newStatus]
+              : [newStatus],
           };
 
-          setContacts(prev => prev.map(u => u.id === targetContact.id ? updatedContact : u));
-          setChats(prev => prev.map(c => c.user.id === targetContact.id ? { ...c, user: updatedContact } : c));
+          setContacts((prev) => prev.map((u) => (u.id === targetContact.id ? updatedContact : u)));
+          setChats((prev) =>
+            prev.map((c) => (c.user.id === targetContact.id ? { ...c, user: updatedContact } : c)),
+          );
         }
       } else {
         const targetContact = getRandomItem(currentContacts as readonly User[]);
@@ -292,8 +311,10 @@ export function useSimulation({ chats, contacts, activeChatId, setChats, setCont
           const updates = generateProfileChange(targetContact);
           const updatedContact = { ...targetContact, ...updates };
 
-          setContacts(prev => prev.map(u => u.id === targetContact.id ? updatedContact : u));
-          setChats(prev => prev.map(c => c.user.id === targetContact.id ? { ...c, user: updatedContact } : c));
+          setContacts((prev) => prev.map((u) => (u.id === targetContact.id ? updatedContact : u)));
+          setChats((prev) =>
+            prev.map((c) => (c.user.id === targetContact.id ? { ...c, user: updatedContact } : c)),
+          );
         }
       }
     };

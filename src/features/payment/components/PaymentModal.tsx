@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, CreditCard, ChevronRight, ChevronDown, ArrowLeft, Building2, Wallet, QrCode, CheckCircle2, Copy, Download } from 'lucide-react';
+import {
+  AlertCircle,
+  CreditCard,
+  ChevronRight,
+  ChevronDown,
+  ArrowLeft,
+  Building2,
+  Wallet,
+  QrCode,
+  CheckCircle2,
+  Copy,
+  Download,
+} from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { APP_CONFIG } from '../../config/config';
-import paymentConfig from '../../config/payment.json';
+import { APP_CONFIG } from '@/config/config';
+import paymentConfig from '@/config/payment.json';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -12,13 +24,16 @@ interface PaymentModalProps {
 
 const getIcon = (iconName: string, className: string) => {
   switch (iconName) {
-    case 'Building2': return <Building2 className={className} />;
-    case 'Wallet': return <Wallet className={className} />;
-    case 'QrCode': return <QrCode className={className} />;
-    default: return <CreditCard className={className} />;
+    case 'Building2':
+      return <Building2 className={className} />;
+    case 'Wallet':
+      return <Wallet className={className} />;
+    case 'QrCode':
+      return <QrCode className={className} />;
+    default:
+      return <CreditCard className={className} />;
   }
 };
-
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: propAmount }) => {
   const [step, setStep] = useState<'summary' | 'method' | 'detail' | 'success'>('summary');
@@ -38,7 +53,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
     .map((method: any) => ({
       ...method,
       options: method.options.filter((opt: any) => opt.isActive !== false),
-      icon: getIcon(method.icon, `w-5 h-5 ${method.iconColor}`)
+      icon: getIcon(method.icon, `w-5 h-5 ${method.iconColor}`),
     }))
     .filter((method: any) => method.options.length > 0);
 
@@ -49,21 +64,21 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       setExpandedCategory(null);
       setCopied(false);
       fetch('/api/settings/payment')
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (Array.isArray(data) && data.length > 0) {
             setPaymentMethodsData(data);
           }
         })
-        .catch(err => console.error('Failed to load dynamic payment methods', err));
+        .catch((err) => console.error('Failed to load dynamic payment methods', err));
 
       fetch('/api/settings/app')
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data: any) => {
           if (data.price) setFetchedAmount(parseInt(data.price, 10));
           if (data.supportPhone) setFetchedSupportPhone(data.supportPhone);
         })
-        .catch(err => console.error('Failed to load dynamic app settings', err));
+        .catch((err) => console.error('Failed to load dynamic app settings', err));
     }
   }, [isOpen]);
 
@@ -72,7 +87,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   const formattedAmount = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   }).format(amount);
 
   const handleSelectMethod = (option: any) => {
@@ -89,7 +104,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   };
 
   const handleProcessPayment = () => {
-    const waPhone = fetchedSupportPhone || localStorage.getItem('wa_support_phone') || (APP_CONFIG as any).supportPhone || '6281234567890';
+    const waPhone =
+      fetchedSupportPhone ||
+      localStorage.getItem('wa_support_phone') ||
+      (APP_CONFIG as any).supportPhone ||
+      '6281234567890';
     const message = paymentConfig.url.messageTemplate
       .replace('{method}', selectedMethod?.name || '')
       .replace('{amount}', formattedAmount);
@@ -106,19 +125,20 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
-        
         {step === 'summary' && (
           <>
             <div className="bg-red-50 p-6 flex flex-col items-center justify-center border-b border-red-100 shrink-0">
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <AlertCircle className="w-8 h-8 text-red-600" />
               </div>
-              <h2 className="text-xl font-bold text-gray-800 text-center">{paymentConfig.text.summary.title}</h2>
+              <h2 className="text-xl font-bold text-gray-800 text-center">
+                {paymentConfig.text.summary.title}
+              </h2>
               <p className="text-sm text-gray-500 text-center mt-2">
                 {paymentConfig.text.summary.subtitle}
               </p>
             </div>
-            
+
             <div className="p-6 overflow-y-auto">
               <div className="bg-gray-50 p-4 rounded-xl flex items-center justify-between mb-6 border border-gray-100">
                 <div className="flex items-center gap-3">
@@ -126,20 +146,22 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                     <CreditCard className="w-5 h-5 text-[#00a884]" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 font-medium">{paymentConfig.text.summary.totalLabel}</p>
+                    <p className="text-xs text-gray-500 font-medium">
+                      {paymentConfig.text.summary.totalLabel}
+                    </p>
                     <p className="text-lg font-bold text-gray-800">{formattedAmount}</p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex flex-col gap-3">
-                <button 
+                <button
                   className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white font-medium py-3 rounded-xl transition-colors shadow-sm"
                   onClick={() => setStep('method')}
                 >
                   {paymentConfig.text.summary.buttonSelect}
                 </button>
-                <button 
+                <button
                   className="w-full bg-white hover:bg-gray-50 text-gray-600 font-medium py-3 rounded-xl transition-colors border border-gray-200"
                   onClick={onClose}
                 >
@@ -153,7 +175,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
         {step === 'method' && (
           <>
             <div className="bg-white p-4 flex items-center gap-3 border-b border-gray-100 shrink-0 sticky top-0 z-10">
-              <button 
+              <button
                 onClick={() => setStep('summary')}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
@@ -161,22 +183,29 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
               </button>
               <h2 className="text-lg font-bold text-gray-800">{paymentConfig.text.method.title}</h2>
             </div>
-            
+
             <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
               <div className="bg-gray-50 p-4 rounded-xl flex items-center justify-between mb-6 border border-gray-100">
-                <p className="text-sm text-gray-500 font-medium">{paymentConfig.text.method.totalLabel}</p>
+                <p className="text-sm text-gray-500 font-medium">
+                  {paymentConfig.text.method.totalLabel}
+                </p>
                 <p className="text-base font-bold text-[#00a884]">{formattedAmount}</p>
               </div>
 
               <div className="flex flex-col gap-4">
                 {PAYMENT_METHODS.map((category) => (
-                  <div key={category.id} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm">
+                  <div
+                    key={category.id}
+                    className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm"
+                  >
                     <button
                       onClick={() => {
                         if (category.id === 'qris' && category.options.length > 0) {
                           handleSelectMethod(category.options[0]);
                         } else {
-                          setExpandedCategory(expandedCategory === category.id ? null : category.id);
+                          setExpandedCategory(
+                            expandedCategory === category.id ? null : category.id,
+                          );
                         }
                       }}
                       className="w-full flex items-center justify-between p-4 bg-gray-50/50 hover:bg-gray-50 transition-colors"
@@ -188,19 +217,19 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                         <h3 className="font-bold text-gray-800 text-sm">{category.category}</h3>
                       </div>
                       {category.id !== 'qris' && (
-                        <ChevronDown 
+                        <ChevronDown
                           className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
                             expandedCategory === category.id ? 'rotate-180' : ''
-                          }`} 
+                          }`}
                         />
                       )}
                     </button>
-                    
+
                     {category.id !== 'qris' && (
-                      <div 
+                      <div
                         className={`transition-all duration-200 ease-in-out ${
-                          expandedCategory === category.id 
-                            ? 'max-h-[500px] opacity-100' 
+                          expandedCategory === category.id
+                            ? 'max-h-[500px] opacity-100'
                             : 'max-h-0 opacity-0'
                         } overflow-hidden`}
                       >
@@ -213,7 +242,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                             >
                               <div className="flex items-center gap-3">
                                 {option.logo ? (
-                                  <img src={option.logo} alt={option.name} className="h-6 object-contain" />
+                                  <img
+                                    src={option.logo}
+                                    alt={option.name}
+                                    className="h-6 object-contain"
+                                  />
                                 ) : (
                                   <span className="text-sm font-medium text-gray-700">
                                     {option.name}
@@ -236,7 +269,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
         {step === 'detail' && selectedMethod && (
           <>
             <div className="bg-white p-4 flex items-center gap-3 border-b border-gray-100 shrink-0 sticky top-0 z-10">
-              <button 
+              <button
                 onClick={() => setStep('method')}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
@@ -244,12 +277,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
               </button>
               <h2 className="text-lg font-bold text-gray-800">{paymentConfig.text.detail.title}</h2>
             </div>
-            
+
             <div className="p-6 overflow-y-auto flex-1">
               <div className="text-center mb-6">
-                <p className="text-gray-500 text-sm mb-2">{paymentConfig.text.detail.selectedMethod}</p>
+                <p className="text-gray-500 text-sm mb-2">
+                  {paymentConfig.text.detail.selectedMethod}
+                </p>
                 {selectedMethod.logo ? (
-                  <img src={selectedMethod.logo} alt={selectedMethod.name} className="h-8 mx-auto object-contain" />
+                  <img
+                    src={selectedMethod.logo}
+                    alt={selectedMethod.name}
+                    className="h-8 mx-auto object-contain"
+                  />
                 ) : (
                   <p className="font-bold text-lg text-gray-800">{selectedMethod.name}</p>
                 )}
@@ -257,20 +296,28 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
 
               {!selectedMethod.isQris && (
                 <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 mb-6">
-                  <p className="text-sm text-gray-500 mb-2">{paymentConfig.text.detail.accountLabel}</p>
+                  <p className="text-sm text-gray-500 mb-2">
+                    {paymentConfig.text.detail.accountLabel}
+                  </p>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <p className="text-2xl font-bold tracking-wider text-gray-800">
                       {selectedMethod.account}
                     </p>
-                    <button 
+                    <button
                       onClick={handleCopyAccount}
                       className="p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors shrink-0"
                       title={paymentConfig.text.detail.copyTooltip}
                     >
-                      {copied ? <CheckCircle2 className="w-5 h-5 text-[#00a884]" /> : <Copy className="w-5 h-5 text-gray-400" />}
+                      {copied ? (
+                        <CheckCircle2 className="w-5 h-5 text-[#00a884]" />
+                      ) : (
+                        <Copy className="w-5 h-5 text-gray-400" />
+                      )}
                     </button>
                   </div>
-                  <p className="text-sm text-gray-500 mb-1">{paymentConfig.text.detail.ownerLabel}</p>
+                  <p className="text-sm text-gray-500 mb-1">
+                    {paymentConfig.text.detail.ownerLabel}
+                  </p>
                   <p className="font-semibold text-gray-800">{selectedMethod.owner}</p>
                 </div>
               )}
@@ -280,19 +327,21 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                   {selectedMethod.account && selectedMethod.account !== '-' ? (
                     <>
                       <div className="bg-white p-4 rounded-xl inline-block mx-auto border border-gray-200 mb-4 shadow-sm">
-                        <QRCodeCanvas 
-                          id="qris-canvas" 
-                          value={selectedMethod.account} 
-                          size={512} 
+                        <QRCodeCanvas
+                          id="qris-canvas"
+                          value={selectedMethod.account}
+                          size={512}
                           level="H"
                           includeMargin={true}
                           style={{ width: '180px', height: '180px' }}
                         />
                       </div>
                       <p className="text-gray-800 font-medium mb-4">{selectedMethod.owner}</p>
-                      <button 
+                      <button
                         onClick={() => {
-                          const canvas = document.getElementById('qris-canvas') as HTMLCanvasElement;
+                          const canvas = document.getElementById(
+                            'qris-canvas',
+                          ) as HTMLCanvasElement;
                           if (canvas) {
                             const url = canvas.toDataURL('image/jpeg', 1.0);
                             const link = document.createElement('a');
@@ -323,12 +372,14 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
               <div className="bg-blue-50/50 rounded-xl p-4 border border-blue-100 mb-6 flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
                 <div className="text-sm text-blue-800 leading-relaxed">
-                  <p className="mb-1 font-semibold">{paymentConfig.text.detail.totalTransferLabel} {formattedAmount}</p>
+                  <p className="mb-1 font-semibold">
+                    {paymentConfig.text.detail.totalTransferLabel} {formattedAmount}
+                  </p>
                   <p>{paymentConfig.text.detail.instructionText}</p>
                 </div>
               </div>
 
-              <button 
+              <button
                 className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white font-medium py-3.5 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
                 onClick={handleProcessPayment}
               >
@@ -344,10 +395,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 animate-bounce">
               <CheckCircle2 className="w-10 h-10 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">{paymentConfig.text.success.title}</h2>
-            <p className="text-gray-500 text-center">
-              {paymentConfig.text.success.subtitle}
-            </p>
+            <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
+              {paymentConfig.text.success.title}
+            </h2>
+            <p className="text-gray-500 text-center">{paymentConfig.text.success.subtitle}</p>
           </div>
         )}
       </div>

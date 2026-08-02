@@ -5,7 +5,6 @@ interface DefaultAvatarProps {
   className?: string;
 }
 
-
 const DefaultAvatar: React.FC<DefaultAvatarProps> = ({ size = 40, className = '' }) => {
   return (
     <div

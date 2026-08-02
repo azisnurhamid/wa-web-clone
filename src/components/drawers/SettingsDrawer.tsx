@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List } from 'lucide-react';
 import { TEXTS } from '../../config/config';
@@ -14,7 +13,14 @@ interface SettingsDrawerProps {
   isInteractionLocked: boolean;
 }
 
-const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProfileClick, userName, isPrivacyMode, isInteractionLocked }) => {
+const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
+  isOpen,
+  onClose,
+  onProfileClick,
+  userName,
+  isPrivacyMode,
+  isInteractionLocked,
+}) => {
   const settingsItems = [
     { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
     { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },
@@ -23,17 +29,17 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProf
     { icon: List, label: TEXTS.settings.requestAccount, sub: '' },
     { icon: HelpCircle, label: TEXTS.settings.help, sub: TEXTS.settings.helpSub },
   ];
-  
-  const blurClass = isPrivacyMode 
-    ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}` 
+
+  const blurClass = isPrivacyMode
+    ? `blur-[5px] ${!isInteractionLocked ? 'group-hover:blur-0' : ''}`
     : '';
-    
-  const imgBlurClass = isPrivacyMode 
-    ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'group-hover:blur-0 group-hover:grayscale-0' : ''}` 
+
+  const imgBlurClass = isPrivacyMode
+    ? `blur-[5px] grayscale-[50%] ${!isInteractionLocked ? 'group-hover:blur-0 group-hover:grayscale-0' : ''}`
     : '';
 
   return (
-    <div 
+    <div
       className={`absolute inset-0 bg-[#f0f2f5] z-30 flex flex-col transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
@@ -49,29 +55,40 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ isOpen, onClose, onProf
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar">
-        
-        <div className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group" onClick={onProfileClick}>
-            <div className={`transition-all duration-300 ${imgBlurClass}`}>
-              <DefaultAvatar size={80} />
-            </div>
-            <div className="flex-1">
-                <h3 className={`text-[17px] text-[#111b21] mb-1 transition-all duration-300 ${blurClass}`}>{userName}</h3>
-                <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>{TEXTS.profile.aboutPlaceholder}</p>
-            </div>
+        <div
+          className="flex items-center gap-4 px-4 py-4 bg-white shadow-sm mb-3 cursor-pointer hover:bg-[#f5f6f6] transition group"
+          onClick={onProfileClick}
+        >
+          <div className={`transition-all duration-300 ${imgBlurClass}`}>
+            <DefaultAvatar size={80} />
+          </div>
+          <div className="flex-1">
+            <h3
+              className={`text-[17px] text-[#111b21] mb-1 transition-all duration-300 ${blurClass}`}
+            >
+              {userName}
+            </h3>
+            <p className={`text-[14px] text-[#667781] transition-all duration-300 ${blurClass}`}>
+              {TEXTS.profile.aboutPlaceholder}
+            </p>
+          </div>
         </div>
 
         <div className="bg-white shadow-sm">
-            {settingsItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 px-6 py-5 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100 last:border-none transition">
-                    <div className="text-[#8696a0]">
-                        <item.icon size={22} />
-                    </div>
-                    <div>
-                        <div className="text-[17px] text-[#111b21]">{item.label}</div>
-                        {item.sub && <div className="text-[14px] text-[#667781]">{item.sub}</div>}
-                    </div>
-                </div>
-            ))}
+          {settingsItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4 px-6 py-5 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100 last:border-none transition"
+            >
+              <div className="text-[#8696a0]">
+                <item.icon size={22} />
+              </div>
+              <div>
+                <div className="text-[17px] text-[#111b21]">{item.label}</div>
+                {item.sub && <div className="text-[14px] text-[#667781]">{item.sub}</div>}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

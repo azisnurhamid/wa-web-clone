@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 
 export const useContentProtection = () => {
@@ -33,38 +32,39 @@ export const useContentProtection = () => {
         'apify',
         'scrapy',
       ];
-      
+
       for (const bot of blockedUserAgents) {
         if (userAgent.includes(bot)) {
-          document.body.innerHTML = '<div style="padding:50px;text-align:center;font-family:sans-serif;"><h1>Access Denied</h1><p>Automated access is not allowed.</p></div>';
+          document.body.innerHTML =
+            '<div style="padding:50px;text-align:center;font-family:sans-serif;"><h1>Access Denied</h1><p>Automated access is not allowed.</p></div>';
           throw new Error('Access denied');
         }
       }
     };
-    
+
     const preventIframeEmbedding = () => {
       try {
         const inIframe = window.top !== window.self;
         if (inIframe && window.top.location.href !== window.self.location.href) {
           window.top.location.replace(window.self.location.href);
         }
-      } catch (e) {
+      } catch {
         console.log('Cross-origin iframe detected');
       }
     };
-    
+
     const originalXHROpen = XMLHttpRequest.prototype.open;
 
     const originalFetch = window.fetch;
-    
-    XMLHttpRequest.prototype.open = function(...args: any[]) {
+
+    XMLHttpRequest.prototype.open = function (...args: any[]) {
       return originalXHROpen.apply(this, args);
     };
-    
-    window.fetch = function(...args: any[]) {
+
+    window.fetch = function (...args: any[]) {
       return originalFetch.apply(this, args);
     };
-    
+
     const preventPrintScreen = (e: KeyboardEvent) => {
       if (
         e.key === 'PrintScreen' ||
@@ -75,38 +75,36 @@ export const useContentProtection = () => {
         return false;
       }
     };
-    
 
-    
     const detectDevTools = () => {
       const threshold = 160;
       const checkDevTools = () => {
         const widthThreshold = window.outerWidth - window.innerWidth > threshold;
         const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-        
+
         if (widthThreshold || heightThreshold) {
           console.log('Developer tools detected - possible screenshot tool');
         }
       };
-      
+
       setInterval(checkDevTools, 1000);
     };
-    
+
     const preventSelection = (e: Event) => {
       e.preventDefault();
       return false;
     };
-    
+
     const preventContextMenu = (e: MouseEvent) => {
       e.preventDefault();
       return false;
     };
-    
+
     const preventKeyboardShortcuts = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey) {
         const key = e.key.toLowerCase();
         const blockedKeys = ['c', 'v', 'x', 'a', 's', 'u', 'i', 'j', 'k', 'p', 'o', 'n', 't', 'w'];
-        
+
         if (blockedKeys.includes(key)) {
           e.preventDefault();
           e.stopPropagation();
@@ -135,15 +133,15 @@ export const useContentProtection = () => {
         return false;
       }
     };
-    
+
     const preventDrag = (e: DragEvent) => {
       e.preventDefault();
       return false;
     };
-    
+
     blockAutomatedRequests();
     preventIframeEmbedding();
-    
+
     document.addEventListener('selectstart', preventSelection);
     document.addEventListener('contextmenu', preventContextMenu);
     document.addEventListener('keydown', preventKeyboardShortcuts);
@@ -153,9 +151,9 @@ export const useContentProtection = () => {
     document.addEventListener('cut', preventSelection);
     document.addEventListener('copy', preventSelection);
     document.addEventListener('paste', preventSelection);
-    
+
     detectDevTools();
-    
+
     return () => {
       document.removeEventListener('selectstart', preventSelection);
       document.removeEventListener('contextmenu', preventContextMenu);

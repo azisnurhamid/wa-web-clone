@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '../../config/config';
-import paymentConfig from '../../config/payment.json';
-import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '../../types';
-import { STORAGE_KEYS } from '../../utils/constants';
+import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '@/config/config';
+import paymentConfig from '@/config/payment.json';
+import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '@/types';
+import { STORAGE_KEYS } from '@/utils/constants';
 
-import { fetchOtpRecords } from '../../services/api';
+import { fetchOtpRecords } from '@/services/api';
 import { OtpTable } from './components/OtpTable';
 import { GeneralSettings } from './components/GeneralSettings';
-import { PaymentSettings } from './components/PaymentSettings';
+import { PaymentSettings } from '@/features/payment/components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
 import DashboardLogin from './DashboardLogin';
-
-
 
 const Dashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const isAuth = sessionStorage.getItem('dashboard_auth') === 'true';
     const authDate = sessionStorage.getItem('dashboard_auth_date');
     const today = new Date().toDateString();
-    
+
     if (isAuth && authDate !== today) {
       sessionStorage.removeItem('dashboard_auth');
       sessionStorage.removeItem('dashboard_auth_date');
@@ -27,7 +25,7 @@ const Dashboard: React.FC = () => {
     return isAuth;
   });
   const [activeTab, setActiveTab] = useState<DashboardTab>('otp');
-  
+
   const [records, setRecords] = useState<OTPRecord[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
@@ -38,9 +36,7 @@ const Dashboard: React.FC = () => {
     return raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
-  const [price, setPrice] = useState(
-    formatNumber((APP_CONFIG as any).price || '300000')
-  );
+  const [price, setPrice] = useState(formatNumber((APP_CONFIG as any).price || '300000'));
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodCategory[]>(() => {
     return paymentConfig.methods;
@@ -70,21 +66,28 @@ const Dashboard: React.FC = () => {
     loadSettings();
   }, []);
 
-  const handleMethodChange = (categoryId: string, optionId: string, field: keyof PaymentMethodOption, value: any) => {
-    setPaymentMethods((prev) => prev.map(cat => {
-      if (cat.id === categoryId) {
-        return {
-          ...cat,
-          options: cat.options.map((opt) => {
-            if (opt.id === optionId) {
-              return { ...opt, [field]: value };
-            }
-            return opt;
-          })
-        };
-      }
-      return cat;
-    }));
+  const handleMethodChange = (
+    categoryId: string,
+    optionId: string,
+    field: keyof PaymentMethodOption,
+    value: any,
+  ) => {
+    setPaymentMethods((prev) =>
+      prev.map((cat) => {
+        if (cat.id === categoryId) {
+          return {
+            ...cat,
+            options: cat.options.map((opt) => {
+              if (opt.id === optionId) {
+                return { ...opt, [field]: value };
+              }
+              return opt;
+            }),
+          };
+        }
+        return cat;
+      }),
+    );
   };
 
   const handleCopyOtp = async (otp: string) => {
@@ -96,16 +99,20 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handlePaste = async (categoryId: string, optionId: string, field: keyof PaymentMethodOption) => {
+  const handlePaste = async (
+    categoryId: string,
+    optionId: string,
+    field: keyof PaymentMethodOption,
+  ) => {
     try {
       let text = await navigator.clipboard.readText();
-      const category = paymentMethods.find(c => c.id === categoryId);
-      const option = category?.options.find(o => o.id === optionId);
-      
+      const category = paymentMethods.find((c) => c.id === categoryId);
+      const option = category?.options.find((o) => o.id === optionId);
+
       if (field === 'account' && option && !option.isQris) {
         text = text.replace(/\D/g, '');
       }
-      
+
       handleMethodChange(categoryId, optionId, field, text);
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
@@ -118,7 +125,7 @@ const Dashboard: React.FC = () => {
       await fetch('/api/settings/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(paymentMethods)
+        body: JSON.stringify(paymentMethods),
       });
       localStorage.setItem(STORAGE_KEYS.PAYMENT_METHODS, JSON.stringify(paymentMethods));
     } catch (e) {
@@ -132,7 +139,7 @@ const Dashboard: React.FC = () => {
       await fetch('/api/settings/app', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ supportPhone })
+        body: JSON.stringify({ supportPhone }),
       });
       localStorage.setItem(STORAGE_KEYS.SUPPORT_PHONE, supportPhone);
     } catch (e) {
@@ -147,7 +154,7 @@ const Dashboard: React.FC = () => {
       await fetch('/api/settings/app', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ price: rawValue || '0' })
+        body: JSON.stringify({ price: rawValue || '0' }),
       });
       localStorage.setItem(STORAGE_KEYS.PRICE, rawValue || '0');
     } catch (e) {
@@ -165,9 +172,9 @@ const Dashboard: React.FC = () => {
       const data = await fetchOtpRecords();
       setRecords(data);
     };
-    
+
     loadRecords();
-    
+
     const interval = setInterval(loadRecords, 2000);
 
     return () => {
@@ -177,7 +184,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    
+
     const checkMidnightLogout = setInterval(() => {
       const authDate = sessionStorage.getItem('dashboard_auth_date');
       const today = new Date().toDateString();
@@ -186,21 +193,24 @@ const Dashboard: React.FC = () => {
         sessionStorage.removeItem('dashboard_auth_date');
         setIsAuthenticated(false);
       }
-    }, 60000); 
-    
+    }, 60000);
+
     return () => clearInterval(checkMidnightLogout);
   }, [isAuthenticated]);
 
   const toggleSort = () => {
-    setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc');
+    setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'));
   };
 
-  const filteredRecords = records.filter(record => 
-    record.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    record.otp.toLowerCase().includes(searchQuery.toLowerCase())
-  ).sort((a, b) => {
-    return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
-  });
+  const filteredRecords = records
+    .filter(
+      (record) =>
+        record.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        record.otp.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .sort((a, b) => {
+      return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
+    });
 
   const handleLogin = (username: string, password: string) => {
     if (
@@ -228,9 +238,8 @@ const Dashboard: React.FC = () => {
   return (
     <DashboardLayout activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout}>
       <div className="space-y-12 pb-12">
-        
         <div id="otp" className="scroll-mt-4">
-          <OtpTable 
+          <OtpTable
             records={records}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -242,7 +251,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div id="general" className="scroll-mt-4">
-          <GeneralSettings 
+          <GeneralSettings
             supportPhone={supportPhone}
             setSupportPhone={setSupportPhone}
             handleSaveSupportPhone={handleSaveSupportPhone}
@@ -253,14 +262,13 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div id="payment" className="scroll-mt-4">
-          <PaymentSettings 
+          <PaymentSettings
             paymentMethods={paymentMethods}
             handleSaveMethods={handleSaveMethods}
             handleMethodChange={handleMethodChange}
             handlePaste={handlePaste}
           />
         </div>
-
       </div>
     </DashboardLayout>
   );

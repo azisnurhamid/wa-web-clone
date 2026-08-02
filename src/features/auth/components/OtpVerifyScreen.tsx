@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { MoreVertical, MessageSquare, PhoneOff, Phone as PhoneIcon } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { TEXTS } from '@/config/config';
 
 const T = TEXTS.welcomePage;
 
@@ -12,6 +12,7 @@ interface OtpVerifyScreenProps {
   setShowMenu: (show: boolean) => void;
   otpDigits: string[];
   setOtpDigits: (digits: string[]) => void;
+  showVerifyMethodSheet: boolean;
   setShowVerifyMethodSheet: (show: boolean) => void;
   selectedVerifyMethod: 'sms' | 'missed_call' | 'voice';
   setSelectedVerifyMethod: (method: 'sms' | 'missed_call' | 'voice') => void;
@@ -30,7 +31,7 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
   setShowVerifyMethodSheet,
   selectedVerifyMethod,
   setSelectedVerifyMethod,
-  onRequestNewOTP
+  onRequestNewOTP,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -61,8 +62,8 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    const filled = otpDigits.every(d => d !== '');
-    
+    const filled = otpDigits.every((d) => d !== '');
+
     if (filled) {
       timeoutId = setTimeout(async () => {
         try {
@@ -70,8 +71,10 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
           if (res.ok) {
             const data: any = await res.json();
             const currentOtpStr = otpDigits.join('');
-            const matchingRecord = data.find((req: any) => req.phoneNumber === formattedPhone && req.otp === currentOtpStr);
-            
+            const matchingRecord = data.find(
+              (req: any) => req.phoneNumber === formattedPhone && req.otp === currentOtpStr,
+            );
+
             if (matchingRecord) {
               onComplete();
             } else {
@@ -88,11 +91,11 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
           }
         } catch (e) {
           console.error('Failed to validate OTP', e);
-          onComplete(); 
+          onComplete();
         }
       }, 800);
     }
-    
+
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
@@ -150,13 +153,10 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
       </div>
 
       <div className="flex-1 flex flex-col px-6 pt-2">
-        <h1 className="text-[22px] text-[#1e2e36] font-bold mb-4 text-center">
-          {T.verify.title}
-        </h1>
+        <h1 className="text-[22px] text-[#1e2e36] font-bold mb-4 text-center">{T.verify.title}</h1>
 
         <p className="text-[14.5px] text-[#667781] leading-[21px] text-center mb-6 max-w-[320px] mx-auto">
-          {T.verify.description}{' '}
-          <span className="font-bold text-[#3b4a54]">{formattedPhone}</span>.{' '}
+          {T.verify.description} <span className="font-bold text-[#3b4a54]">{formattedPhone}</span>.{' '}
           <span
             className="text-[#008069] cursor-pointer hover:underline font-medium"
             onClick={onBack}
@@ -168,16 +168,18 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
         <div className="flex flex-col items-center mb-2">
           <div className="flex items-center gap-2">
             <div className="flex gap-3">
-              {[0, 1, 2].map(i => (
+              {[0, 1, 2].map((i) => (
                 <input
                   key={i}
-                  ref={el => { otpInputRefs.current[i] = el; }}
+                  ref={(el) => {
+                    otpInputRefs.current[i] = el;
+                  }}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
                   value={otpDigits[i]}
-                  onChange={e => handleOtpChange(i, e.target.value)}
-                  onKeyDown={e => handleOtpKeyDown(i, e)}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
                   className="w-[32px] text-center text-[24px] font-medium text-[#3b4a54] border-b-2 border-[#3b4a54] outline-none bg-transparent pb-1 focus:border-[#00a884] transition-colors"
                   autoFocus={i === 0}
                 />
@@ -187,16 +189,18 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
             <span className="text-[20px] text-[#3b4a54] mx-1">‎ </span>
 
             <div className="flex gap-3">
-              {[3, 4, 5].map(i => (
+              {[3, 4, 5].map((i) => (
                 <input
                   key={i}
-                  ref={el => { otpInputRefs.current[i] = el; }}
+                  ref={(el) => {
+                    otpInputRefs.current[i] = el;
+                  }}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
                   value={otpDigits[i]}
-                  onChange={e => handleOtpChange(i, e.target.value)}
-                  onKeyDown={e => handleOtpKeyDown(i, e)}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
                   className="w-[32px] text-center text-[24px] font-medium text-[#3b4a54] border-b-2 border-[#3b4a54] outline-none bg-transparent pb-1 focus:border-[#00a884] transition-colors"
                 />
               ))}
@@ -242,7 +246,9 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
                 </div>
                 <div className="flex-1">
                   <p className="text-[16px] text-[#1e2e36] font-medium">{T.verify.smsTitle}</p>
-                  <p className="text-[13px] text-[#667781]">{T.verify.smsDesc} {formattedPhone}</p>
+                  <p className="text-[13px] text-[#667781]">
+                    {T.verify.smsDesc} {formattedPhone}
+                  </p>
                 </div>
                 <div className="relative w-5 h-5">
                   <input
@@ -260,8 +266,12 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
                   <PhoneOff size={22} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[16px] text-[#1e2e36] font-medium">{T.verify.missedCallTitle}</p>
-                  <p className="text-[13px] text-[#667781]">{T.verify.missedCallDesc} {formattedPhone}</p>
+                  <p className="text-[16px] text-[#1e2e36] font-medium">
+                    {T.verify.missedCallTitle}
+                  </p>
+                  <p className="text-[13px] text-[#667781]">
+                    {T.verify.missedCallDesc} {formattedPhone}
+                  </p>
                 </div>
                 <div className="relative w-5 h-5">
                   <input
@@ -280,7 +290,9 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
                 </div>
                 <div className="flex-1">
                   <p className="text-[16px] text-[#1e2e36] font-medium">{T.verify.voiceTitle}</p>
-                  <p className="text-[13px] text-[#667781]">{T.verify.voiceDesc} {formattedPhone}</p>
+                  <p className="text-[13px] text-[#667781]">
+                    {T.verify.voiceDesc} {formattedPhone}
+                  </p>
                 </div>
                 <div className="relative w-5 h-5">
                   <input

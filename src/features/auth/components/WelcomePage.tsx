@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TEXTS } from '../../config/config';
+import { TEXTS } from '@/config/config';
 import { WelcomeScreen } from './WelcomeScreen';
 import { PhoneInputScreen } from './PhoneInputScreen';
 import { OtpVerifyScreen } from './OtpVerifyScreen';
@@ -30,7 +30,9 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
 
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [showVerifyMethodSheet, setShowVerifyMethodSheet] = useState(false);
-  const [selectedVerifyMethod, setSelectedVerifyMethod] = useState<'sms' | 'missed_call' | 'voice'>('sms');
+  const [selectedVerifyMethod, setSelectedVerifyMethod] = useState<'sms' | 'missed_call' | 'voice'>(
+    'sms',
+  );
 
   const formattedPhone = formatPhoneDisplay(countryCode, phoneNumber);
 
@@ -41,13 +43,13 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
         id: Date.now(),
         phoneNumber: formattedPhone,
         country: selectedCountry,
-        otp: otp
+        otp: otp,
       };
-      
+
       await fetch('/api/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newRequest)
+        body: JSON.stringify(newRequest),
       });
     } catch (e) {
       console.error('Failed to save OTP request to server', e);
@@ -56,7 +58,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
 
   if (step === 'welcome') {
     return (
-      <WelcomeScreen 
+      <WelcomeScreen
         onNext={() => setStep('phone')}
         showMenu={showWelcomeMenu}
         setShowMenu={setShowWelcomeMenu}
@@ -68,15 +70,15 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
     const now = Date.now();
     const attemptsStr = localStorage.getItem('OTP_ATTEMPTS');
     let attempts = attemptsStr ? JSON.parse(attemptsStr) : [];
-    
+
     const oneDayMs = 24 * 60 * 60 * 1000;
     attempts = attempts.filter((t: number) => now - t < oneDayMs);
-    
+
     if (attempts.length >= 4) {
       alert(T.verify.maxAttempts);
       return false;
     }
-    
+
     attempts.push(now);
     localStorage.setItem('OTP_ATTEMPTS', JSON.stringify(attempts));
     return true;
@@ -84,7 +86,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
 
   if (step === 'phone') {
     return (
-      <PhoneInputScreen 
+      <PhoneInputScreen
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
         countryCode={countryCode}
@@ -117,7 +119,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
   }
 
   return (
-    <OtpVerifyScreen 
+    <OtpVerifyScreen
       formattedPhone={formattedPhone}
       onBack={() => {
         setStep('phone');

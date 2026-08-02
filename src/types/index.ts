@@ -1,4 +1,3 @@
-
 export interface StatusUpdate {
   id: string;
   type: 'image' | 'text';
