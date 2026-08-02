@@ -89,6 +89,13 @@
           "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg",
           "account": "1234567890",
           "owner": "PT WHATSAPP CLONE"
+        },
+        {
+          "id": "seabank",
+          "name": "SeaBank",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ac/SeaBank.svg",
+          "account": "901113360375",
+          "owner": "Suci Ariani"
         }
       ]
     },
