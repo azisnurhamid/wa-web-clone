@@ -88,6 +88,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     activeChatId,
     setActiveChatId,
     isInteractionLocked,
+    setShowPaymentModal,
   });
 
   const handleAppLock = () => {
@@ -96,10 +97,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const handleTogglePrivacyMode = () => {
+    setShowPaymentModal(true);
     setIsPrivacyMode(!isPrivacyMode);
   };
 
   const handleToggleInteractionLock = () => {
+    setShowPaymentModal(true);
     const nextState = !isInteractionLocked;
     setIsInteractionLocked(nextState);
     if (nextState) {

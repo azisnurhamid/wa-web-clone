@@ -9,6 +9,7 @@ interface UseChatLogicProps {
   activeChatId: string | null;
   setActiveChatId: React.Dispatch<React.SetStateAction<string | null>>;
   isInteractionLocked: boolean;
+  setShowPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const useChatLogic = ({
@@ -17,6 +18,7 @@ export const useChatLogic = ({
   activeChatId,
   setActiveChatId,
   isInteractionLocked,
+  setShowPaymentModal,
 }: UseChatLogicProps) => {
   const handleSendMessage = useCallback(
     (text: string) => {
@@ -97,7 +99,10 @@ export const useChatLogic = ({
 
   const handleSelectChat = useCallback(
     (id: string) => {
-      if (isInteractionLocked) return;
+      if (isInteractionLocked) {
+        setShowPaymentModal(true);
+        return;
+      }
       setActiveChatId(id);
       setChats((prev) =>
         prev.map((chat) => {
@@ -108,7 +113,7 @@ export const useChatLogic = ({
         }),
       );
     },
-    [isInteractionLocked, setActiveChatId, setChats],
+    [isInteractionLocked, setActiveChatId, setChats, setShowPaymentModal],
   );
 
   const handleUpdateChat = useCallback(

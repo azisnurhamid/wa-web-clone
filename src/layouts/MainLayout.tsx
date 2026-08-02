@@ -26,10 +26,23 @@ const MainLayout: React.FC = () => {
     handleUpdateChat,
     handleTogglePrivacyMode,
     handleToggleInteractionLock,
+    showPaymentModal,
     setShowPaymentModal,
   } = useAppContext();
 
   const [showTooltip, setShowTooltip] = useState(true);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (isLoggedIn && !showPaymentModal) {
+      timeoutId = setTimeout(() => {
+        setShowPaymentModal(true);
+      }, 15000);
+    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isLoggedIn, showPaymentModal, setShowPaymentModal]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,7 +92,6 @@ const MainLayout: React.FC = () => {
         onComplete={() => {
           localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
           setIsLoggedIn(true);
-          setShowPaymentModal(true);
         }}
       />
     );
