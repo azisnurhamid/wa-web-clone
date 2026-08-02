@@ -76,6 +76,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const activeChat = chats.find((c) => c.id === activeChatId);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setShowPaymentModal(true);
+    }, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
     localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
   }, [chats, contacts]);

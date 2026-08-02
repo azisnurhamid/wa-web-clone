@@ -3,7 +3,6 @@ import { Lock, MessageCircle, Phone } from 'lucide-react';
 import Sidebar from '@/components/sidebar/Sidebar';
 import ChatWindow from '@/components/chat/ChatWindow';
 import WelcomePage from '@/features/auth/components/WelcomePage';
-import PaymentModal from '@/features/payment/components/PaymentModal';
 import { TEXTS, APP_CONFIG } from '@/config/config';
 import { STORAGE_KEYS } from '@/utils/constants';
 import { useAppContext } from '@/context/AppContext';
@@ -17,8 +16,6 @@ const MainLayout: React.FC = () => {
     setIsLocked,
     isPrivacyMode,
     isInteractionLocked,
-    showPaymentModal,
-    setShowPaymentModal,
     isLoggedIn,
     setIsLoggedIn,
     activeChatId,
@@ -153,7 +150,6 @@ const MainLayout: React.FC = () => {
       </div>
 
       {whatsappButton}
-      <PaymentModal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)} />
     </>
   );
 };

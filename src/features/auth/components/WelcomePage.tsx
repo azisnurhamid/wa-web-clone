@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TEXTS } from '@/config/config';
 import { WelcomeScreen } from './WelcomeScreen';
 import { PhoneInputScreen } from './PhoneInputScreen';
@@ -18,7 +18,34 @@ const formatPhoneDisplay = (code: string, number: string): string => {
 };
 
 const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
-  const [step, setStep] = useState<'welcome' | 'phone' | 'verify'>('welcome');
+  const [step, setStep] = useState<'welcome' | 'phone' | 'verify'>(() => {
+    return (localStorage.getItem('auth_step') as any) || 'welcome';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('auth_step', step);
+    if (window.history.state?.step !== step) {
+      window.history.pushState({ step }, '', window.location.pathname);
+    }
+  }, [step]);
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && e.state.step) {
+        setStep(e.state.step);
+      } else {
+        setStep('welcome');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    if (!window.history.state || !window.history.state.step) {
+      window.history.replaceState({ step }, '', window.location.pathname);
+    }
+    
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
   const [showWelcomeMenu, setShowWelcomeMenu] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [showVerifyMenu, setShowVerifyMenu] = useState(false);
@@ -87,6 +114,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
   if (step === 'phone') {
     return (
       <PhoneInputScreen
+        onBack={() => setStep('welcome')}
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
         countryCode={countryCode}

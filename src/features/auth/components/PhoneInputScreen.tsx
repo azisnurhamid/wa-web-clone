@@ -5,6 +5,7 @@ import { TEXTS, URLS } from '@/config/config';
 const T = TEXTS.welcomePage;
 
 interface PhoneInputScreenProps {
+  onBack: () => void;
   phoneNumber: string;
   setPhoneNumber: (val: string) => void;
   countryCode: string;
@@ -23,6 +24,7 @@ interface PhoneInputScreenProps {
 }
 
 export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
+  onBack,
   phoneNumber,
   setPhoneNumber,
   countryCode,
@@ -119,26 +121,28 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
       )}
 
       <div className="flex justify-end px-2 pt-3 pb-1 relative" ref={menuRef}>
-        <button
-          onClick={() => setShowMenu(!showMenu)}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
-        >
-          <MoreVertical size={20} className="text-[#54656f]" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+          >
+            <MoreVertical size={20} className="text-[#54656f]" />
+          </button>
 
-        {showMenu && (
-          <div className="absolute top-12 right-3 bg-white rounded-md shadow-lg py-2 z-50 min-w-[280px] border border-gray-50 animate-in fade-in duration-150">
-            <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
-              {T.phone.menuLinkDevice}
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
-              {T.phone.menuParentAccount}
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
-              {T.common.help}
-            </button>
-          </div>
-        )}
+          {showMenu && (
+            <div className="absolute top-12 right-0 bg-white rounded-md shadow-lg py-2 z-50 min-w-[280px] border border-gray-50 animate-in fade-in duration-150">
+              <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
+                {T.phone.menuLinkDevice}
+              </button>
+              <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
+                {T.phone.menuParentAccount}
+              </button>
+              <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
+                {T.common.help}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col px-6 pt-4">
@@ -236,6 +240,9 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
               })()}
               onChange={(e) => {
                 let val = e.target.value.replace(/\D/g, '');
+                if (val.startsWith('62')) {
+                  val = val.substring(2);
+                }
                 if (val.startsWith('08')) {
                   val = '8' + val.substring(2);
                 }
@@ -243,6 +250,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && phoneNumber.length >= 8) {
+                  e.currentTarget.blur();
                   onNext();
                 }
               }}
