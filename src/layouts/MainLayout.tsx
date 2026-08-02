@@ -26,6 +26,7 @@ const MainLayout: React.FC = () => {
     handleUpdateChat,
     handleTogglePrivacyMode,
     handleToggleInteractionLock,
+    setShowPaymentModal,
   } = useAppContext();
 
   const [showTooltip, setShowTooltip] = useState(true);
@@ -78,6 +79,7 @@ const MainLayout: React.FC = () => {
         onComplete={() => {
           localStorage.setItem(STORAGE_KEYS.LOGGED_IN, 'true');
           setIsLoggedIn(true);
+          setShowPaymentModal(true);
         }}
       />
     );

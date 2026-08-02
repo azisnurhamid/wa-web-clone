@@ -76,13 +76,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const activeChat = chats.find((c) => c.id === activeChatId);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setShowPaymentModal(true);
-    }, 15000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CHATS, JSON.stringify(chats));
     localStorage.setItem(STORAGE_KEYS.CONTACTS, JSON.stringify(contacts));
   }, [chats, contacts]);
@@ -103,18 +96,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const handleTogglePrivacyMode = () => {
-    if (isPrivacyMode) {
-      setShowPaymentModal(true);
-    } else {
-      setIsPrivacyMode(true);
-    }
+    setIsPrivacyMode(!isPrivacyMode);
   };
 
   const handleToggleInteractionLock = () => {
-    if (isInteractionLocked) {
-      setShowPaymentModal(true);
-    } else {
-      setIsInteractionLocked(true);
+    const nextState = !isInteractionLocked;
+    setIsInteractionLocked(nextState);
+    if (nextState) {
       setActiveChatId(null);
     }
   };
