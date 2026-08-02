@@ -98,16 +98,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const handleTogglePrivacyMode = () => {
     setShowPaymentModal(true);
-    setIsPrivacyMode(!isPrivacyMode);
   };
 
   const handleToggleInteractionLock = () => {
     setShowPaymentModal(true);
-    const nextState = !isInteractionLocked;
-    setIsInteractionLocked(nextState);
-    if (nextState) {
-      setActiveChatId(null);
-    }
   };
 
   const clearCache = () => {
