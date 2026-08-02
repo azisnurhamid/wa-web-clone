@@ -48,7 +48,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, 
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-8">
-        <div className="w-[260px] h-[260px] mb-8 flex items-center justify-center">
+        <div className="w-[240px] h-[240px] mb-4 flex items-center justify-center">
           <svg viewBox="0 0 300 300" className="w-full h-full">
             <ellipse cx="150" cy="155" rx="100" ry="95" fill="#E8F5E9" opacity="0.6" />
             <rect
@@ -178,7 +178,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, 
           </svg>
         </div>
 
-        <h1 className="text-[26px] text-[#1e2e36] font-light text-center mb-4 tracking-tight">
+        <h1 className="text-[26px] text-[#1e2e36] font-light text-center mb-2 tracking-tight">
           {T.welcome.title}
         </h1>
 
@@ -195,7 +195,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, 
         </p>
       </div>
 
-      <div className="pb-8 px-6 flex flex-col items-center gap-5">
+      <div className="pb-4 px-6 flex flex-col items-center gap-3">
         <div className="relative" ref={langMenuRef}>
           <button
             onClick={() => setShowLangMenu(!showLangMenu)}
