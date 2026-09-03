@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, LogIn, AlertCircle, Eye, EyeOff, Clipboard } from 'lucide-react';
+import { Lock, LogIn, AlertCircle, Eye, EyeOff, Clipboard as ClipboardIcon } from 'lucide-react';
 import { TEXTS } from '../../config/config';
 
 interface DashboardLoginProps {
@@ -81,7 +81,7 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
           setLockoutTime(until);
           setError('');
         } else {
-          setError(`Username atau password salah. Kesempatan: ${3 - attempts} kali lagi`);
+          setError(`${TEXTS.dashboard.login.wrongCredentialsPrefix}${3 - attempts}${TEXTS.dashboard.login.wrongCredentialsSuffix}`);
         }
         setPassword('');
       } else {
@@ -99,9 +99,9 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
         <div className="mx-auto h-12 w-12 bg-[#00a884] rounded-full flex items-center justify-center">
           <Lock className="text-white" size={24} />
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Dashboard Access</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{TEXTS.dashboard.login.title}</h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Please enter admin credentials to continue
+          {TEXTS.dashboard.login.subtitle}
         </p>
       </div>
 
@@ -116,9 +116,9 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
                 {TEXTS.dashboard.login.blocked}
               </h3>
               <p className="text-sm text-gray-500">
-                Anda telah salah memasukkan password lebih dari 3 kali.
+                {TEXTS.dashboard.login.blockedMessage}
                 <br />
-                Silakan coba lagi dalam:
+                {TEXTS.dashboard.login.tryAgainIn}
                 <br />
                 <span className="font-bold text-red-600 text-lg mt-2 block">
                   {remainingTimeText}
@@ -129,7 +129,7 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username
+                  {TEXTS.dashboard.login.username}
                 </label>
                 <div className="mt-1 relative">
                   <input
@@ -157,16 +157,16 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
                       }
                     }}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
-                    title="Paste"
+                    title={TEXTS.dashboard.login.paste}
                   >
-                    <Clipboard size={18} />
+                    <ClipboardIcon size={18} />
                   </button>
                 </div>
               </div>
 
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
+                  {TEXTS.dashboard.login.password}
                 </label>
                 <div className="mt-1 relative">
                   <input
@@ -195,15 +195,15 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
                         }
                       }}
                       className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                      title="Paste"
+                      title={TEXTS.dashboard.login.paste}
                     >
-                      <Clipboard size={18} />
+                      <ClipboardIcon size={18} />
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                      title={showPassword ? 'Hide password' : 'Show password'}
+                      title={showPassword ? TEXTS.dashboard.login.hidePassword : TEXTS.dashboard.login.showPassword}
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -222,7 +222,7 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#00a884] hover:bg-[#008f6f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00a884]"
                 >
                   <LogIn className="w-5 h-5 mr-2" />
-                  Sign in
+                  {TEXTS.dashboard.login.signIn}
                 </button>
               </div>
             </form>

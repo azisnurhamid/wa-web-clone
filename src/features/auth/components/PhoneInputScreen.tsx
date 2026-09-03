@@ -5,7 +5,6 @@ import { TEXTS, URLS } from '@/config/config';
 const T = TEXTS.welcomePage;
 
 interface PhoneInputScreenProps {
-  onBack: () => void;
   phoneNumber: string;
   setPhoneNumber: (val: string) => void;
   countryCode: string;
@@ -24,7 +23,6 @@ interface PhoneInputScreenProps {
 }
 
 export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
-  onBack,
   phoneNumber,
   setPhoneNumber,
   countryCode,

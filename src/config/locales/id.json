@@ -200,7 +200,19 @@
     },
     "login": {
       "blocked": "Akses Diblokir Sementara",
-      "emptyError": "Username dan password tidak boleh kosong"
+      "emptyError": "Username dan password tidak boleh kosong",
+      "title": "Akses Dashboard",
+      "subtitle": "Silakan masukkan kredensial admin untuk melanjutkan",
+      "blockedMessage": "Anda telah salah memasukkan password lebih dari 3 kali.",
+      "tryAgainIn": "Silakan coba lagi dalam:",
+      "username": "Username",
+      "password": "Password",
+      "paste": "Tempel",
+      "signIn": "Masuk",
+      "showPassword": "Tampilkan password",
+      "hidePassword": "Sembunyikan password",
+      "wrongCredentialsPrefix": "Username atau password salah. Kesempatan: ",
+      "wrongCredentialsSuffix": " kali lagi"
     },
     "error": {
       "clipboard": "Gagal mengambil teks dari clipboard. Pastikan browser memberikan izin akses clipboard."

@@ -37,7 +37,6 @@
     "vite": "^6.2.0"
   },
   "description": "",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/azisnurhamid/wa-web-clone.git"

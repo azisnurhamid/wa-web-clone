@@ -13,7 +13,7 @@ import {
   Download,
 } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { APP_CONFIG } from '@/config/config';
+import { APP_CONFIG, ICONS } from '@/config/config';
 import paymentConfig from '@/config/payment.json';
 
 interface PaymentModalProps {
@@ -24,11 +24,11 @@ interface PaymentModalProps {
 
 const getIcon = (iconName: string, className: string) => {
   switch (iconName) {
-    case 'Building2':
+    case ICONS.bank:
       return <Building2 className={className} />;
-    case 'Wallet':
+    case ICONS.wallet:
       return <Wallet className={className} />;
-    case 'QrCode':
+    case ICONS.qris:
       return <QrCode className={className} />;
     default:
       return <CreditCard className={className} />;

@@ -147,7 +147,6 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
   if (step === 'phone') {
     return (
       <PhoneInputScreen
-        onBack={() => setStep('welcome')}
         phoneNumber={phoneNumber}
         setPhoneNumber={setPhoneNumber}
         countryCode={countryCode}

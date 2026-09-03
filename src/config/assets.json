@@ -12,5 +12,11 @@
     "api": {
       "countries": "https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json"
     }
+  },
+  "icons": {
+    "bank": "Building2",
+    "wallet": "Wallet",
+    "qris": "QrCode",
+    "card": "CreditCard"
   }
 }

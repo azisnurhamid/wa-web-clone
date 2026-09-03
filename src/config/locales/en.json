@@ -200,7 +200,19 @@
     },
     "login": {
       "blocked": "Access Temporarily Blocked",
-      "emptyError": "Username and password cannot be empty"
+      "emptyError": "Username and password cannot be empty",
+      "title": "Dashboard Access",
+      "subtitle": "Please enter admin credentials to continue",
+      "blockedMessage": "You have entered an incorrect password more than 3 times.",
+      "tryAgainIn": "Please try again in:",
+      "username": "Username",
+      "password": "Password",
+      "paste": "Paste",
+      "signIn": "Sign in",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "wrongCredentialsPrefix": "Incorrect username or password. Remaining attempts: ",
+      "wrongCredentialsSuffix": ""
     },
     "error": {
       "clipboard": "Failed to read text from clipboard. Make sure the browser allows clipboard access."

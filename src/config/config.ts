@@ -12,6 +12,7 @@ const texts = currentLang === 'en' ? enTexts : idTexts;
 
 export const TEXTS = texts;
 export const URLS = assets.urls;
+export const ICONS = assets.icons;
 export const APP_CONFIG = {
   ...appConfig.app,
   supportEmail: appConfig.app.supportEmail,
