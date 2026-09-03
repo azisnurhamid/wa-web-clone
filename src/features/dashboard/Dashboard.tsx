@@ -212,17 +212,24 @@ const Dashboard: React.FC = () => {
       return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
     });
 
-  const handleLogin = (username: string, password: string) => {
-    if (
-      username === DASHBOARD_CONFIG.adminUsername &&
-      password === DASHBOARD_CONFIG.adminPassword
-    ) {
-      sessionStorage.setItem('dashboard_auth', 'true');
-      sessionStorage.setItem('dashboard_auth_date', new Date().toDateString());
-      setIsAuthenticated(true);
-      return true;
+  const handleLogin = async (username: string, password: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        sessionStorage.setItem('dashboard_auth', 'true');
+        sessionStorage.setItem('dashboard_auth_date', new Date().toDateString());
+        setIsAuthenticated(true);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   const handleLogout = () => {

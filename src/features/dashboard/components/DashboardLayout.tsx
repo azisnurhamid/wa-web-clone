@@ -73,7 +73,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
-      {}
       <aside className="hidden md:flex flex-col w-20 hover:w-64 bg-white shadow-lg z-20 transition-all duration-300 ease-in-out group overflow-hidden">
         <div className="flex items-center h-[72px] bg-[#00a884] px-7">
           <LayoutDashboard size={24} className="text-white flex-shrink-0" />
@@ -133,9 +132,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </aside>
 
-      {}
       <main className="flex-1 flex flex-col overflow-hidden relative">
-        {}
         <header className="md:hidden bg-[#00a884] p-4 shadow-sm z-20 flex justify-between items-center">
           <h1 className="text-lg font-bold text-white">{TEXTS.dashboard.layout.dashboard}</h1>
           <div className="flex gap-2">
@@ -156,7 +153,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </header>
 
-        {}
         <div
           className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 custom-scrollbar"
           onScroll={handleScroll}
@@ -165,7 +161,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </main>
 
-      {}
       <nav
         className={`md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] border-t border-gray-100 z-30 pb-2 transition-transform duration-300 ease-in-out ${
           showNav ? 'translate-y-0' : 'translate-y-full'

@@ -19,8 +19,6 @@
   },
   "dashboard": {
     "homeUrl": "/",
-    "adminUsername": "Owner",
-    "adminPassword": "421$_2ur_h431D",
     "countries": [
       {
         "code": "+62",

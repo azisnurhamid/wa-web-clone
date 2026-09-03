@@ -14,6 +14,13 @@ export default defineConfig(({ mode }) => {
         watch: {
           usePolling: true,
         },
+        proxy: {
+          '/api': {
+            target: env.VITE_API_URL || 'http://127.0.0.1:8788',
+            changeOrigin: true,
+            secure: false,
+          },
+        },
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
           'Pragma': 'no-cache',

@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:backend": "wrangler pages dev --port 8788",
+    "pages:dev": "npm run build && wrangler pages dev --port 8788",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+    "db:migrate:local": "wrangler d1 migrations apply WA_DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply WA_DB --remote"
   },
   "dependencies": {
     "lucide-react": "^0.563.0",

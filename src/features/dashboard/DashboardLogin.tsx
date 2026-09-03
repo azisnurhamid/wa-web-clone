@@ -3,7 +3,7 @@ import { Lock, LogIn, AlertCircle, Eye, EyeOff, Clipboard } from 'lucide-react';
 import { TEXTS } from '../../config/config';
 
 interface DashboardLoginProps {
-  onLogin: (username: string, password: string) => boolean;
+  onLogin: (username: string, password: string) => Promise<boolean> | boolean;
 }
 
 const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
@@ -11,6 +11,7 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [lockoutTime, setLockoutTime] = useState<number | null>(null);
   const [remainingTimeText, setRemainingTimeText] = useState('');
 
@@ -56,7 +57,7 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
     return () => clearInterval(interval);
   }, [lockoutTime]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (lockoutTime && Date.now() < lockoutTime) {
       return;
@@ -66,23 +67,29 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
       setError(TEXTS.dashboard.login.emptyError);
       return;
     }
-    const success = onLogin(username, password);
-    if (!success) {
-      const attempts = parseInt(localStorage.getItem('login_failed_attempts') || '0', 10) + 1;
-      localStorage.setItem('login_failed_attempts', attempts.toString());
 
-      if (attempts >= 3) {
-        const until = Date.now() + 24 * 60 * 60 * 1000;
-        localStorage.setItem('login_lockout_until', until.toString());
-        setLockoutTime(until);
-        setError('');
+    setIsSubmitting(true);
+    try {
+      const success = await onLogin(username, password);
+      if (!success) {
+        const attempts = parseInt(localStorage.getItem('login_failed_attempts') || '0', 10) + 1;
+        localStorage.setItem('login_failed_attempts', attempts.toString());
+
+        if (attempts >= 3) {
+          const until = Date.now() + 24 * 60 * 60 * 1000;
+          localStorage.setItem('login_lockout_until', until.toString());
+          setLockoutTime(until);
+          setError('');
+        } else {
+          setError(`Username atau password salah. Kesempatan: ${3 - attempts} kali lagi`);
+        }
+        setPassword('');
       } else {
-        setError(`Username atau password salah. Kesempatan: ${3 - attempts} kali lagi`);
+        localStorage.removeItem('login_failed_attempts');
+        localStorage.removeItem('login_lockout_until');
       }
-      setPassword('');
-    } else {
-      localStorage.removeItem('login_failed_attempts');
-      localStorage.removeItem('login_lockout_until');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
