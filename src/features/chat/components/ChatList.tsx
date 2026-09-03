@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, Archive } from 'lucide-react';
-import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { ChatSession } from '@/types';
+import { TEXTS } from '@/config/config';
 import { ChatListItem } from './ChatListItem';
 
 interface ChatListProps {

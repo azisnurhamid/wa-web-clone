@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { User } from '../../types';
-import { TEXTS } from '../../config/config';
-import DefaultAvatar from '../common/DefaultAvatar';
+import { User } from '@/types';
+import { TEXTS } from '@/config/config';
+import DefaultAvatar from '@/components/ui/DefaultAvatar';
 
 interface StatusDrawerProps {
   isOpen: boolean;

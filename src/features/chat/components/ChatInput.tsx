@@ -11,7 +11,7 @@ import {
   BarChart2,
   Sticker,
 } from 'lucide-react';
-import { TEXTS } from '../../config/config';
+import { TEXTS } from '@/config/config';
 
 interface ChatInputProps {
   inputText: string;

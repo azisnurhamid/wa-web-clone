@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Edit2, Camera, Check, Smile } from 'lucide-react';
-import { TEXTS } from '../../config/config';
-import DefaultAvatar from '../common/DefaultAvatar';
+import { TEXTS } from '@/config/config';
+import DefaultAvatar from '@/components/ui/DefaultAvatar';
 
 interface ProfileDrawerProps {
   isOpen: boolean;

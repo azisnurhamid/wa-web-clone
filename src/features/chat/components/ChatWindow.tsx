@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { ChatSession } from '@/types';
+import { TEXTS } from '@/config/config';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessages } from './ChatMessages';
 import { ChatInput } from './ChatInput';

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChatSession, User } from '../../types';
+import { ChatSession, User } from '@/types';
 import { Search, Filter, ArrowLeft } from 'lucide-react';
 import ProfileDrawer from '../drawers/ProfileDrawer';
 import StatusDrawer from '../drawers/StatusDrawer';
 import SettingsDrawer from '../drawers/SettingsDrawer';
 import NewChatDrawer from '../drawers/NewChatDrawer';
-import { TEXTS, URLS } from '../../config/config';
+import { TEXTS, URLS } from '@/config/config';
 import { SidebarHeader } from './SidebarHeader';
 import { ChatList } from './ChatList';
 

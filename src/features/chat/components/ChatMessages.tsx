@@ -1,7 +1,7 @@
 import React from 'react';
-import { ChatSession } from '../../types';
-import MessageBubble from '../common/MessageBubble';
-import { URLS } from '../../config/config';
+import { ChatSession } from '@/types';
+import MessageBubble from '@/components/ui/MessageBubble';
+import { URLS } from '@/config/config';
 
 interface ChatMessagesProps {
   chat: ChatSession;

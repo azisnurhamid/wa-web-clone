@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, MessageCircle, Phone } from 'lucide-react';
-import Sidebar from '@/components/sidebar/Sidebar';
-import ChatWindow from '@/components/chat/ChatWindow';
+import Sidebar from '@/features/chat/components/Sidebar';
+import ChatWindow from '@/features/chat/components/ChatWindow';
 import WelcomePage from '@/features/auth/components/WelcomePage';
 import { TEXTS, APP_CONFIG } from '@/config/config';
 import { STORAGE_KEYS } from '@/utils/constants';

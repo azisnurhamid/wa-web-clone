@@ -7,8 +7,8 @@ import {
   EyeOff,
   MessageSquareLock,
 } from 'lucide-react';
-import DefaultAvatar from '../common/DefaultAvatar';
-import { COLORS, TEXTS } from '../../config/config';
+import DefaultAvatar from '@/components/ui/DefaultAvatar';
+import { COLORS, TEXTS } from '@/config/config';
 
 interface SidebarHeaderProps {
   isPrivacyMode: boolean;

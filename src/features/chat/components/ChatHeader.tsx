@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search, MoreVertical, ArrowLeft } from 'lucide-react';
-import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { ChatSession } from '@/types';
+import { TEXTS } from '@/config/config';
 
 interface ChatHeaderProps {
   chat: ChatSession;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronDown, Pin, PinOff } from 'lucide-react';
-import { ChatSession } from '../../types';
-import { TEXTS } from '../../config/config';
+import { ChatSession } from '@/types';
+import { TEXTS } from '@/config/config';
 
 interface ChatListItemProps {
   chat: ChatSession;
