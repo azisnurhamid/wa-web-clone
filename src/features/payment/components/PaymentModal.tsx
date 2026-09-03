@@ -52,9 +52,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       try {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch {
-        // fallback
-      }
+      } catch {}
     }
     return paymentConfig.methods;
   });
@@ -87,9 +85,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
             try {
               const parsed = JSON.parse(cached);
               if (Array.isArray(parsed) && parsed.length > 0) setPaymentMethodsData(parsed);
-            } catch {
-              // ignore
-            }
+            } catch {}
           }
         });
 
@@ -248,9 +244,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
 
                     {category.id !== 'qris' && (
                       <div
-                        className={`transition-all duration-200 ease-in-out ${
+                        className={`transition-all duration-300 ease-in-out ${
                           expandedCategory === category.id
-                            ? 'max-h-[500px] opacity-100'
+                            ? 'max-h-[2000px] opacity-100'
                             : 'max-h-0 opacity-0'
                         } overflow-hidden`}
                       >

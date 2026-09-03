@@ -44,9 +44,7 @@ const Dashboard: React.FC = () => {
       try {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch {
-        // fallback
-      }
+      } catch {}
     }
     return paymentConfig.methods;
   });
