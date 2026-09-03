@@ -6,9 +6,11 @@ import {
   Eye,
   EyeOff,
   MessageSquareLock,
+  LogOut,
 } from 'lucide-react';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
 import { COLORS, TEXTS } from '@/config/config';
+import { useAppContext } from '@/context/AppContext';
 
 interface SidebarHeaderProps {
   isPrivacyMode: boolean;
@@ -25,6 +27,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   onToggleInteractionLock,
   setView,
 }) => {
+  const { clearCache } = useAppContext();
   const [isMainMenuOpen, setIsMainMenuOpen] = useState(false);
   const mainMenuRef = useRef<HTMLDivElement>(null);
 
@@ -107,6 +110,16 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
                   }}
                 >
                   {TEXTS.sidebar.settings}
+                </li>
+                <li
+                  className="px-6 py-2.5 hover:bg-[#f0f2f5] cursor-pointer text-[#ea4335] hover:bg-[#f5f6f6] transition flex items-center gap-2"
+                  onClick={() => {
+                    setIsMainMenuOpen(false);
+                    clearCache();
+                  }}
+                >
+                  <LogOut size={16} />
+                  <span>{TEXTS.sidebar.logout}</span>
                 </li>
               </ul>
             </div>

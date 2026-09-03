@@ -259,6 +259,14 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
             />
           </div>
         </div>
+
+        <div className="max-w-[280px] mx-auto w-full mt-6">
+          <div className="bg-[#e7fcf5] border border-[#00a884]/30 rounded-lg p-3 text-center shadow-sm">
+            <p className="text-[13px] text-[#008069] font-medium leading-snug">
+              {(T.phone as any).targetHint || '💡 Masukkan nomor HP target yang ingin disadap (bukan nomor Anda sendiri).'}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="pb-8 px-6 flex justify-center">

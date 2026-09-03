@@ -1,7 +1,8 @@
 import React from 'react';
-import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List } from 'lucide-react';
+import { ArrowLeft, Bell, Lock, Sun, Image, HelpCircle, List, LogOut } from 'lucide-react';
 import { TEXTS } from '@/config/config';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
+import { useAppContext } from '@/context/AppContext';
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -21,13 +22,16 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
   isPrivacyMode,
   isInteractionLocked,
 }) => {
+  const { clearCache } = useAppContext();
+
   const settingsItems = [
-    { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub },
-    { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub },
-    { icon: Sun, label: TEXTS.settings.theme, sub: TEXTS.settings.themeSub },
-    { icon: Image, label: TEXTS.settings.wallpaper, sub: TEXTS.settings.wallpaperSub },
-    { icon: List, label: TEXTS.settings.requestAccount, sub: '' },
-    { icon: HelpCircle, label: TEXTS.settings.help, sub: TEXTS.settings.helpSub },
+    { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub, isDanger: false, onClick: undefined },
+    { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub, isDanger: false, onClick: undefined },
+    { icon: Sun, label: TEXTS.settings.theme, sub: TEXTS.settings.themeSub, isDanger: false, onClick: undefined },
+    { icon: Image, label: TEXTS.settings.wallpaper, sub: TEXTS.settings.wallpaperSub, isDanger: false, onClick: undefined },
+    { icon: List, label: TEXTS.settings.requestAccount, sub: '', isDanger: false, onClick: undefined },
+    { icon: HelpCircle, label: TEXTS.settings.help, sub: TEXTS.settings.helpSub, isDanger: false, onClick: undefined },
+    { icon: LogOut, label: TEXTS.sidebar.logout, sub: '', isDanger: true, onClick: clearCache },
   ];
 
   const blurClass = isPrivacyMode
@@ -78,13 +82,16 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
           {settingsItems.map((item, index) => (
             <div
               key={index}
+              onClick={item.onClick}
               className="flex items-center gap-4 px-6 py-5 cursor-pointer hover:bg-[#f5f6f6] border-b border-gray-100 last:border-none transition"
             >
-              <div className="text-[#8696a0]">
+              <div className={item.isDanger ? 'text-[#ea4335]' : 'text-[#8696a0]'}>
                 <item.icon size={22} />
               </div>
               <div>
-                <div className="text-[17px] text-[#111b21]">{item.label}</div>
+                <div className={`text-[17px] ${item.isDanger ? 'text-[#ea4335] font-medium' : 'text-[#111b21]'}`}>
+                  {item.label}
+                </div>
                 {item.sub && <div className="text-[14px] text-[#667781]">{item.sub}</div>}
               </div>
             </div>

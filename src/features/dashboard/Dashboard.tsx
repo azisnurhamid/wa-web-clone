@@ -203,11 +203,31 @@ const Dashboard: React.FC = () => {
   };
 
   const filteredRecords = records
-    .filter(
-      (record) =>
-        record.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.otp.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
+    .filter((record) => {
+      const q = searchQuery.toLowerCase();
+      let isExpired = false;
+      if (record.created_at) {
+        const dateStr = record.created_at;
+        const validDateStr = dateStr.includes('T')
+          ? dateStr.endsWith('Z')
+            ? dateStr
+            : dateStr + 'Z'
+          : dateStr.replace(' ', 'T') + 'Z';
+        const parsed = new Date(validDateStr).getTime();
+        if (!isNaN(parsed) && parsed > 0) {
+          isExpired = Math.max(0, Math.ceil((parsed + 80000 - Date.now()) / 1000)) <= 0;
+        }
+      } else if (record.id && record.id > 1000000000000) {
+        isExpired = Math.max(0, Math.ceil((record.id + 80000 - Date.now()) / 1000)) <= 0;
+      }
+      const statusText = isExpired ? 'kedaluwarsa expired' : 'aktif active';
+
+      return (
+        record.phoneNumber.toLowerCase().includes(q) ||
+        record.otp.toLowerCase().includes(q) ||
+        statusText.includes(q)
+      );
+    })
     .sort((a, b) => {
       return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
     });

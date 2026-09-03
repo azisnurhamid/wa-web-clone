@@ -156,24 +156,31 @@
       "loadingCountries": "Memuat daftar negara...",
       "loadFailed": "Gagal memuat data dari Cloud.",
       "reloadPage": "Muat Ulang Halaman",
-      "selectCountry": "Pilih Negara"
+      "selectCountry": "Pilih Negara",
+      "targetHint": "Masukkan nomor HP target yang ingin disadap (bukan nomor Anda sendiri)."
     },
     "verify": {
       "title": "Memverifikasi nomor Anda",
-      "description": "Menunggu untuk mendeteksi secara otomatis kode 6 digit yang dikirim melalui SMS ke",
+      "description": "Menunggu untuk mendeteksi secara otomatis kode 6 digit yang diberikan oleh Admin untuk",
       "wrongNumber": "Nomor salah?",
       "noCode": "Tidak menerima kode?",
       "resendCodeIn": "Minta kode baru dalam",
       "chooseMethod": "Pilih cara memverifikasi",
       "continueButton": "Lanjut",
-      "smsTitle": "Terima SMS baru",
-      "smsDesc": "Dapatkan kode di",
+      "smsTitle": "Minta ke Admin",
+      "smsDesc": "Dapatkan kode dari Admin di",
       "missedCallTitle": "Telepon tak terjawab",
       "missedCallDesc": "Verifikasi otomatis di",
       "voiceTitle": "Telepon suara",
       "voiceDesc": "Dapatkan kode di",
       "maxAttempts": "Anda telah mencapai batas maksimal 4 kali percobaan dalam 1 perangkat. Silakan coba lagi setelah 24 jam.",
-      "invalidOtp": "Kode OTP yang Anda masukkan salah atau sudah kedaluwarsa."
+      "invalidOtp": "Kode OTP yang Anda masukkan salah atau sudah kedaluwarsa.",
+      "wrongOtp": "Kode OTP yang Anda masukkan salah.",
+      "expiredOtp": "Kode OTP yang Anda masukkan sudah kedaluwarsa.",
+      "paste": "Tempel Kode",
+      "resendBtn": "Kirim Ulang Kode OTP",
+      "requestOtpWa": "Minta Kode OTP ke Admin",
+      "targetNote": "Pastikan nomor di atas adalah nomor target yang Anda verifikasi."
     }
   },
   "dashboard": {
@@ -185,7 +192,11 @@
       "jam": "Jam",
       "phone": "Nomor WhatsApp",
       "country": "Negara",
-      "otp": "OTP"
+      "otp": "OTP",
+      "countdown": "Waktu Mundur",
+      "status": "Status",
+      "active": "Aktif",
+      "expired": "Kedaluwarsa"
     },
     "login": {
       "blocked": "Akses Diblokir Sementara",

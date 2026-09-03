@@ -108,6 +108,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.removeItem(STORAGE_KEYS.CHATS);
     localStorage.removeItem(STORAGE_KEYS.CONTACTS);
     localStorage.removeItem(STORAGE_KEYS.LOGGED_IN);
+    localStorage.setItem('auth_step', 'welcome');
+    setIsLoggedIn(false);
+    setActiveChatId(null);
     window.location.reload();
   };
 

@@ -50,50 +50,43 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [showVerifyMenu, setShowVerifyMenu] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState(T.phone.defaultCountryCode);
-  const [selectedCountry, setSelectedCountry] = useState(T.phone.defaultCountry);
+  const [phoneNumber, setPhoneNumber] = useState(() => {
+    return localStorage.getItem('auth_phone_number') || '';
+  });
+  const [countryCode, setCountryCode] = useState(() => {
+    return localStorage.getItem('auth_country_code') || T.phone.defaultCountryCode;
+  });
+  const [selectedCountry, setSelectedCountry] = useState(() => {
+    return localStorage.getItem('auth_selected_country') || T.phone.defaultCountry;
+  });
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [showVerifyMethodSheet, setShowVerifyMethodSheet] = useState(false);
   const [selectedVerifyMethod, setSelectedVerifyMethod] = useState<'sms' | 'missed_call' | 'voice'>(
     'sms',
   );
 
+  useEffect(() => {
+    if (phoneNumber) {
+      localStorage.setItem('auth_phone_number', phoneNumber);
+    }
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    if (countryCode) {
+      localStorage.setItem('auth_country_code', countryCode);
+    }
+  }, [countryCode]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      localStorage.setItem('auth_selected_country', selectedCountry);
+    }
+  }, [selectedCountry]);
+
   const formattedPhone = formatPhoneDisplay(countryCode, phoneNumber);
 
-  const handleRequestOTP = async () => {
-    try {
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const newRequest = {
-        id: Date.now(),
-        phoneNumber: formattedPhone,
-        country: selectedCountry,
-        otp: otp,
-      };
-
-      await fetch('/api/otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newRequest),
-      });
-    } catch (e) {
-      console.error('Failed to save OTP request to server', e);
-    }
-  };
-
-  if (step === 'welcome') {
-    return (
-      <WelcomeScreen
-        onNext={() => setStep('phone')}
-        showMenu={showWelcomeMenu}
-        setShowMenu={setShowWelcomeMenu}
-      />
-    );
-  }
-
-  const checkAttemptLimit = () => {
+  const checkAttemptLimit = (): boolean => {
     const now = Date.now();
     const attemptsStr = localStorage.getItem('OTP_ATTEMPTS');
     let attempts = attemptsStr ? JSON.parse(attemptsStr) : [];
@@ -110,6 +103,46 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
     localStorage.setItem('OTP_ATTEMPTS', JSON.stringify(attempts));
     return true;
   };
+
+  const handleRequestOTP = async (): Promise<boolean> => {
+    if (!checkAttemptLimit()) {
+      return false;
+    }
+    try {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const createdAtMs = Date.now();
+      const createdAtIso = new Date(createdAtMs).toISOString();
+      localStorage.setItem('current_otp_created_at', createdAtMs.toString());
+
+      const newRequest = {
+        id: createdAtMs,
+        phoneNumber: formattedPhone,
+        country: selectedCountry,
+        otp: otp,
+        created_at: createdAtIso,
+      };
+
+      await fetch('/api/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newRequest),
+      });
+      return true;
+    } catch (e) {
+      console.error('Failed to save OTP request to server', e);
+      return false;
+    }
+  };
+
+  if (step === 'welcome') {
+    return (
+      <WelcomeScreen
+        onNext={() => setStep('phone')}
+        showMenu={showWelcomeMenu}
+        setShowMenu={setShowWelcomeMenu}
+      />
+    );
+  }
 
   if (step === 'phone') {
     return (
@@ -128,13 +161,11 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
             setShowConfirmDialog(true);
           }
         }}
-        onConfirm={() => {
-          if (checkAttemptLimit()) {
-            setShowConfirmDialog(false);
+        onConfirm={async () => {
+          setShowConfirmDialog(false);
+          const ok = await handleRequestOTP();
+          if (ok) {
             setStep('verify');
-            handleRequestOTP();
-          } else {
-            setShowConfirmDialog(false);
           }
         }}
         showMenu={showPhoneMenu}

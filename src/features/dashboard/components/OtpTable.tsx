@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ArrowDown, ArrowUp, Copy } from 'lucide-react';
 import { TEXTS } from '../../../config/config';
 import { OTPRecord } from '../../../types';
@@ -13,6 +13,8 @@ interface OtpTableProps {
   handleCopyOtp: (otp: string) => void;
 }
 
+const OTP_VALID_DURATION_SECONDS = 80;
+
 export const OtpTable: React.FC<OtpTableProps> = ({
   records,
   searchQuery,
@@ -22,6 +24,40 @@ export const OtpTable: React.FC<OtpTableProps> = ({
   filteredRecords,
   handleCopyOtp,
 }) => {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const getCreatedAtMs = (record: OTPRecord): number => {
+    if (record.created_at) {
+      const dateStr = record.created_at;
+      const validDateStr = dateStr.includes('T')
+        ? dateStr.endsWith('Z')
+          ? dateStr
+          : dateStr + 'Z'
+        : dateStr.replace(' ', 'T') + 'Z';
+      const parsed = new Date(validDateStr).getTime();
+      if (!isNaN(parsed) && parsed > 0) {
+        return parsed;
+      }
+    }
+    if (record.id && record.id > 1000000000000) {
+      return record.id;
+    }
+    return now;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 bg-[#00a884] border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
@@ -91,6 +127,12 @@ export const OtpTable: React.FC<OtpTableProps> = ({
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 sticky top-0">
                 {TEXTS.dashboard.table.otp}
               </th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 sticky top-0">
+                {(TEXTS.dashboard.table as any).countdown || 'Waktu Mundur'}
+              </th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50 sticky top-0">
+                {(TEXTS.dashboard.table as any).status || 'Status'}
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -100,7 +142,9 @@ export const OtpTable: React.FC<OtpTableProps> = ({
               return filteredRecords.map((record) => {
                 const dateStr = record.created_at || '';
                 const validDateStr = dateStr.includes('T')
-                  ? dateStr
+                  ? dateStr.endsWith('Z')
+                    ? dateStr
+                    : dateStr + 'Z'
                   : dateStr.replace(' ', 'T') + 'Z';
                 const dateObj = dateStr ? new Date(validDateStr) : new Date();
                 const tanggal = dateObj.toLocaleDateString('id-ID', {
@@ -117,6 +161,12 @@ export const OtpTable: React.FC<OtpTableProps> = ({
                   .replace(/\./g, ':');
 
                 const absoluteUrut = sortedChronologically.findIndex((r) => r.id === record.id) + 1;
+
+                const createdAtMs = getCreatedAtMs(record);
+                const targetMs = createdAtMs + OTP_VALID_DURATION_SECONDS * 1000;
+                const remainingMs = targetMs - now;
+                const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+                const isExpired = remainingSec <= 0;
 
                 return (
                   <tr key={record.id} className="hover:bg-gray-50">
@@ -161,6 +211,28 @@ export const OtpTable: React.FC<OtpTableProps> = ({
                         <Copy className="w-4 h-4" />
                       </button>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                      {isExpired ? (
+                        <span className="font-mono text-xs text-gray-400">00:00</span>
+                      ) : (
+                        <span className="font-mono text-xs font-bold text-[#00a884] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 inline-block shadow-sm">
+                          {formatTime(remainingSec)}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                      {isExpired ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                          {(TEXTS.dashboard.table as any).expired || 'Kedaluwarsa'}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                          {(TEXTS.dashboard.table as any).active || 'Aktif'}
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 );
               });
@@ -171,3 +243,4 @@ export const OtpTable: React.FC<OtpTableProps> = ({
     </div>
   );
 };
+

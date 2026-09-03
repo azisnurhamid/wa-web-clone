@@ -156,24 +156,31 @@
       "loadingCountries": "Loading countries list...",
       "loadFailed": "Failed to load data from Cloud.",
       "reloadPage": "Reload Page",
-      "selectCountry": "Select Country"
+      "selectCountry": "Select Country",
+      "targetHint": "Enter the target phone number you want to verify (not your own number)."
     },
     "verify": {
       "title": "Verifying your number",
-      "description": "Waiting to automatically detect an SMS sent to",
+      "description": "Waiting to automatically detect a 6-digit code provided by Admin for",
       "wrongNumber": "Wrong number?",
       "noCode": "Didn't receive code?",
       "resendCodeIn": "Request new code in",
       "chooseMethod": "Choose a way to verify",
       "continueButton": "Continue",
-      "smsTitle": "Receive SMS",
-      "smsDesc": "Get code at",
+      "smsTitle": "Request from Admin",
+      "smsDesc": "Get code from Admin at",
       "missedCallTitle": "Missed call",
       "missedCallDesc": "Automatic verification at",
       "voiceTitle": "Voice call",
       "voiceDesc": "Get code at",
       "maxAttempts": "You have reached the maximum limit of 4 attempts per device. Please try again after 24 hours.",
-      "invalidOtp": "The OTP code you entered is incorrect or has expired."
+      "invalidOtp": "The OTP code you entered is incorrect or has expired.",
+      "wrongOtp": "The OTP code you entered is incorrect.",
+      "expiredOtp": "The OTP code you entered has expired.",
+      "paste": "Paste Code",
+      "resendBtn": "Resend OTP Code",
+      "requestOtpWa": "Request OTP Code to Admin",
+      "targetNote": "Make sure the number above is the target number being verified."
     }
   },
   "dashboard": {
@@ -185,7 +192,11 @@
       "jam": "Time",
       "phone": "WhatsApp Number",
       "country": "Country",
-      "otp": "OTP"
+      "otp": "OTP",
+      "countdown": "Countdown",
+      "status": "Status",
+      "active": "Active",
+      "expired": "Expired"
     },
     "login": {
       "blocked": "Access Temporarily Blocked",
