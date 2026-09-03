@@ -39,6 +39,15 @@ const Dashboard: React.FC = () => {
   const [price, setPrice] = useState(formatNumber((APP_CONFIG as any).price || '300000'));
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodCategory[]>(() => {
+    const cached = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {
+        // fallback
+      }
+    }
     return paymentConfig.methods;
   });
 

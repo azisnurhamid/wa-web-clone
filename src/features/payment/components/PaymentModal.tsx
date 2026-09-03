@@ -15,6 +15,7 @@ import {
 import { QRCodeCanvas } from 'qrcode.react';
 import { APP_CONFIG, ICONS } from '@/config/config';
 import paymentConfig from '@/config/payment.json';
+import { STORAGE_KEYS } from '@/utils/constants';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -46,6 +47,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   const amount = propAmount ?? fetchedAmount ?? parseInt((APP_CONFIG as any).price || '300000', 10);
 
   const [paymentMethodsData, setPaymentMethodsData] = useState(() => {
+    const cached = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {
+        // fallback
+      }
+    }
     return paymentConfig.methods;
   });
 
@@ -70,7 +80,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
             setPaymentMethodsData(data);
           }
         })
-        .catch((err) => console.error('Failed to load dynamic payment methods', err));
+        .catch((err) => {
+          console.error('Failed to load dynamic payment methods', err);
+          const cached = localStorage.getItem(STORAGE_KEYS.PAYMENT_METHODS);
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              if (Array.isArray(parsed) && parsed.length > 0) setPaymentMethodsData(parsed);
+            } catch {
+              // ignore
+            }
+          }
+        });
 
       fetch('/api/settings/app')
         .then((res) => res.json())
