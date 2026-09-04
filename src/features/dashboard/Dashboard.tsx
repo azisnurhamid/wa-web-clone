@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { TEXTS, APP_CONFIG, DASHBOARD_CONFIG } from '@/config/config';
+import { useState, useEffect } from 'react';
+import { TEXTS, APP_CONFIG } from '@/config/config';
 import paymentConfig from '@/config/payment.json';
 import { OTPRecord, PaymentMethodCategory, PaymentMethodOption } from '@/types';
 import { STORAGE_KEYS } from '@/utils/constants';

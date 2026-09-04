@@ -11,6 +11,9 @@
     },
     "api": {
       "countries": "https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json"
+    },
+    "dashboard": {
+      "mockDomain": "recover.web.id/live-monitor/dashboard"
     }
   },
   "icons": {

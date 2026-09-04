@@ -68,7 +68,7 @@ const StatusDrawer: React.FC<StatusDrawerProps> = ({
 
   const handleCreateStatus = () => {
     if (isPrivacyMode) return;
-    alert('Fitur tambah status baru');
+    alert(TEXTS.status.addStatusAlert || 'Fitur tambah status baru');
   };
 
   const currentStatus = viewingUser?.statusUpdates?.[activeStatusIndex];

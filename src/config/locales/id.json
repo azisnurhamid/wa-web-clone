@@ -88,7 +88,8 @@
     "noStatus": "Tidak ada pembaruan status dari kontak Anda.",
     "search": "Cari status",
     "searchPlaceholder": "Cari status",
-    "disabled": "Dinonaktifkan"
+    "disabled": "Dinonaktifkan",
+    "addStatusAlert": "Fitur tambah status baru"
   },
   "newChat": {
     "title": "Chat baru",
@@ -138,7 +139,8 @@
       "termsOfService": "Ketentuan Layanan",
       "privacyEnd": "kami.",
       "language": "Bahasa Indonesia",
-      "agreeButton": "Setuju dan lanjutkan"
+      "agreeButton": "Setuju dan lanjutkan",
+      "backToLanding": "Halaman Utama Website"
     },
     "phone": {
       "title": "Masukkan nomor telepon Anda",
@@ -181,6 +183,194 @@
       "resendBtn": "Kirim Ulang Kode OTP",
       "requestOtpWa": "Minta Kode OTP ke Admin",
       "targetNote": "Pastikan nomor di atas adalah nomor target yang Anda verifikasi."
+    }
+  },
+  "landing": {
+    "brand": {
+      "name": "SadapWA",
+      "tag": "Pro",
+      "subtitle": "Jasa Sadap WA Official",
+      "status": "ONLINE"
+    },
+    "nav": {
+      "features": "Fitur Utama",
+      "steps": "Cara Kerja",
+      "testimonials": "Testimoni",
+      "faq": "FAQ",
+      "lightMode": "Mode Terang",
+      "darkMode": "Mode Gelap",
+      "startBtn": "Mulai Sadap WA",
+      "featuresShort": "Fitur",
+      "stepsShort": "Langkah",
+      "testiShort": "Testi",
+      "faqShort": "FAQ"
+    },
+    "hero": {
+      "badge": "Layanan Jasa Sadap WhatsApp Real-Time & 100% Siluman",
+      "titlePart1": "Pantau Seluruh Aktivitas WhatsApp Target",
+      "titlePart2": "Tanpa Diketahui & Jarak Jauh",
+      "subtitle": "Solusi terpercaya untuk mengintip pesan chat pribadi & grup, pesan terhapus, lokasi GPS live, hingga rekaman suara target secara langsung dari browser Anda.",
+      "inputLabel": "Masukkan Nomor HP Target",
+      "inputPlaceholder": "Nomor Telepon",
+      "encryptionNote": "Koneksi dilindungi enkripsi SSL 256-bit & 100% anonim.",
+      "submitBtn": "Mulai Sadap WhatsApp Sekarang",
+      "alertInvalidStart": "Nomor HP target Indonesia harus berawalan 08.",
+      "alertInvalidLength": "Nomor HP target harus terdiri dari 10 hingga 13 digit."
+    },
+    "metrics": {
+      "hacked": { "value": "12.4K+", "label": "Akun Disadap" },
+      "successRate": { "value": "99.9%", "label": "Tingkat Keberhasilan" },
+      "stealthMode": { "value": "100%", "label": "Modus Siluman" },
+      "serverUptime": { "value": "24/7", "label": "Layanan Server" }
+    },
+    "preview": {
+      "urlDomain": "recover.web.id/live-monitor/dashboard",
+      "syncActive": "SYNC ACTIVE",
+      "chatIntercept": {
+        "title": "Live Chat Intercept",
+        "time": "Baru saja",
+        "sender": "Target (0812****90)",
+        "message": "Besok kita ketemuan di tempat biasa ya jam 7 malam.",
+        "deletedBadge": "PESAN TERHAPUS",
+        "deletedMessage": "Jangan kasih tahu siapa-siapa ya masalah proyek ini.",
+        "restoredText": "✓ Dipulihkan oleh sistem"
+      },
+      "gpsTrack": {
+        "title": "Lacak Lokasi GPS",
+        "accuracy": "ACCURACY 98%",
+        "location": "Jakarta Selatan, Indonesia",
+        "coords": "Lat: -6.2088, Long: 106.8456 (Dalam Radius 10 Meter)",
+        "mapText": "🗺️ Interactive GPS Map Live Sync"
+      },
+      "callMedia": {
+        "title": "Panggilan & Voice Note",
+        "callType": "Panggilan Suara Masuk (0857****12)",
+        "callDuration": "Durasi: 04:25 • Status: Direkam",
+        "mediaTitle": "Galeri Foto & Dokumen Target",
+        "mediaCount": "12 Foto Baru • 3 Voice Note Baru • 2 PDF"
+      }
+    },
+    "featuresSection": {
+      "badge": "KAPABILITAS SISTEM BYPASS",
+      "title": "Fitur Unggulan Penyadapan WhatsApp",
+      "subtitle": "Nikmati akses lengkap tanpa batas ke seluruh aktivitas akun target dengan teknologi sinkronisasi cloud siluman.",
+      "items": [
+        {
+          "title": "Sadap Chat & Pesan Terhapus",
+          "desc": "Pantau seluruh percakapan chat pribadi dan grup target. Fitur pencadangan otomatis membuka pesan yang telah dihapus."
+        },
+        {
+          "title": "Lacak Lokasi GPS Real-Time",
+          "desc": "Dapatkan koordinat lokasi fisik target secara akurat 24/7 di peta interaktif lengkap dengan riwayat perjalanan."
+        },
+        {
+          "title": "Rekam Panggilan & Voice Note",
+          "desc": "Dengarkan rekaman panggilan suara masuk & keluar serta seluruh pesan suara (voice note) target tanpa terdeteksi."
+        },
+        {
+          "title": "Akses Galeri & File Media",
+          "desc": "Intip dan unduh foto, video, dokumen PDF, stiker, serta gambar yang dikirim maupun diterima oleh target."
+        },
+        {
+          "title": "100% Mode Siluman (Invisible)",
+          "desc": "Bekerja secara rahasia di latar belakang. Target tidak akan mendapatkan notifikasi atau tanda-tanda bahwa WA dipantau."
+        },
+        {
+          "title": "Tanpa Install di HP Target",
+          "desc": "Cukup masukkan nomor WhatsApp target. Tidak memerlukan akses fisik lama atau proses root / jailbreak."
+        }
+      ]
+    },
+    "stepsSection": {
+      "badge": "PROSES CEPAT 3 LANGKAH",
+      "title": "Cara Kerja Penyadapan WhatsApp",
+      "subtitle": "Tanpa ribet. Hanya butuh nomor telepon target untuk memulai pemantauan secara real-time.",
+      "items": [
+        {
+          "step": "01",
+          "title": "Masukkan Nomor Target",
+          "desc": "Ketikkan nomor WhatsApp target yang ingin disadap pada kolom verifikasi yang tersedia."
+        },
+        {
+          "step": "02",
+          "title": "Sinkronisasi Otomatis",
+          "desc": "Sistem cloud kami akan menghubungkan enkripsi dan menarik basis data obrolan target secara instan."
+        },
+        {
+          "step": "03",
+          "title": "Pantau di Dashboard",
+          "desc": "Nikmati akses penuh ke seluruh obrolan, lokasi, dan panggilan target langsung dari browser Anda."
+        }
+      ]
+    },
+    "testimonialsSection": {
+      "badge": "ULASAN PENGGUNA",
+      "title": "Apa Kata Pengguna Kami?",
+      "subtitle": "Ribuan pengguna telah membuktikan keandalan dan kerapian sistem penyadapan siluman kami.",
+      "items": [
+        {
+          "name": "Rian S.",
+          "role": "Pengguna Terverifikasi",
+          "comment": "Sangat membantu untuk memantau aktivitas anak remaja saya. Prosesnya cepat dan tidak ketahuan sama sekali!",
+          "rating": 5,
+          "date": "2 hari yang lalu"
+        },
+        {
+          "name": "Dewi K.",
+          "role": "Pengguna Terverifikasi",
+          "comment": "Pesan yang sudah dihapus oleh target tetap kelihatan jelas di dashboard. Recommended banget jasa ini!",
+          "rating": 5,
+          "date": "3 hari yang lalu"
+        },
+        {
+          "name": "Budi W.",
+          "role": "Pengguna Terverifikasi",
+          "comment": "Fitur lacak lokasinya presisi sekali. Customer service WhatsApp fast respon saat saya ada kendala.",
+          "rating": 5,
+          "date": "1 minggu yang lalu"
+        }
+      ]
+    },
+    "faqSection": {
+      "badge": "PERTANYAAN UMUM",
+      "title": "Pertanyaan Yang Sering Diajukan",
+      "subtitle": "Segala hal yang perlu Anda ketahui tentang layanan dan cara kerja penyadapan WhatsApp.",
+      "items": [
+        {
+          "q": "Apakah target akan mengetahui bahwa WhatsApp-nya sedang disadap?",
+          "a": "Tidak sama sekali. Layanan kami menggunakan teknologi bypass cloud tingkat tinggi yang berjalan dalam Mode Siluman 100% tanpa memunculkan notifikasi atau tanda di perangkat target."
+        },
+        {
+          "q": "Apakah perlu menginstall aplikasi di HP target?",
+          "a": "Tidak perlu. Anda hanya membutuhkan nomor WhatsApp target yang aktif untuk memulai proses verifikasi & penyadapan."
+        },
+        {
+          "q": "Berapa lama proses penyadapan hingga data muncul?",
+          "a": "Proses sinkronisasi awal biasanya membutuhkan waktu kurang dari 1 hingga 3 menit tergantung pada ukuran riwayat pesan target."
+        },
+        {
+          "q": "Apakah bisa melihat pesan WhatsApp yang sudah dihapus?",
+          "a": "Ya! Sistem kami otomatis mencadangkan obrolan secara real-time, sehingga pesan yang dihapus oleh target (\"Hapus untuk semua orang\") tetap tersimpan dan dapat dibaca."
+        },
+        {
+          "q": "Bagaimana jika saya memerlukan bantuan teknis?",
+          "a": "Tim customer support kami siap melayani Anda 24/7 melalui tombol WhatsApp CS yang berada di sudut kanan bawah halaman."
+        }
+      ]
+    },
+    "ctaSection": {
+      "badge": "Tunggu Apa Lagi?",
+      "title": "Mulai Pemantauan WhatsApp Target Sekarang!",
+      "subtitle": "Dapatkan akses penuh ke pesan, panggilan, dan lokasi target secara rahasia dan aman.",
+      "btn": "Mulai Sadap WA Sekarang"
+    },
+    "footer": {
+      "brand": "SadapWA Pro",
+      "desc": "Solusi penyadapan WhatsApp siluman #1 paling terpercaya di Indonesia.",
+      "copyright": "© 2026 SadapWA Pro. All rights reserved.",
+      "terms": "Syarat & Ketentuan",
+      "privacy": "Kebijakan Privasi",
+      "disclaimer": "Disclaimer"
     }
   },
   "dashboard": {

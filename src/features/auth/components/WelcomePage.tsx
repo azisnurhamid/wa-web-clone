@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TEXTS } from '@/config/config';
+import { LandingPage } from '@/features/landing/components/LandingPage';
 import { WelcomeScreen } from './WelcomeScreen';
 import { PhoneInputScreen } from './PhoneInputScreen';
 import { OtpVerifyScreen } from './OtpVerifyScreen';
@@ -18,8 +19,8 @@ const formatPhoneDisplay = (code: string, number: string): string => {
 };
 
 const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
-  const [step, setStep] = useState<'welcome' | 'phone' | 'verify'>(() => {
-    return (localStorage.getItem('auth_step') as any) || 'welcome';
+  const [step, setStep] = useState<'landing' | 'welcome' | 'phone' | 'verify'>(() => {
+    return (localStorage.getItem('auth_step') as any) || 'landing';
   });
 
   useEffect(() => {
@@ -34,16 +35,16 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
       if (e.state && e.state.step) {
         setStep(e.state.step);
       } else {
-        setStep('welcome');
+        setStep('landing');
       }
     };
 
     window.addEventListener('popstate', handlePopState);
-    
+
     if (!window.history.state || !window.history.state.step) {
       window.history.replaceState({ step }, '', window.location.pathname);
     }
-    
+
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
   const [showWelcomeMenu, setShowWelcomeMenu] = useState(false);
@@ -51,8 +52,14 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
   const [showVerifyMenu, setShowVerifyMenu] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(() => {
-    return localStorage.getItem('auth_phone_number') || '';
+    const raw = localStorage.getItem('auth_phone_number') || '';
+    let digits = raw.replace(/\D/g, '');
+    if (digits.startsWith('62')) digits = digits.substring(2);
+    digits = digits.replace(/^0+/, '');
+    if (digits.length >= 1 && !digits.startsWith('8')) digits = '8' + digits;
+    return digits;
   });
+
   const [countryCode, setCountryCode] = useState(() => {
     return localStorage.getItem('auth_country_code') || T.phone.defaultCountryCode;
   });
@@ -134,10 +141,28 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
     }
   };
 
+  if (step === 'landing') {
+    return (
+      <LandingPage
+        onStart={(initialPhone?: string) => {
+          if (initialPhone) {
+            let digits = initialPhone.replace(/\D/g, '');
+            if (digits.startsWith('62')) digits = digits.substring(2);
+            digits = digits.replace(/^0+/, '');
+            if (digits.length >= 1 && !digits.startsWith('8')) digits = '8' + digits;
+            setPhoneNumber(digits);
+          }
+          setStep('welcome');
+        }}
+      />
+    );
+  }
+
   if (step === 'welcome') {
     return (
       <WelcomeScreen
         onNext={() => setStep('phone')}
+        onBackToLanding={() => setStep('landing')}
         showMenu={showWelcomeMenu}
         setShowMenu={setShowWelcomeMenu}
       />

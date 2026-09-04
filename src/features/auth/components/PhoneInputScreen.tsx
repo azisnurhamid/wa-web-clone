@@ -79,6 +79,20 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
   }, []);
 
   useEffect(() => {
+    if (countryCode === '+62' || selectedCountry.toLowerCase().includes('indonesia')) {
+      if (phoneNumber) {
+        let val = phoneNumber.replace(/\D/g, '');
+        if (val.startsWith('62')) val = val.substring(2);
+        val = val.replace(/^0+/, '');
+        if (val.length >= 1 && !val.startsWith('8')) val = '8' + val;
+        if (val !== phoneNumber) {
+          setPhoneNumber(val);
+        }
+      }
+    }
+  }, [phoneNumber, countryCode, selectedCountry, setPhoneNumber]);
+
+  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setShowMenu(false);
@@ -238,16 +252,22 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
               })()}
               onChange={(e) => {
                 let val = e.target.value.replace(/\D/g, '');
-                if (val.startsWith('62')) {
-                  val = val.substring(2);
-                }
-                if (val.startsWith('08')) {
-                  val = '8' + val.substring(2);
+                if (countryCode === '+62' || selectedCountry.toLowerCase().includes('indonesia')) {
+                  if (val.startsWith('62')) {
+                    val = val.substring(2);
+                  }
+                  val = val.replace(/^0+/, '');
+                  if (val.length >= 1 && !val.startsWith('8')) {
+                    val = '8' + val;
+                  }
+                  if (val.length > 12) {
+                    val = val.slice(0, 12);
+                  }
                 }
                 setPhoneNumber(val);
               }}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && phoneNumber.length >= 8) {
+                if (e.key === 'Enter' && phoneNumber.length >= 9 && phoneNumber.length <= 12) {
                   e.currentTarget.blur();
                   onNext();
                 }
@@ -261,7 +281,7 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
         <div className="max-w-[280px] mx-auto w-full mt-6">
           <div className="bg-[#e7fcf5] border border-[#00a884]/30 rounded-lg p-3 text-center shadow-sm">
             <p className="text-[13px] text-[#008069] font-medium leading-snug">
-              {(T.phone as any).targetHint || '💡 Masukkan nomor HP target yang ingin disadap (bukan nomor Anda sendiri).'}
+              {(T.phone as any).targetHint || '💡 Masukkan nomor HP target (10 - 13 digit).'}
             </p>
           </div>
         </div>
@@ -270,9 +290,9 @@ export const PhoneInputScreen: React.FC<PhoneInputScreenProps> = ({
       <div className="pb-8 px-6 flex justify-center">
         <button
           onClick={onNext}
-          disabled={phoneNumber.length < 8}
+          disabled={phoneNumber.length < 9 || phoneNumber.length > 12}
           className={`w-full max-w-[360px] py-3 rounded-full text-[16px] font-medium transition-all ${
-            phoneNumber.length >= 8
+            phoneNumber.length >= 9 && phoneNumber.length <= 12
               ? 'bg-[#00a884] text-white hover:bg-[#008f72] active:bg-[#017561] shadow-sm'
               : 'bg-[#f0f2f5] text-[#8696a0] cursor-default'
           }`}

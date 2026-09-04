@@ -53,18 +53,6 @@ export const useContentProtection = () => {
       }
     };
 
-    const originalXHROpen = XMLHttpRequest.prototype.open;
-
-    const originalFetch = window.fetch;
-
-    XMLHttpRequest.prototype.open = function (...args: any[]) {
-      return originalXHROpen.apply(this, args);
-    };
-
-    window.fetch = function (...args: any[]) {
-      return originalFetch.apply(this, args);
-    };
-
     const preventPrintScreen = (e: KeyboardEvent) => {
       if (
         e.key === 'PrintScreen' ||

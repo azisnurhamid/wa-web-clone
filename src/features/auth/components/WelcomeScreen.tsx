@@ -1,16 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { MoreVertical, ChevronDown, Globe } from 'lucide-react';
+import { MoreVertical, ChevronDown, Globe, ArrowLeft } from 'lucide-react';
 import { TEXTS } from '@/config/config';
 
 const T = TEXTS.welcomePage;
 
 interface WelcomeScreenProps {
   onNext: () => void;
+  onBackToLanding?: () => void;
   showMenu: boolean;
   setShowMenu: (show: boolean) => void;
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, setShowMenu }) => {
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
+  onNext,
+  onBackToLanding,
+  showMenu,
+  setShowMenu,
+}) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -30,21 +36,34 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onNext, showMenu, 
 
   return (
     <div className="h-screen w-full bg-white flex flex-col relative">
-      <div className="flex justify-end px-2 pt-3 pb-1 relative" ref={menuRef}>
-        <button
-          onClick={() => setShowMenu(!showMenu)}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
-        >
-          <MoreVertical size={20} className="text-[#54656f]" />
-        </button>
-
-        {showMenu && (
-          <div className="absolute top-12 right-3 bg-white rounded-md shadow-lg py-2 z-50 min-w-[180px] border border-gray-50 animate-in fade-in duration-150">
-            <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
-              {T.common.help}
-            </button>
-          </div>
+      <div className="flex justify-between items-center px-4 pt-3 pb-1 relative">
+        {onBackToLanding ? (
+          <button
+            onClick={onBackToLanding}
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#008069] hover:bg-emerald-50 px-3 py-1.5 rounded-full transition"
+          >
+            <ArrowLeft size={16} />
+            <span>{(T.welcome as any).backToLanding || 'Halaman Utama Website'}</span>
+          </button>
+        ) : (
+          <div></div>
         )}
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+          >
+            <MoreVertical size={20} className="text-[#54656f]" />
+          </button>
+
+          {showMenu && (
+            <div className="absolute top-12 right-0 bg-white rounded-md shadow-lg py-2 z-50 min-w-[180px] border border-gray-50 animate-in fade-in duration-150">
+              <button className="w-full text-left px-6 py-3 text-[15px] text-[#3b4a54] hover:bg-[#f5f6f6] transition">
+                {T.common.help}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-8">
