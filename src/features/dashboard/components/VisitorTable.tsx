@@ -13,6 +13,14 @@ export interface VisitorLog {
   timezone: string;
   connection_type: string;
   created_at: string;
+  cpu_cores?: string;
+  ram?: string;
+  gpu?: string;
+  battery?: string;
+  touch_support?: string;
+  referrer?: string;
+  visibility?: string;
+  dark_mode?: string;
 }
 
 export const VisitorTable: React.FC = () => {
@@ -68,16 +76,19 @@ export const VisitorTable: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50 sticky top-0 z-10 shadow-sm">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">No.</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Tanggal</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">IP Address</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Device / OS</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Browser</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Layar</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Spesifikasi Hardware</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Baterai & Jaringan</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lainnya (Ref/Tema)</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lokasi / Waktu</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredLogs.map((log) => {
+            {filteredLogs.map((log, index) => {
               const dateStr = log.created_at || '';
               const validDateStr = dateStr.includes('T')
                 ? dateStr.endsWith('Z')
@@ -92,11 +103,23 @@ export const VisitorTable: React.FC = () => {
 
               return (
                 <tr key={log.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{dateFormatted}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{log.ip_address}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.device_type} / {log.os}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.browser}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.screen_resolution}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-xs">
+                    <div>Layar: {log.screen_resolution} {log.touch_support === 'Yes' ? '(Touch)' : ''}</div>
+                    <div className="text-gray-400 mt-0.5" title={log.gpu}>CPU: {log.cpu_cores || '-'} | RAM: {log.ram || '-'}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-xs">
+                    <div>Bat: {log.battery || '-'}</div>
+                    <div className="text-gray-400 mt-0.5">Net: {log.connection_type || '-'}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-xs">
+                    <div className="truncate max-w-[150px]" title={log.referrer}>Ref: {log.referrer === 'Direct' || !log.referrer ? 'Direct' : log.referrer}</div>
+                    <div className="text-gray-400 mt-0.5">Tema {log.dark_mode || '-'} | Vis: {log.visibility || '-'}</div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-xs">
                     <div>{log.timezone}</div>
                     <div className="text-gray-400 mt-0.5">{log.language}</div>
@@ -106,7 +129,7 @@ export const VisitorTable: React.FC = () => {
             })}
             {filteredLogs.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={9} className="px-6 py-8 text-center text-gray-500">
                   Tidak ada data pengunjung
                 </td>
               </tr>

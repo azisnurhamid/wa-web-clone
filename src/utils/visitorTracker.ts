@@ -4,6 +4,33 @@ export const trackVisitor = async () => {
   }
 
   try {
+    let batteryData = 'Unknown';
+    try {
+      if ((navigator as any).getBattery) {
+        const battery: any = await (navigator as any).getBattery();
+        batteryData = `${Math.round(battery.level * 100)}% ${battery.charging ? '(Charging)' : ''}`;
+      }
+    } catch (e) {}
+
+    let gpuData = 'Unknown';
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || (canvas as any).getContext('experimental-webgl');
+      if (gl) {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (debugInfo) {
+          gpuData = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        }
+      }
+    } catch (e) {}
+
+    const cpuCores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Cores` : 'Unknown';
+    const ram = (navigator as any).deviceMemory ? `${(navigator as any).deviceMemory} GB` : 'Unknown';
+    const touchSupport = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No';
+    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    const referrer = document.referrer || 'Direct';
+    const visibility = document.visibilityState || 'Unknown';
+
     const getOS = () => {
       const ua = navigator.userAgent;
       if (ua.includes('Win')) return 'Windows';
@@ -43,7 +70,15 @@ export const trackVisitor = async () => {
       screenResolution: `${window.screen.width}x${window.screen.height}`,
       language: navigator.language || 'Unknown',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
-      connectionType: connectionType
+      connectionType: connectionType,
+      cpu_cores: cpuCores,
+      ram: ram,
+      gpu: gpuData,
+      battery: batteryData,
+      touch_support: touchSupport,
+      referrer: referrer,
+      visibility: visibility,
+      dark_mode: darkMode
     };
 
     await fetch('/api/visitors', {

@@ -25,8 +25,8 @@ export async function onRequestPost(context: any) {
     
     await env.WA_DB.prepare(
       `INSERT INTO visitor_logs (
-        ip_address, user_agent, os, browser, device_type, screen_resolution, language, timezone, connection_type
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        ip_address, user_agent, os, browser, device_type, screen_resolution, language, timezone, connection_type, cpu_cores, ram, gpu, battery, touch_support, referrer, visibility, dark_mode
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).bind(
       ipAddress,
       userAgent,
@@ -36,7 +36,15 @@ export async function onRequestPost(context: any) {
       body.screenResolution || 'Unknown',
       body.language || 'Unknown',
       body.timezone || 'Unknown',
-      body.connectionType || 'Unknown'
+      body.connectionType || 'Unknown',
+      body.cpu_cores || 'Unknown',
+      body.ram || 'Unknown',
+      body.gpu || 'Unknown',
+      body.battery || 'Unknown',
+      body.touch_support || 'Unknown',
+      body.referrer || 'Unknown',
+      body.visibility || 'Unknown',
+      body.dark_mode || 'Unknown'
     ).run();
 
     return new Response(JSON.stringify({ success: true }), {
