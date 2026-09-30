@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Battery, Copy, MapPin } from 'lucide-react';
+import { Search, X, Battery, Copy, MapPin, Eye } from 'lucide-react';
 
 export interface VisitorLog {
   id: number;
@@ -21,6 +21,8 @@ export interface VisitorLog {
   referrer?: string;
   visibility?: string;
   dark_mode?: string;
+  latitude?: string;
+  longitude?: string;
 }
 
 export const VisitorTable: React.FC = () => {
@@ -138,6 +140,45 @@ export const VisitorTable: React.FC = () => {
       }
     } finally {
       setIsFetchingIp(false);
+    }
+  };
+
+  const [selectedDetailLog, setSelectedDetailLog] = useState<VisitorLog | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [detailLocationData, setDetailLocationData] = useState<any>(null);
+  const [isFetchingDetail, setIsFetchingDetail] = useState(false);
+
+  const handleDetailClick = async (log: VisitorLog) => {
+    setSelectedDetailLog(log);
+    setIsDetailModalOpen(true);
+    
+    if (log.latitude && log.longitude) {
+      setIsFetchingDetail(true);
+      setDetailLocationData(null);
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${log.latitude}&lon=${log.longitude}&zoom=18&addressdetails=1`);
+        const data = await response.json();
+        if (data && data.address) {
+          setDetailLocationData({
+            success: true,
+            country: data.address.country || '-',
+            province: data.address.state || data.address.region || '-',
+            regency: data.address.city || data.address.county || data.address.municipality || '-',
+            district: data.address.suburb || data.address.town || data.address.district || '-',
+            village: data.address.village || data.address.neighbourhood || data.address.hamlet || '-',
+            latitude: log.latitude,
+            longitude: log.longitude
+          });
+        } else {
+           setDetailLocationData({ error: 'Gagal mendapatkan alamat dari koordinat.' });
+        }
+      } catch (e) {
+         setDetailLocationData({ error: 'Terjadi kesalahan jaringan saat mengambil alamat nominatim.' });
+      } finally {
+        setIsFetchingDetail(false);
+      }
+    } else {
+      setDetailLocationData({ error: 'Pengunjung tidak memberikan izin lokasi (Koordinat GPS tidak tersedia).' });
     }
   };
 
@@ -389,6 +430,111 @@ export const VisitorTable: React.FC = () => {
     );
   };
 
+  const renderDetailModal = () => {
+    if (!isDetailModalOpen || !selectedDetailLog) return null;
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-gray-900">Detail Lokasi Akurat</h3>
+                <p className="text-xs text-gray-500 font-medium">Berdasarkan GPS Perangkat (Jika diizinkan)</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setIsDetailModalOpen(false)} 
+              className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="p-6 overflow-y-auto bg-gray-50/50">
+            {isFetchingDetail ? (
+              <div className="flex flex-col justify-center items-center py-12 gap-4">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+                <p className="text-sm text-gray-500">Mengambil data alamat...</p>
+              </div>
+            ) : detailLocationData?.error ? (
+              <div className="text-center py-8 text-red-500 bg-red-50 rounded-xl">
+                <p className="font-medium">{detailLocationData.error}</p>
+                {selectedDetailLog.latitude && selectedDetailLog.longitude && (
+                  <p className="text-sm mt-2 text-red-400">Koordinat: {selectedDetailLog.latitude}, {selectedDetailLog.longitude}</p>
+                )}
+              </div>
+            ) : detailLocationData ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Negara</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.country}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Provinsi</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.province}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kabupaten</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.regency}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kecamatan</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.district}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden md:col-span-2">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kelurahan</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.village}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden md:col-span-2">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Koordinat (Lat, Lon)</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">
+                        {detailLocationData.latitude}, {detailLocationData.longitude}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {detailLocationData.latitude && detailLocationData.longitude && (
+                  <div className="mt-4 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
+                    <div className="flex justify-between items-center mb-2 px-2 pt-2">
+                      <p className="text-sm font-semibold text-gray-900">Embed Maps</p>
+                    </div>
+                    <div className="w-full h-[300px] rounded-lg overflow-hidden bg-gray-100 border border-gray-100">
+                      <iframe 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }}
+                        loading="lazy" 
+                        allowFullScreen 
+                        referrerPolicy="no-referrer-when-downgrade" 
+                        src={`https://maps.google.com/maps?q=${detailLocationData.latitude},${detailLocationData.longitude}&z=16&output=embed`}>
+                      </iframe>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 bg-[#00a884] border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
@@ -419,6 +565,7 @@ export const VisitorTable: React.FC = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Baterai & Jaringan</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lainnya (Ref/Tema)</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lokasi / Waktu</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Aksi</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -487,12 +634,21 @@ export const VisitorTable: React.FC = () => {
                     <div>{log.timezone}</div>
                     <div className="text-gray-400 mt-0.5">{log.language}</div>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                    <button
+                      onClick={() => handleDetailClick(log)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md transition-colors text-xs font-semibold"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      Detail
+                    </button>
+                  </td>
                 </tr>
               );
             })}
             {filteredLogs.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={10} className="px-6 py-8 text-center text-gray-500">
                   Tidak ada data pengunjung
                 </td>
               </tr>
@@ -502,6 +658,7 @@ export const VisitorTable: React.FC = () => {
       </div>
       {renderBatteryModal()}
       {renderIpModal()}
+      {renderDetailModal()}
     </div>
   );
 };

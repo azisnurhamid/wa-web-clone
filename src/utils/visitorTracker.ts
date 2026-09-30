@@ -1,4 +1,6 @@
 let isTracking = false;
+let storedLat: string | undefined = undefined;
+let storedLon: string | undefined = undefined;
 
 export const trackVisitor = async () => {
   if (isTracking) return;
@@ -63,7 +65,7 @@ export const trackVisitor = async () => {
     };
 
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-    const sendLog = async (currentBatteryData: string) => {
+    const sendLog = async (currentBatteryData: string, lat?: string, lon?: string) => {
       const data = {
         os: getOS(),
         browser: getBrowser(),
@@ -79,7 +81,9 @@ export const trackVisitor = async () => {
         touch_support: touchSupport,
         referrer: referrer,
         visibility: visibility,
-        dark_mode: darkMode
+        dark_mode: darkMode,
+        latitude: lat || storedLat,
+        longitude: lon || storedLon
       };
 
       try {
@@ -93,9 +97,28 @@ export const trackVisitor = async () => {
       }
     };
 
+    const getLocationAndSendLog = (battery: string) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            storedLat = position.coords.latitude.toString();
+            storedLon = position.coords.longitude.toString();
+            sendLog(battery, storedLat, storedLon);
+          },
+          (error) => {
+            console.error('Geolocation error:', error);
+            sendLog(battery);
+          },
+          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+      } else {
+        sendLog(battery);
+      }
+    };
+
     // Send initial log if not logged in this session
     if (!sessionStorage.getItem('visitor_logged')) {
-      await sendLog(batteryData);
+      getLocationAndSendLog(batteryData);
       sessionStorage.setItem('visitor_logged', 'true');
     }
 
