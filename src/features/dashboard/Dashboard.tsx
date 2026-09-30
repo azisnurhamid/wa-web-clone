@@ -11,7 +11,6 @@ import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from '@/features/payment/components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
 import DashboardLogin from './DashboardLogin';
-import WhatsAppHelpButton from '@/components/WhatsAppHelpButton';
 
 const Dashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -268,12 +267,7 @@ const Dashboard: React.FC = () => {
   };
 
   if (!isAuthenticated) {
-    return (
-      <>
-        <DashboardLogin onLogin={handleLogin} />
-        <WhatsAppHelpButton />
-      </>
-    );
+    return <DashboardLogin onLogin={handleLogin} />;
   }
 
   return (
@@ -317,7 +311,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </DashboardLayout>
-      <WhatsAppHelpButton />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Battery } from 'lucide-react';
+import { Search, X, Battery, Copy, MapPin } from 'lucide-react';
 
 export interface VisitorLog {
   id: number;
@@ -27,6 +27,127 @@ export const VisitorTable: React.FC = () => {
   const [logs, setLogs] = useState<VisitorLog[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIpForBattery, setSelectedIpForBattery] = useState<string | null>(null);
+
+  const translateRegion = (region: string) => {
+    if (!region) return '-';
+    const map: Record<string, string> = {
+      'Central Java': 'Jawa Tengah',
+      'West Java': 'Jawa Barat',
+      'East Java': 'Jawa Timur',
+      'Jakarta': 'DKI Jakarta',
+      'Jakarta Raya': 'DKI Jakarta',
+      'Special Capital Region of Jakarta': 'DKI Jakarta',
+      'North Sumatra': 'Sumatera Utara',
+      'South Sumatra': 'Sumatera Selatan',
+      'West Sumatra': 'Sumatera Barat',
+      'North Sulawesi': 'Sulawesi Utara',
+      'South Sulawesi': 'Sulawesi Selatan',
+      'Central Sulawesi': 'Sulawesi Tengah',
+      'Southeast Sulawesi': 'Sulawesi Tenggara',
+      'West Sulawesi': 'Sulawesi Barat',
+      'West Kalimantan': 'Kalimantan Barat',
+      'Central Kalimantan': 'Kalimantan Tengah',
+      'South Kalimantan': 'Kalimantan Selatan',
+      'East Kalimantan': 'Kalimantan Timur',
+      'North Kalimantan': 'Kalimantan Utara',
+      'West Nusa Tenggara': 'Nusa Tenggara Barat',
+      'East Nusa Tenggara': 'Nusa Tenggara Timur',
+      'North Maluku': 'Maluku Utara',
+      'West Papua': 'Papua Barat',
+      'South Papua': 'Papua Selatan',
+      'Central Papua': 'Papua Tengah',
+      'Highland Papua': 'Papua Pegunungan',
+      'Southwest Papua': 'Papua Barat Daya',
+      'Yogyakarta': 'DI Yogyakarta',
+      'Special Region of Yogyakarta': 'DI Yogyakarta',
+      'Riau Islands': 'Kepulauan Riau',
+      'Bangka Belitung Islands': 'Kepulauan Bangka Belitung',
+    };
+    return map[region] || region;
+  };
+
+  const translateCity = (city: string) => {
+    if (!city) return '-';
+    const map: Record<string, string> = {
+      'South Jakarta': 'Jakarta Selatan',
+      'West Jakarta': 'Jakarta Barat',
+      'East Jakarta': 'Jakarta Timur',
+      'North Jakarta': 'Jakarta Utara',
+      'Central Jakarta': 'Jakarta Pusat',
+    };
+    return map[city] || city;
+  };
+
+  const getFlagEmoji = (countryCode: string) => {
+    if (!countryCode) return '';
+    const codePoints = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+  };
+
+  const [selectedIpData, setSelectedIpData] = useState<any>(null);
+  const [isIpModalOpen, setIsIpModalOpen] = useState(false);
+  const [isFetchingIp, setIsFetchingIp] = useState(false);
+
+  const handleIpClick = async (ip: string) => {
+    if (!ip || ip === '::1' || ip === '127.0.0.1') {
+      setIsIpModalOpen(true);
+      setSelectedIpData({ error: 'IP Localhost tidak dapat dilacak lokasinya.', ip });
+      return;
+    }
+    
+    setIsIpModalOpen(true);
+    setIsFetchingIp(true);
+    setSelectedIpData(null);
+    try {
+      // 1. Coba gunakan ip-api.com karena memiliki akurasi sampai 'district' (kecamatan)
+      const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,regionName,city,district,lat,lon,isp`);
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        setSelectedIpData({
+          success: true,
+          ip: ip,
+          connection: { isp: data.isp },
+          country: data.country,
+          region: data.regionName,
+          city: data.city,
+          district: data.district,
+          latitude: data.lat,
+          longitude: data.lon,
+          flag: { emoji: getFlagEmoji(data.countryCode) }
+        });
+      } else {
+        setSelectedIpData({ error: data.message || 'Gagal mengambil data lokasi IP', ip });
+      }
+    } catch (err) {
+      console.error('Failed with primary IP API, trying fallback', err);
+      // 2. Fallback ke ipwho.is jika ip-api.com diblokir (misal karena Mixed Content HTTPS)
+      try {
+        const fbRes = await fetch(`https://ipwho.is/${ip}`);
+        const fbData = await fbRes.json();
+        if (fbData.success) {
+          setSelectedIpData(fbData);
+        } else {
+          setSelectedIpData({ error: 'Gagal mengambil data IP', ip });
+        }
+      } catch {
+        setSelectedIpData({ error: 'Terjadi kesalahan jaringan atau API diblokir', ip });
+      }
+    } finally {
+      setIsFetchingIp(false);
+    }
+  };
+
+  const handleCopyIp = async (ip: string) => {
+    try {
+      await navigator.clipboard.writeText(ip);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -143,6 +264,131 @@ export const VisitorTable: React.FC = () => {
     );
   };
 
+  const renderIpModal = () => {
+    if (!isIpModalOpen) return null;
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-gray-900">Detail Lokasi IP</h3>
+                <p className="text-xs text-gray-500 font-medium">Informasi Geolocation & ISP</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setIsIpModalOpen(false)} 
+              className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="p-6 overflow-y-auto bg-gray-50/50">
+            {isFetchingIp ? (
+              <div className="flex flex-col justify-center items-center py-12 gap-4">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+                <p className="text-sm text-gray-500">Melacak lokasi IP...</p>
+              </div>
+            ) : selectedIpData?.error ? (
+              <div className="text-center py-8 text-red-500 bg-red-50 rounded-xl">
+                <p className="font-medium">{selectedIpData.error}</p>
+                <p className="text-sm mt-2 text-red-400">{selectedIpData.ip}</p>
+              </div>
+            ) : selectedIpData ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">IP Address</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.ip}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">ISP / Provider</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.connection?.isp || '-'}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Negara</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 flex items-center gap-2 whitespace-nowrap">
+                        {selectedIpData.country || '-'} {selectedIpData.flag?.emoji}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Provinsi</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{translateRegion(selectedIpData.region)}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kabupaten / Kota</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">{translateCity(selectedIpData.city)}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kecamatan</p>
+                    <div className="overflow-x-auto pb-1">
+                      {selectedIpData.district ? (
+                        <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.district}</p>
+                      ) : (
+                        <p className="font-semibold text-gray-900 text-sm text-gray-400 italic whitespace-nowrap">
+                          -
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Kelurahan</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 text-sm text-gray-400 italic whitespace-nowrap">
+                        Tidak terlacak oleh IP
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
+                    <p className="text-xs text-gray-500 font-medium mb-1">Koordinat (Lat, Lon)</p>
+                    <div className="overflow-x-auto pb-1">
+                      <p className="font-semibold text-gray-900 whitespace-nowrap">
+                        {selectedIpData.latitude ? `${selectedIpData.latitude}, ${selectedIpData.longitude}` : '-'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {selectedIpData.latitude && selectedIpData.longitude && (
+                  <div className="mt-4 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
+                    <div className="flex justify-between items-center mb-2 px-2 pt-2">
+                      <p className="text-sm font-semibold text-gray-900">Peta Lokasi (Estimasi)</p>
+                    </div>
+                    <div className="w-full h-[300px] rounded-lg overflow-hidden bg-gray-100 border border-gray-100">
+                      <iframe 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }}
+                        loading="lazy" 
+                        allowFullScreen 
+                        referrerPolicy="no-referrer-when-downgrade" 
+                        src={`https://maps.google.com/maps?q=${selectedIpData.latitude},${selectedIpData.longitude}&z=13&output=embed`}>
+                      </iframe>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-6 py-3 bg-[#00a884] border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
@@ -193,7 +439,24 @@ export const VisitorTable: React.FC = () => {
                 <tr key={log.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{dateFormatted}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{log.ip_address}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <div className="flex items-center gap-2">
+                      <span 
+                        className="cursor-pointer hover:text-blue-600 hover:underline transition-colors"
+                        onClick={() => handleIpClick(log.ip_address)}
+                        title="Lihat Detail IP"
+                      >
+                        {log.ip_address}
+                      </span>
+                      <button
+                        onClick={() => handleCopyIp(log.ip_address)}
+                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                        title="Copy IP Address"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.device_type} / {log.os}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.browser}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-xs">
@@ -238,6 +501,7 @@ export const VisitorTable: React.FC = () => {
         </table>
       </div>
       {renderBatteryModal()}
+      {renderIpModal()}
     </div>
   );
 };
