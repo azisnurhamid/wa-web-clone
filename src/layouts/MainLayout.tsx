@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Lock, MessageCircle, Phone } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Lock } from 'lucide-react';
 import Sidebar from '@/features/chat/components/Sidebar';
 import ChatWindow from '@/features/chat/components/ChatWindow';
 import WelcomePage from '@/features/auth/components/WelcomePage';
-import { TEXTS, APP_CONFIG } from '@/config/config';
+import { TEXTS } from '@/config/config';
 import { STORAGE_KEYS } from '@/utils/constants';
 import { useAppContext } from '@/context/AppContext';
 import { getAppSettings } from '@/services/api';
+import WhatsAppHelpButton from '@/components/WhatsAppHelpButton';
 
 const MainLayout: React.FC = () => {
   const {
@@ -30,8 +31,6 @@ const MainLayout: React.FC = () => {
     setShowPaymentModal,
   } = useAppContext();
 
-  const [showTooltip, setShowTooltip] = useState(true);
-
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (isLoggedIn && !showPaymentModal) {
@@ -45,10 +44,6 @@ const MainLayout: React.FC = () => {
   }, [isLoggedIn, showPaymentModal, setShowPaymentModal]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setShowTooltip((prev) => !prev);
-    }, 5000);
-
     getAppSettings()
       .then((data: any) => {
         if (data.supportPhone) {
@@ -59,32 +54,7 @@ const MainLayout: React.FC = () => {
         }
       })
       .catch((err) => console.error('Failed to load dynamic app settings in Layout', err));
-
-    return () => clearInterval(interval);
   }, []);
-
-  const whatsappButton = (
-    <div className="fixed bottom-6 right-6 flex items-center gap-3 z-50 group">
-      <div
-        className={`bg-white px-3 py-1.5 rounded-lg shadow-md text-sm text-gray-700 whitespace-nowrap transition-opacity ${showTooltip ? 'opacity-100' : 'opacity-0'}`}
-      >
-        {TEXTS.whatsappButton.tooltip}
-      </div>
-      <a
-        href={`https://wa.me/${localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone}?text=${encodeURIComponent(TEXTS.whatsappButton.defaultMessage)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all"
-      >
-        <div className="relative w-full h-full flex items-center justify-center">
-          <MessageCircle size={32} className="text-white" />
-        </div>
-        <div className="absolute w-full h-full flex items-center justify-center">
-          <Phone size={14} className="text-white" />
-        </div>
-      </a>
-    </div>
-  );
 
   if (!isLoggedIn) {
     return (
@@ -115,7 +85,7 @@ const MainLayout: React.FC = () => {
             {TEXTS.lock.button}
           </button>
         </div>
-        {whatsappButton}
+        <WhatsAppHelpButton />
       </>
     );
   }
@@ -163,7 +133,7 @@ const MainLayout: React.FC = () => {
         </div>
       </div>
 
-      {whatsappButton}
+      <WhatsAppHelpButton />
     </>
   );
 };

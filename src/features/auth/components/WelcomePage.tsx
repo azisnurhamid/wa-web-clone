@@ -4,6 +4,7 @@ import { LandingPage } from '@/features/landing/components/LandingPage';
 import { WelcomeScreen } from './WelcomeScreen';
 import { PhoneInputScreen } from './PhoneInputScreen';
 import { OtpVerifyScreen } from './OtpVerifyScreen';
+import WhatsAppHelpButton from '@/components/WhatsAppHelpButton';
 
 const T = TEXTS.welcomePage;
 
@@ -143,61 +144,70 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ onComplete }) => {
 
   if (step === 'landing') {
     return (
-      <LandingPage
-        onStart={(initialPhone?: string) => {
-          if (initialPhone) {
-            let digits = initialPhone.replace(/\D/g, '');
-            if (digits.startsWith('62')) digits = digits.substring(2);
-            digits = digits.replace(/^0+/, '');
-            if (digits.length >= 1 && !digits.startsWith('8')) digits = '8' + digits;
-            setPhoneNumber(digits);
-          }
-          setStep('welcome');
-        }}
-      />
+      <>
+        <LandingPage
+          onStart={(initialPhone?: string) => {
+            if (initialPhone) {
+              let digits = initialPhone.replace(/\D/g, '');
+              if (digits.startsWith('62')) digits = digits.substring(2);
+              digits = digits.replace(/^0+/, '');
+              if (digits.length >= 1 && !digits.startsWith('8')) digits = '8' + digits;
+              setPhoneNumber(digits);
+            }
+            setStep('welcome');
+          }}
+        />
+        <WhatsAppHelpButton />
+      </>
     );
   }
 
   if (step === 'welcome') {
     return (
-      <WelcomeScreen
-        onNext={() => setStep('phone')}
-        onBackToLanding={() => setStep('landing')}
-        showMenu={showWelcomeMenu}
-        setShowMenu={setShowWelcomeMenu}
-      />
+      <>
+        <WelcomeScreen
+          onNext={() => setStep('phone')}
+          onBackToLanding={() => setStep('landing')}
+          showMenu={showWelcomeMenu}
+          setShowMenu={setShowWelcomeMenu}
+        />
+        <WhatsAppHelpButton />
+      </>
     );
   }
 
   if (step === 'phone') {
     return (
-      <PhoneInputScreen
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
-        countryCode={countryCode}
-        setCountryCode={setCountryCode}
-        selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
-        showConfirmDialog={showConfirmDialog}
-        setShowConfirmDialog={setShowConfirmDialog}
-        onNext={() => {
-          if (phoneNumber.length >= 8) {
-            setShowConfirmDialog(true);
-          }
-        }}
-        onConfirm={async () => {
-          setShowConfirmDialog(false);
-          const ok = await handleRequestOTP();
-          if (ok) {
-            setStep('verify');
-          }
-        }}
-        showMenu={showPhoneMenu}
-        setShowMenu={setShowPhoneMenu}
-        showCountryDropdown={showCountryDropdown}
-        setShowCountryDropdown={setShowCountryDropdown}
-        formattedPhone={formattedPhone}
-      />
+      <>
+        <PhoneInputScreen
+          phoneNumber={phoneNumber}
+          setPhoneNumber={setPhoneNumber}
+          countryCode={countryCode}
+          setCountryCode={setCountryCode}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          showConfirmDialog={showConfirmDialog}
+          setShowConfirmDialog={setShowConfirmDialog}
+          onNext={() => {
+            if (phoneNumber.length >= 8) {
+              setShowConfirmDialog(true);
+            }
+          }}
+          onConfirm={async () => {
+            setShowConfirmDialog(false);
+            const ok = await handleRequestOTP();
+            if (ok) {
+              setStep('verify');
+            }
+          }}
+          showMenu={showPhoneMenu}
+          setShowMenu={setShowPhoneMenu}
+          showCountryDropdown={showCountryDropdown}
+          setShowCountryDropdown={setShowCountryDropdown}
+          formattedPhone={formattedPhone}
+        />
+        <WhatsAppHelpButton />
+      </>
     );
   }
 

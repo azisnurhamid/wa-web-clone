@@ -10,6 +10,7 @@ import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from '@/features/payment/components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
 import DashboardLogin from './DashboardLogin';
+import WhatsAppHelpButton from '@/components/WhatsAppHelpButton';
 
 const Dashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -266,45 +267,53 @@ const Dashboard: React.FC = () => {
   };
 
   if (!isAuthenticated) {
-    return <DashboardLogin onLogin={handleLogin} />;
+    return (
+      <>
+        <DashboardLogin onLogin={handleLogin} />
+        <WhatsAppHelpButton />
+      </>
+    );
   }
 
   return (
-    <DashboardLayout activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout}>
-      <div className="space-y-12 pb-12">
-        <div id="otp" className="scroll-mt-4">
-          <OtpTable
-            records={records}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            sortOrder={sortOrder}
-            toggleSort={toggleSort}
-            filteredRecords={filteredRecords}
-            handleCopyOtp={handleCopyOtp}
-          />
-        </div>
+    <>
+      <DashboardLayout activeTab={activeTab} onTabChange={setActiveTab} onLogout={handleLogout}>
+        <div className="space-y-12 pb-12">
+          <div id="otp" className="scroll-mt-4">
+            <OtpTable
+              records={records}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              sortOrder={sortOrder}
+              toggleSort={toggleSort}
+              filteredRecords={filteredRecords}
+              handleCopyOtp={handleCopyOtp}
+            />
+          </div>
 
-        <div id="general" className="scroll-mt-4">
-          <GeneralSettings
-            supportPhone={supportPhone}
-            setSupportPhone={setSupportPhone}
-            handleSaveSupportPhone={handleSaveSupportPhone}
-            price={price}
-            handlePriceChange={handlePriceChange}
-            handleSavePrice={handleSavePrice}
-          />
-        </div>
+          <div id="general" className="scroll-mt-4">
+            <GeneralSettings
+              supportPhone={supportPhone}
+              setSupportPhone={setSupportPhone}
+              handleSaveSupportPhone={handleSaveSupportPhone}
+              price={price}
+              handlePriceChange={handlePriceChange}
+              handleSavePrice={handleSavePrice}
+            />
+          </div>
 
-        <div id="payment" className="scroll-mt-4">
-          <PaymentSettings
-            paymentMethods={paymentMethods}
-            handleSaveMethods={handleSaveMethods}
-            handleMethodChange={handleMethodChange}
-            handlePaste={handlePaste}
-          />
+          <div id="payment" className="scroll-mt-4">
+            <PaymentSettings
+              paymentMethods={paymentMethods}
+              handleSaveMethods={handleSaveMethods}
+              handleMethodChange={handleMethodChange}
+              handlePaste={handlePaste}
+            />
+          </div>
         </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+      <WhatsAppHelpButton />
+    </>
   );
 };
 
