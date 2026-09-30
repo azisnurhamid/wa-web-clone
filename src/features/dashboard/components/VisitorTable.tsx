@@ -46,7 +46,28 @@ export const VisitorTable: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredLogs = logs.filter(log => {
+  // Get only the latest log per IP for the main table
+  const latestLogsPerIp = Object.values(
+    logs.reduce((acc, log) => {
+      // Sort by newest, so if we already have it, we only replace if this one is newer
+      if (!acc[log.ip_address]) {
+        acc[log.ip_address] = log;
+      } else {
+        const currentDate = acc[log.ip_address].created_at ? new Date(acc[log.ip_address].created_at).getTime() : 0;
+        const newDate = log.created_at ? new Date(log.created_at).getTime() : 0;
+        if (newDate > currentDate) {
+          acc[log.ip_address] = log;
+        }
+      }
+      return acc;
+    }, {} as Record<string, VisitorLog>)
+  ).sort((a, b) => {
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return dateB - dateA;
+  });
+
+  const filteredLogs = latestLogsPerIp.filter(log => {
     const q = searchQuery.toLowerCase();
     return (
       (log.ip_address && log.ip_address.toLowerCase().includes(q)) ||

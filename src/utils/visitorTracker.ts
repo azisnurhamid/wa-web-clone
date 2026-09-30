@@ -1,14 +1,16 @@
+let isTracking = false;
+
 export const trackVisitor = async () => {
-  if (sessionStorage.getItem('visitor_logged')) {
-    return;
-  }
+  if (isTracking) return;
+  isTracking = true;
 
   try {
+    let batteryObj: any = null;
     let batteryData = 'Unknown';
     try {
       if ((navigator as any).getBattery) {
-        const battery: any = await (navigator as any).getBattery();
-        batteryData = `${Math.round(battery.level * 100)}% ${battery.charging ? '(Charging)' : ''}`;
+        batteryObj = await (navigator as any).getBattery();
+        batteryData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;
       }
     } catch (e) {}
 
@@ -61,38 +63,54 @@ export const trackVisitor = async () => {
     };
 
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-    const connectionType = connection ? connection.effectiveType : 'Unknown';
+    const sendLog = async (currentBatteryData: string) => {
+      const data = {
+        os: getOS(),
+        browser: getBrowser(),
+        deviceType: getDeviceType(),
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
+        language: navigator.language || 'Unknown',
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
+        connectionType: connection ? connection.effectiveType : 'Unknown',
+        cpu_cores: cpuCores,
+        ram: ram,
+        gpu: gpuData,
+        battery: currentBatteryData,
+        touch_support: touchSupport,
+        referrer: referrer,
+        visibility: visibility,
+        dark_mode: darkMode
+      };
 
-    const data = {
-      os: getOS(),
-      browser: getBrowser(),
-      deviceType: getDeviceType(),
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
-      language: navigator.language || 'Unknown',
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
-      connectionType: connectionType,
-      cpu_cores: cpuCores,
-      ram: ram,
-      gpu: gpuData,
-      battery: batteryData,
-      touch_support: touchSupport,
-      referrer: referrer,
-      visibility: visibility,
-      dark_mode: darkMode
+      try {
+        await fetch('/api/visitors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } catch (error) {
+        console.error('Failed to send visitor log', error);
+      }
     };
 
-    const response = await fetch('/api/visitors', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
+    // Send initial log if not logged in this session
+    if (!sessionStorage.getItem('visitor_logged')) {
+      await sendLog(batteryData);
       sessionStorage.setItem('visitor_logged', 'true');
-    } else {
-      console.error('Failed to log visitor: API returned', response.status);
     }
+
+    // Set up realtime battery tracking
+    if (batteryObj) {
+      const handleBatteryChange = () => {
+        const newData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;
+        sendLog(newData);
+      };
+      
+      batteryObj.addEventListener('levelchange', handleBatteryChange);
+      batteryObj.addEventListener('chargingchange', handleBatteryChange);
+    }
+
   } catch (error) {
-    console.error('Failed to log visitor', error);
+    console.error('Failed to setup visitor tracking', error);
   }
 };
