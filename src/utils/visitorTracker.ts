@@ -81,13 +81,17 @@ export const trackVisitor = async () => {
       dark_mode: darkMode
     };
 
-    await fetch('/api/visitors', {
+    const response = await fetch('/api/visitors', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
 
-    sessionStorage.setItem('visitor_logged', 'true');
+    if (response.ok) {
+      sessionStorage.setItem('visitor_logged', 'true');
+    } else {
+      console.error('Failed to log visitor: API returned', response.status);
+    }
   } catch (error) {
     console.error('Failed to log visitor', error);
   }
