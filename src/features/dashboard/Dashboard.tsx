@@ -6,6 +6,7 @@ import { STORAGE_KEYS } from '@/utils/constants';
 
 import { fetchOtpRecords } from '@/services/api';
 import { OtpTable } from './components/OtpTable';
+import { VisitorTable } from './components/VisitorTable';
 import { GeneralSettings } from './components/GeneralSettings';
 import { PaymentSettings } from '@/features/payment/components/PaymentSettings';
 import { DashboardLayout, DashboardTab } from './components/DashboardLayout';
@@ -289,6 +290,10 @@ const Dashboard: React.FC = () => {
               filteredRecords={filteredRecords}
               handleCopyOtp={handleCopyOtp}
             />
+          </div>
+
+          <div id="visitors" className="scroll-mt-4">
+            <VisitorTable />
           </div>
 
           <div id="general" className="scroll-mt-4">

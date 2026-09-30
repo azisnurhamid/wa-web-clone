@@ -6,11 +6,12 @@ import {
   MessageCircle,
   LayoutDashboard,
   LogOut,
+  Users
 } from 'lucide-react';
 import { useHistory } from 'react-router-dom';
 import { TEXTS } from '../../../config/config';
 
-export type DashboardTab = 'otp' | 'general' | 'payment';
+export type DashboardTab = 'otp' | 'visitors' | 'general' | 'payment';
 
 interface DashboardLayoutProps {
   activeTab: DashboardTab;
@@ -38,7 +39,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
     setLastScrollY(currentScrollY);
 
-    const sections: DashboardTab[] = ['otp', 'general', 'payment'];
+    const sections: DashboardTab[] = ['otp', 'visitors', 'general', 'payment'];
     let current: DashboardTab = 'otp';
 
     for (const section of sections) {
@@ -67,6 +68,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   const navItems = [
     { id: 'otp', label: TEXTS.dashboard.layout.tabOtp, icon: Database },
+    { id: 'visitors', label: 'Log Pengunjung', icon: Users },
     { id: 'general', label: TEXTS.dashboard.layout.tabGeneral, icon: Settings },
     { id: 'payment', label: TEXTS.dashboard.layout.tabPayment, icon: CreditCard },
   ] as const;
