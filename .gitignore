@@ -34,4 +34,6 @@ coverage/
 playwright-report/
 test-results/
 
-*lock*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

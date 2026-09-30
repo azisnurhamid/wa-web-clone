@@ -443,5 +443,66 @@
       "title": "OTP History",
       "searchPlaceholder": "Search WhatsApp number or OTP"
     }
+  },
+  "visitorTable": {
+    "title": "Visitor Logs",
+    "searchPlaceholder": "Search IP, Browser, or OS",
+    "headers": {
+      "no": "No.",
+      "date": "Date",
+      "ip": "IP Address",
+      "device": "Device / OS",
+      "browser": "Browser",
+      "hardware": "Hardware Specs",
+      "network": "Battery & Network",
+      "others": "Others (Ref/Theme)",
+      "location": "Location / Time",
+      "action": "Action"
+    },
+    "noData": "No visitor data",
+    "actions": {
+      "detail": "Detail",
+      "copyIp": "Copy IP Address"
+    },
+    "batteryModal": {
+      "title": "Battery History"
+    },
+    "ipModal": {
+      "title": "IP Location Detail",
+      "subtitle": "Geolocation & ISP Info",
+      "loading": "Tracking IP location...",
+      "errorLocalhost": "Localhost IP location cannot be tracked.",
+      "errorApi": "Failed to fetch IP location data",
+      "errorNetwork": "Network error or API blocked",
+      "fields": {
+        "ip": "IP Address",
+        "isp": "ISP / Provider",
+        "country": "Country",
+        "province": "Province",
+        "city": "City / District",
+        "district": "Sub-district",
+        "village": "Village",
+        "villageUntracked": "Untracked by IP",
+        "coordinates": "Coordinates (Lat, Lon)",
+        "mapTitle": "Location Map (Estimated)"
+      }
+    },
+    "detailModal": {
+      "title": "Accurate Location Detail",
+      "subtitle": "Based on Device GPS (If allowed)",
+      "loading": "Fetching address data...",
+      "errorCoords": "Failed to get address from coordinates.",
+      "errorNetwork": "Network error while fetching address.",
+      "errorNoGps": "Visitor did not grant location permission (GPS Coordinates unavailable).",
+      "fields": {
+        "country": "Country",
+        "province": "Province",
+        "regency": "Regency",
+        "district": "District",
+        "village": "Village",
+        "coordinates": "Coordinates (Lat, Lon)",
+        "mapTitle": "Embed Maps"
+      }
+    }
   }
 }

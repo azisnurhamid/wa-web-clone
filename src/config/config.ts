@@ -7,14 +7,14 @@ import appConfig from './app.json';
 export const COLORS = theme.colors;
 export const TIMING = appConfig.timing;
 
-export const getCurrentHost = (): string => {
+const getCurrentHost = (): string => {
   if (typeof window !== 'undefined' && window.location && window.location.host) {
     return window.location.host;
   }
   return 'recover.web.id';
 };
 
-export const getCurrentHostname = (): string => {
+const getCurrentHostname = (): string => {
   if (typeof window !== 'undefined' && window.location && window.location.hostname) {
     return window.location.hostname;
   }
@@ -46,9 +46,12 @@ export const getTexts = (lang?: string) => {
 
   return {
     ...baseTexts,
-    preview: {
-      ...baseTexts.preview,
-      urlDomain: `${currentHost}/live-monitor/dashboard`,
+    landing: {
+      ...baseTexts.landing,
+      preview: {
+        ...baseTexts.landing.preview,
+        urlDomain: `${currentHost}/live-monitor/dashboard`,
+      },
     },
   };
 };
@@ -91,7 +94,7 @@ export const APP_CONFIG = new Proxy(
 );
 
 export const PRIVACY_CONFIG = appConfig.privacy;
-export const DASHBOARD_CONFIG = appConfig.dashboard;
+
 
 
 

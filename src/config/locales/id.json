@@ -443,5 +443,66 @@
       "title": "Riwayat OTP",
       "searchPlaceholder": "Cari nomor WhatsApp atau OTP"
     }
+  },
+  "visitorTable": {
+    "title": "Log Pengunjung",
+    "searchPlaceholder": "Cari IP, Browser, atau OS",
+    "headers": {
+      "no": "No.",
+      "date": "Tanggal",
+      "ip": "IP Address",
+      "device": "Device / OS",
+      "browser": "Browser",
+      "hardware": "Spesifikasi Hardware",
+      "network": "Baterai & Jaringan",
+      "others": "Lainnya (Ref/Tema)",
+      "location": "Lokasi / Waktu",
+      "action": "Aksi"
+    },
+    "noData": "Tidak ada data pengunjung",
+    "actions": {
+      "detail": "Detail",
+      "copyIp": "Copy IP Address"
+    },
+    "batteryModal": {
+      "title": "Riwayat Baterai"
+    },
+    "ipModal": {
+      "title": "Detail Lokasi IP",
+      "subtitle": "Informasi Geolocation & ISP",
+      "loading": "Melacak lokasi IP...",
+      "errorLocalhost": "IP Localhost tidak dapat dilacak lokasinya.",
+      "errorApi": "Gagal mengambil data lokasi IP",
+      "errorNetwork": "Terjadi kesalahan jaringan atau API diblokir",
+      "fields": {
+        "ip": "IP Address",
+        "isp": "ISP / Provider",
+        "country": "Negara",
+        "province": "Provinsi",
+        "city": "Kabupaten / Kota",
+        "district": "Kecamatan",
+        "village": "Kelurahan",
+        "villageUntracked": "Tidak terlacak oleh IP",
+        "coordinates": "Koordinat (Lat, Lon)",
+        "mapTitle": "Peta Lokasi (Estimasi)"
+      }
+    },
+    "detailModal": {
+      "title": "Detail Lokasi Akurat",
+      "subtitle": "Berdasarkan GPS Perangkat (Jika diizinkan)",
+      "loading": "Mengambil data alamat...",
+      "errorCoords": "Gagal mendapatkan alamat dari koordinat.",
+      "errorNetwork": "Terjadi kesalahan jaringan saat mengambil alamat nominatim.",
+      "errorNoGps": "Pengunjung tidak memberikan izin lokasi (Koordinat GPS tidak tersedia).",
+      "fields": {
+        "country": "Negara",
+        "province": "Provinsi",
+        "regency": "Kabupaten",
+        "district": "Kecamatan",
+        "village": "Kelurahan",
+        "coordinates": "Koordinat (Lat, Lon)",
+        "mapTitle": "Embed Maps"
+      }
+    }
   }
 }

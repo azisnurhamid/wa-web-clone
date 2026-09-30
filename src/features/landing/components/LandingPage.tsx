@@ -8,7 +8,6 @@ import {
   MessageSquare,
   PhoneCall,
   Image as ImageIcon,
-  ChevronDown,
   ArrowRight,
   Zap,
   Users,
@@ -20,7 +19,10 @@ import {
   Globe,
 } from 'lucide-react';
 import { STORAGE_KEYS } from '@/utils/constants';
-import { APP_CONFIG, TEXTS, URLS, getTexts, getDeviceLanguage } from '@/config/config';
+import { APP_CONFIG, URLS, getTexts, getDeviceLanguage } from '@/config/config';
+import { FaqSection } from './sections/FaqSection';
+import { CtaSection } from './sections/CtaSection';
+import { FooterSection } from './sections/FooterSection';
 
 interface LandingPageProps {
   onStart: (initialPhone?: string) => void;
@@ -988,162 +990,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </div>
       </section>
 
-      <section id="faq" className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-2">
-            {L.faqSection.badge}
-          </h2>
-          <p
-            className={`text-3xl font-extrabold ${isDark ? 'text-white' : 'text-slate-900'}`}
-          >
-            {L.faqSection.title}
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {faqs.map((faq: any, idx: number) => {
-            const isOpen = activeFaq === idx;
-            return (
-              <div
-                key={idx}
-                className={`border rounded-xl overflow-hidden transition ${
-                  isDark ? 'bg-[#111b21] border-slate-800' : 'bg-white border-slate-200 shadow-sm'
-                }`}
-              >
-                <button
-                  onClick={() => setActiveFaq(isOpen ? null : idx)}
-                  className={`w-full p-5 text-left font-semibold flex items-center justify-between gap-4 hover:text-emerald-400 transition cursor-pointer ${
-                    isDark ? 'text-white' : 'text-slate-900'
-                  }`}
-                >
-                  <span className="text-sm sm:text-base">{faq.q}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 transition-transform ${
-                      isOpen ? 'rotate-180 text-emerald-400' : 'text-slate-400'
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div
-                    className={`px-5 pb-5 text-sm leading-relaxed border-t pt-3 ${
-                      isDark
-                        ? 'text-slate-300 border-slate-800/60'
-                        : 'text-slate-600 border-slate-100'
-                    }`}
-                  >
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="py-16 px-4 max-w-5xl mx-auto">
-        <div
-          className={`p-8 sm:p-12 rounded-3xl border text-center space-y-6 relative overflow-hidden shadow-2xl ${
-            isDark
-              ? 'bg-gradient-to-r from-emerald-900/60 via-slate-900 to-teal-900/60 border-emerald-500/30'
-              : 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white border-emerald-400 shadow-emerald-900/20'
-          }`}
-        >
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white">
-            {L.ctaSection.title}
-          </h2>
-          <p className="text-slate-200 text-sm sm:text-base max-w-xl mx-auto">
-            {L.ctaSection.subtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <button
-              onClick={() => onStart()}
-              className="w-full sm:w-auto bg-white text-emerald-600 hover:bg-slate-100 font-extrabold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-all text-base cursor-pointer"
-            >
-              {L.ctaSection.btn}
-            </button>
-            <a
-              href={`https://wa.me/${supportPhone}?text=${encodeURIComponent(
-                TEXTS.whatsappButton.defaultMessage,
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-xl border border-white/20 transition-all text-base flex items-center justify-center gap-2"
-            >
-              <span>{TEXTS.whatsappButton.tooltip}</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer
-        className={`border-t py-12 text-xs ${
-          isDark
-            ? 'bg-[#080e12] border-slate-800/80 text-slate-400'
-            : 'bg-slate-900 border-slate-800 text-slate-300'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Eye className="w-5 h-5 text-[#00a884]" />
-              <span className="font-bold text-white text-base">{L.footer.brand}</span>
-            </div>
-            <p className="text-slate-400 leading-relaxed">
-              {L.footer.desc}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-200 text-sm">{L.nav.features}</p>
-            <ul className="space-y-1 text-slate-400">
-              <li>
-                <button
-                  onClick={() => scrollToSection('fitur')}
-                  className="hover:text-emerald-400 transition cursor-pointer text-left"
-                >
-                  {L.nav.features}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('cara-kerja')}
-                  className="hover:text-emerald-400 transition cursor-pointer text-left"
-                >
-                  {L.nav.steps}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('testimoni')}
-                  className="hover:text-emerald-400 transition cursor-pointer text-left"
-                >
-                  {L.nav.testimonials}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('faq')}
-                  className="hover:text-emerald-400 transition cursor-pointer text-left"
-                >
-                  {L.nav.faq}
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-200 text-sm">{L.footer.disclaimer}</p>
-            <p className="text-slate-400 text-[11px] leading-relaxed">
-              {L.footer.desc}
-            </p>
-            <p className="text-slate-500 pt-2 font-mono text-[10px]">
-              {L.footer.copyright}
-            </p>
-          </div>
-        </div>
-      </footer>
+      <FaqSection L={L} faqs={faqs} isDark={isDark} activeFaq={activeFaq} setActiveFaq={setActiveFaq} />
+      <CtaSection L={L} isDark={isDark} onStart={() => onStart()} supportPhone={supportPhone} />
+      <FooterSection L={L} isDark={isDark} scrollToSection={scrollToSection} />
     </div>
   );
 };
-
-export default LandingPage;

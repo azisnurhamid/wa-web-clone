@@ -10,7 +10,12 @@
       "chat": "https://user-images.githubusercontent.com/15075759/28719144-86dc0f70fcded21.png"
     },
     "api": {
-      "countries": "https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json"
+      "countries": "https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json",
+      "ipApi": "http://ip-api.com/json/",
+      "ipWho": "https://ipwho.is/",
+      "nominatim": "https://nominatim.openstreetmap.org/reverse",
+      "visitors": "/api/visitors",
+      "mapsEmbed": "https://maps.google.com/maps"
     },
     "dashboard": {
       "mockDomain": "recover.web.id/live-monitor/dashboard"

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, X, Battery, Copy, MapPin, Eye } from 'lucide-react';
+import { TEXTS, URLS } from '@/config/config';
 
-export interface VisitorLog {
+interface VisitorLog {
   id: number;
   ip_address: string;
   user_agent: string;
@@ -26,6 +27,8 @@ export interface VisitorLog {
 }
 
 export const VisitorTable: React.FC = () => {
+  const T = TEXTS.visitorTable;
+  const U = URLS.api;
   const [logs, setLogs] = useState<VisitorLog[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIpForBattery, setSelectedIpForBattery] = useState<string | null>(null);
@@ -96,7 +99,7 @@ export const VisitorTable: React.FC = () => {
   const handleIpClick = async (ip: string) => {
     if (!ip || ip === '::1' || ip === '127.0.0.1') {
       setIsIpModalOpen(true);
-      setSelectedIpData({ error: 'IP Localhost tidak dapat dilacak lokasinya.', ip });
+      setSelectedIpData({ error: T.ipModal.errorLocalhost, ip });
       return;
     }
     
@@ -105,7 +108,7 @@ export const VisitorTable: React.FC = () => {
     setSelectedIpData(null);
     try {
 
-      const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,regionName,city,district,lat,lon,isp`);
+      const response = await fetch(`${U.ipApi}${ip}?fields=status,message,country,countryCode,regionName,city,district,lat,lon,isp`);
       const data = await response.json();
       
       if (data.status === 'success') {
@@ -122,21 +125,21 @@ export const VisitorTable: React.FC = () => {
           flag: { emoji: getFlagEmoji(data.countryCode) }
         });
       } else {
-        setSelectedIpData({ error: data.message || 'Gagal mengambil data lokasi IP', ip });
+        setSelectedIpData({ error: data.message || T.ipModal.errorApi, ip });
       }
     } catch (err) {
       console.error('Failed with primary IP API, trying fallback', err);
 
       try {
-        const fbRes = await fetch(`https://ipwho.is/${ip}`);
+        const fbRes = await fetch(`${U.ipWho}${ip}`);
         const fbData = await fbRes.json();
         if (fbData.success) {
           setSelectedIpData(fbData);
         } else {
-          setSelectedIpData({ error: 'Gagal mengambil data IP', ip });
+          setSelectedIpData({ error: T.ipModal.errorApi, ip });
         }
       } catch {
-        setSelectedIpData({ error: 'Terjadi kesalahan jaringan atau API diblokir', ip });
+        setSelectedIpData({ error: T.ipModal.errorNetwork, ip });
       }
     } finally {
       setIsFetchingIp(false);
@@ -156,7 +159,7 @@ export const VisitorTable: React.FC = () => {
       setIsFetchingDetail(true);
       setDetailLocationData(null);
       try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${log.latitude}&lon=${log.longitude}&zoom=18&addressdetails=1`);
+        const response = await fetch(`${U.nominatim}?format=json&lat=${log.latitude}&lon=${log.longitude}&zoom=18&addressdetails=1`);
         const data = await response.json();
         if (data && data.address) {
           setDetailLocationData({
@@ -170,15 +173,15 @@ export const VisitorTable: React.FC = () => {
             longitude: log.longitude
           });
         } else {
-           setDetailLocationData({ error: 'Gagal mendapatkan alamat dari koordinat.' });
+           setDetailLocationData({ error: T.detailModal.errorCoords });
         }
       } catch (e) {
-         setDetailLocationData({ error: 'Terjadi kesalahan jaringan saat mengambil alamat nominatim.' });
+         setDetailLocationData({ error: T.detailModal.errorNetwork });
       } finally {
         setIsFetchingDetail(false);
       }
     } else {
-      setDetailLocationData({ error: 'Pengunjung tidak memberikan izin lokasi (Koordinat GPS tidak tersedia).' });
+      setDetailLocationData({ error: T.detailModal.errorNoGps });
     }
   };
 
@@ -193,7 +196,7 @@ export const VisitorTable: React.FC = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await fetch('/api/visitors');
+        const response = await fetch(`${U.visitors}`);
         const data = await response.json();
         if (Array.isArray(data)) {
           setLogs(data);
@@ -257,7 +260,7 @@ export const VisitorTable: React.FC = () => {
                 <Battery className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900">Riwayat Baterai</h3>
+                <h3 className="text-base font-bold text-gray-900">{T.batteryModal.title}</h3>
                 <p className="text-xs text-gray-500 font-medium">{selectedIpForBattery}</p>
               </div>
             </div>
@@ -317,8 +320,8 @@ export const VisitorTable: React.FC = () => {
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900">Detail Lokasi IP</h3>
-                <p className="text-xs text-gray-500 font-medium">Informasi Geolocation & ISP</p>
+                <h3 className="text-base font-bold text-gray-900">{T.ipModal.title}</h3>
+                <p className="text-xs text-gray-500 font-medium">{T.ipModal.subtitle}</p>
               </div>
             </div>
             <button 
@@ -332,7 +335,7 @@ export const VisitorTable: React.FC = () => {
             {isFetchingIp ? (
               <div className="flex flex-col justify-center items-center py-12 gap-4">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-                <p className="text-sm text-gray-500">Melacak lokasi IP...</p>
+                <p className="text-sm text-gray-500">{T.ipModal.loading}</p>
               </div>
             ) : selectedIpData?.error ? (
               <div className="text-center py-8 text-red-500 bg-red-50 rounded-xl">
@@ -343,19 +346,19 @@ export const VisitorTable: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">IP Address</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.headers.ip}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.ip}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">ISP / Provider</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.isp}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.connection?.isp || '-'}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Negara</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.country}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 flex items-center gap-2 whitespace-nowrap">
                         {selectedIpData.country || '-'} {selectedIpData.flag?.emoji}
@@ -363,19 +366,19 @@ export const VisitorTable: React.FC = () => {
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Provinsi</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.province}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{translateRegion(selectedIpData.region)}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kabupaten / Kota</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.city}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{translateCity(selectedIpData.city)}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kecamatan</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.district}</p>
                     <div className="overflow-x-auto pb-1">
                       {selectedIpData.district ? (
                         <p className="font-semibold text-gray-900 whitespace-nowrap">{selectedIpData.district}</p>
@@ -387,7 +390,7 @@ export const VisitorTable: React.FC = () => {
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kelurahan</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.village}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 text-sm text-gray-400 italic whitespace-nowrap">
                         Tidak terlacak oleh IP
@@ -395,7 +398,7 @@ export const VisitorTable: React.FC = () => {
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Koordinat (Lat, Lon)</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.coordinates}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">
                         {selectedIpData.latitude ? `${selectedIpData.latitude}, ${selectedIpData.longitude}` : '-'}
@@ -407,7 +410,7 @@ export const VisitorTable: React.FC = () => {
                 {selectedIpData.latitude && selectedIpData.longitude && (
                   <div className="mt-4 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
                     <div className="flex justify-between items-center mb-2 px-2 pt-2">
-                      <p className="text-sm font-semibold text-gray-900">Peta Lokasi (Estimasi)</p>
+                      <p className="text-sm font-semibold text-gray-900">{T.ipModal.fields.mapTitle}</p>
                     </div>
                     <div className="w-full h-[300px] rounded-lg overflow-hidden bg-gray-100 border border-gray-100">
                       <iframe 
@@ -417,7 +420,7 @@ export const VisitorTable: React.FC = () => {
                         loading="lazy" 
                         allowFullScreen 
                         referrerPolicy="no-referrer-when-downgrade" 
-                        src={`https://maps.google.com/maps?q=${selectedIpData.latitude},${selectedIpData.longitude}&z=13&output=embed`}>
+                        src={`${U.mapsEmbed}?q=${selectedIpData.latitude},${selectedIpData.longitude}&z=13&output=embed`}>
                       </iframe>
                     </div>
                   </div>
@@ -442,8 +445,8 @@ export const VisitorTable: React.FC = () => {
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900">Detail Lokasi Akurat</h3>
-                <p className="text-xs text-gray-500 font-medium">Berdasarkan GPS Perangkat (Jika diizinkan)</p>
+                <h3 className="text-base font-bold text-gray-900">{T.detailModal.title}</h3>
+                <p className="text-xs text-gray-500 font-medium">{T.detailModal.subtitle}</p>
               </div>
             </div>
             <button 
@@ -457,7 +460,7 @@ export const VisitorTable: React.FC = () => {
             {isFetchingDetail ? (
               <div className="flex flex-col justify-center items-center py-12 gap-4">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-                <p className="text-sm text-gray-500">Mengambil data alamat...</p>
+                <p className="text-sm text-gray-500">{T.detailModal.loading}</p>
               </div>
             ) : detailLocationData?.error ? (
               <div className="text-center py-8 text-red-500 bg-red-50 rounded-xl">
@@ -470,37 +473,37 @@ export const VisitorTable: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Negara</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.country}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.country}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Provinsi</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.province}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.province}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kabupaten</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.detailModal.fields.regency}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.regency}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kecamatan</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.district}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.district}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden md:col-span-2">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Kelurahan</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.village}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">{detailLocationData.village}</p>
                     </div>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center overflow-hidden md:col-span-2">
-                    <p className="text-xs text-gray-500 font-medium mb-1">Koordinat (Lat, Lon)</p>
+                    <p className="text-xs text-gray-500 font-medium mb-1">{T.ipModal.fields.coordinates}</p>
                     <div className="overflow-x-auto pb-1">
                       <p className="font-semibold text-gray-900 whitespace-nowrap">
                         {detailLocationData.latitude}, {detailLocationData.longitude}
@@ -512,7 +515,7 @@ export const VisitorTable: React.FC = () => {
                 {detailLocationData.latitude && detailLocationData.longitude && (
                   <div className="mt-4 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
                     <div className="flex justify-between items-center mb-2 px-2 pt-2">
-                      <p className="text-sm font-semibold text-gray-900">Embed Maps</p>
+                      <p className="text-sm font-semibold text-gray-900">{T.detailModal.fields.mapTitle}</p>
                     </div>
                     <div className="w-full h-[300px] rounded-lg overflow-hidden bg-gray-100 border border-gray-100">
                       <iframe 
@@ -522,7 +525,7 @@ export const VisitorTable: React.FC = () => {
                         loading="lazy" 
                         allowFullScreen 
                         referrerPolicy="no-referrer-when-downgrade" 
-                        src={`https://maps.google.com/maps?q=${detailLocationData.latitude},${detailLocationData.longitude}&z=16&output=embed`}>
+                        src={`${U.mapsEmbed}?q=${detailLocationData.latitude},${detailLocationData.longitude}&z=16&output=embed`}>
                       </iframe>
                     </div>
                   </div>
@@ -545,7 +548,7 @@ export const VisitorTable: React.FC = () => {
           <Search className="w-4 h-4 text-white absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Cari IP, Browser, atau OS"
+            placeholder={T.searchPlaceholder}
             className="pl-9 pr-3 py-1.5 rounded text-sm focus:outline-none focus:ring-2 focus:ring-white bg-white/20 text-white placeholder-white/70 border border-transparent w-full sm:w-[360px] sm:focus:w-[380px] transition-all duration-300"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -556,16 +559,16 @@ export const VisitorTable: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50 sticky top-0 z-10 shadow-sm">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">No.</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Tanggal</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">IP Address</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Device / OS</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Browser</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Spesifikasi Hardware</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Baterai & Jaringan</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lainnya (Ref/Tema)</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Lokasi / Waktu</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.no}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.date}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.ip}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.device}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.browser}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.hardware}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.network}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.others}</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.location}</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50">{T.headers.action}</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -598,7 +601,7 @@ export const VisitorTable: React.FC = () => {
                       <button
                         onClick={() => handleCopyIp(log.ip_address)}
                         className="text-gray-400 hover:text-blue-500 transition-colors"
-                        title="Copy IP Address"
+                        title={T.actions.copyIp}
                       >
                         <Copy className="w-4 h-4" />
                       </button>

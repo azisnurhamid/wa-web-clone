@@ -14,7 +14,8 @@ export const trackVisitor = async () => {
         batteryObj = await (navigator as any).getBattery();
         batteryData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;
       }
-    } catch (e) {}
+    } catch {
+    }
 
     let gpuData = 'Unknown';
     try {
@@ -26,7 +27,8 @@ export const trackVisitor = async () => {
           gpuData = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
         }
       }
-    } catch (e) {}
+    } catch {
+    }
 
     const cpuCores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Cores` : 'Unknown';
     const ram = (navigator as any).deviceMemory ? `${(navigator as any).deviceMemory} GB` : 'Unknown';
