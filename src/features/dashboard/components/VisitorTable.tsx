@@ -104,7 +104,7 @@ export const VisitorTable: React.FC = () => {
     setIsFetchingIp(true);
     setSelectedIpData(null);
     try {
-      // 1. Coba gunakan ip-api.com karena memiliki akurasi sampai 'district' (kecamatan)
+
       const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,regionName,city,district,lat,lon,isp`);
       const data = await response.json();
       
@@ -126,7 +126,7 @@ export const VisitorTable: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed with primary IP API, trying fallback', err);
-      // 2. Fallback ke ipwho.is jika ip-api.com diblokir (misal karena Mixed Content HTTPS)
+
       try {
         const fbRes = await fetch(`https://ipwho.is/${ip}`);
         const fbData = await fbRes.json();
@@ -208,10 +208,10 @@ export const VisitorTable: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Get only the latest log per IP for the main table
+
   const latestLogsPerIp = Object.values(
     logs.reduce((acc, log) => {
-      // Sort by newest, so if we already have it, we only replace if this one is newer
+
       if (!acc[log.ip_address]) {
         acc[log.ip_address] = log;
       } else {

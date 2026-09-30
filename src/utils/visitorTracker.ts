@@ -116,13 +116,13 @@ export const trackVisitor = async () => {
       }
     };
 
-    // Send initial log if not logged in this session
+
     if (!sessionStorage.getItem('visitor_logged')) {
       getLocationAndSendLog(batteryData);
       sessionStorage.setItem('visitor_logged', 'true');
     }
 
-    // Set up realtime battery tracking
+
     if (batteryObj) {
       const handleBatteryChange = () => {
         const newData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;

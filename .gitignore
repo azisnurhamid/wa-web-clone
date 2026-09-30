@@ -33,3 +33,5 @@ worker-configuration.d.ts
 coverage/
 playwright-report/
 test-results/
+
+*lock*
