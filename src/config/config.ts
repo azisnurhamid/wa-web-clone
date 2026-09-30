@@ -90,11 +90,7 @@ export const APP_CONFIG = new Proxy(
       }
       return (target as any)[prop];
     },
-  }
+  },
 );
 
 export const PRIVACY_CONFIG = appConfig.privacy;
-
-
-
-

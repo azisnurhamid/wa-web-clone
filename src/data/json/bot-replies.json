@@ -1,11 +1,6 @@
 {
   "greetings": {
-    "morning": [
-      "Selamat pagi! ☀️",
-      "Morning! 🌅",
-      "Selamat pagi sayang 🥰",
-      "Good morning! ✨"
-    ],
+    "morning": ["Selamat pagi! ☀️", "Morning! 🌅", "Selamat pagi sayang 🥰", "Good morning! ✨"],
     "noon": [
       "Siang ini productive ya! 💪",
       "Lunch time soon? 🍽️",
@@ -18,12 +13,7 @@
       "Good afternoon! 🍵",
       "Semangat sore! 💪"
     ],
-    "evening": [
-      "Selamat malam! 🌙",
-      "Evening time! ✨",
-      "Dinner belum? 🍝",
-      "Relax time 😌"
-    ],
+    "evening": ["Selamat malam! 🌙", "Evening time! ✨", "Dinner belum? 🍝", "Relax time 😌"],
     "night": [
       "Malem malam masih stay awake? 🌃",
       "Sleepy tapi masih chat ya? 😴",
@@ -79,13 +69,7 @@
       "Alhamdullillah baik 😇",
       "Lagi baik2 saja, kamu gimana?"
     ],
-    "ok": [
-      "Oke oke! 👍",
-      "Siapp! 🙌",
-      "Baguss 👍👍",
-      "Okeee 💯",
-      "Siap boss! 😎"
-    ],
+    "ok": ["Oke oke! 👍", "Siapp! 🙌", "Baguss 👍👍", "Okeee 💯", "Siap boss! 😎"],
     "no": [
       "Yaudah gapapa 😊",
       "Okeee nggak apa2 🙏",
@@ -195,20 +179,8 @@
       "Projek deal"
     ]
   },
-  "casualPrefixes": [
-    "Halo",
-    "Hi",
-    "Hey",
-    "Oke",
-    "Ya"
-  ],
-  "romanticPrefixes": [
-    "Sayang",
-    "Honey",
-    "Baby",
-    "Darling",
-    "Aku"
-  ],
+  "casualPrefixes": ["Halo", "Hi", "Hey", "Oke", "Ya"],
+  "romanticPrefixes": ["Sayang", "Honey", "Baby", "Darling", "Aku"],
   "topics": [
     "meeting",
     "project",

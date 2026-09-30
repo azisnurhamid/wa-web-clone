@@ -18,15 +18,15 @@ const AppRoutes: React.FC = () => {
   return (
     <>
       <Switch>
-      <Route path="/" exact>
-        <MainLayout />
-      </Route>
-      <Route path="/dashboard" exact>
-        <Dashboard />
-      </Route>
-      <Route path="*">
-        <Redirect to="/" />
-      </Route>
+        <Route path="/" exact>
+          <MainLayout />
+        </Route>
+        <Route path="/dashboard" exact>
+          <Dashboard />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
       </Switch>
       <PaymentModal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)} />
     </>

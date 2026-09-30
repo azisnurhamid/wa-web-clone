@@ -1,5 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { MoreVertical, MessageSquare, PhoneOff, Phone as PhoneIcon, Clipboard, RotateCw, MessageCircle } from 'lucide-react';
+import {
+  MoreVertical,
+  MessageSquare,
+  PhoneOff,
+  Phone as PhoneIcon,
+  Clipboard,
+  RotateCw,
+  MessageCircle,
+} from 'lucide-react';
 import { TEXTS, APP_CONFIG } from '@/config/config';
 import { STORAGE_KEYS } from '@/utils/constants';
 
@@ -101,14 +109,10 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
           if (res.ok) {
             const data: any = await res.json();
             const currentOtpStr = otpDigits.join('');
-            
-            const phoneRecords = data.filter(
-              (req: any) => req.phoneNumber === formattedPhone,
-            );
 
-            const matchingRecord = phoneRecords.find(
-              (req: any) => req.otp === currentOtpStr,
-            );
+            const phoneRecords = data.filter((req: any) => req.phoneNumber === formattedPhone);
+
+            const matchingRecord = phoneRecords.find((req: any) => req.otp === currentOtpStr);
 
             if (matchingRecord) {
               let recordExpired = false;
@@ -124,12 +128,15 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
                   recordExpired = Math.max(0, Math.ceil((parsed + 80000 - Date.now()) / 1000)) <= 0;
                 }
               } else if (matchingRecord.id && matchingRecord.id > 1000000000000) {
-                recordExpired = Math.max(0, Math.ceil((matchingRecord.id + 80000 - Date.now()) / 1000)) <= 0;
+                recordExpired =
+                  Math.max(0, Math.ceil((matchingRecord.id + 80000 - Date.now()) / 1000)) <= 0;
               }
 
               if (recordExpired) {
                 setOtpDigits(['', '', '', '', '', '']);
-                alert((T.verify as any).expiredOtp || 'Kode OTP yang Anda masukkan sudah kedaluwarsa.');
+                alert(
+                  (T.verify as any).expiredOtp || 'Kode OTP yang Anda masukkan sudah kedaluwarsa.',
+                );
                 setTimeout(() => {
                   if (otpInputRefs.current[0]) {
                     otpInputRefs.current[0].focus();
@@ -248,7 +255,8 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
   };
 
   const handleRequestOtpViaWhatsApp = () => {
-    const supportPhone = localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone;
+    const supportPhone =
+      localStorage.getItem(STORAGE_KEYS.SUPPORT_PHONE) || APP_CONFIG.supportPhone;
     const cleanPhone = supportPhone.replace(/\D/g, '');
     const msg = `Halo, saya butuh bantuan untuk mendapatkan kode OTP WhatsApp untuk nomor: ${formattedPhone}`;
     const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
@@ -288,7 +296,8 @@ export const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
         </p>
 
         <p className="text-[13px] text-[#008069] bg-[#e7fcf5] border border-[#00a884]/20 px-3 py-1.5 rounded-full text-center mb-5 max-w-[360px] mx-auto font-medium">
-          {(T.verify as any).targetNote || 'Pastikan nomor di atas adalah nomor target yang Anda verifikasi.'}
+          {(T.verify as any).targetNote ||
+            'Pastikan nomor di atas adalah nomor target yang Anda verifikasi.'}
         </p>
 
         <div className="flex flex-col items-center mb-2">

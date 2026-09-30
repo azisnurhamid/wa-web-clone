@@ -243,4 +243,3 @@ export const OtpTable: React.FC<OtpTableProps> = ({
     </div>
   );
 };
-

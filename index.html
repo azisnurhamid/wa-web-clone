@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,7 @@
     <meta http-equiv="Expires" content="0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <title><%= title %></title>
     <meta name="description" content="<%= description %>" />
     <meta name="keywords" content="<%= keywords %>" />
@@ -20,10 +20,10 @@
     <meta name="rating" content="general" />
     <meta name="theme-color" content="<%= themeColor %>" />
     <link rel="canonical" href="<%= url.canonical %>" />
-    
+
     <link rel="icon" type="image/svg+xml" href="<%= url.favicon %>" />
     <link rel="apple-touch-icon" href="<%= url.favicon %>" />
-    
+
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= url.canonical %>" />
     <meta property="og:title" content="<%= title %>" />
@@ -35,7 +35,7 @@
     <meta property="og:site_name" content="<%= siteName %>" />
     <meta property="og:locale" content="<%= locale %>" />
     <meta property="invite_link_type" content="website" />
-    
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@WhatsApp" />
     <meta name="twitter:creator" content="@WhatsApp" />
@@ -43,9 +43,9 @@
     <meta name="twitter:title" content="<%= title %>" />
     <meta name="twitter:description" content="<%= description %>" />
     <meta name="twitter:image" content="<%= url.ogImage %>" />
-    
+
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
-    
+
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -53,31 +53,31 @@
     <meta name="application-name" content="WhatsApp Web" />
     <meta name="msapplication-TileColor" content="#00a884" />
     <meta name="msapplication-config" content="none" />
-    
+
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "WhatsApp",
-      "description": "Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal.",
-      "url": "https://whatsapp.com/",
-      "applicationCategory": "CommunicationApplication",
-      "operatingSystem": "Android, iOS, Web Browser",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "WhatsApp LLC"
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "WhatsApp",
+        "description": "Gunakan WhatsApp Messenger untuk terus berkomunikasi dengan teman dan keluarga. WhatsApp adalah aplikasi berkirim pesan dan menelepon yang simpel, aman, dan andal.",
+        "url": "https://whatsapp.com/",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Android, iOS, Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "WhatsApp LLC"
+        }
       }
-    }
     </script>
-    
+
     <script>
       const originalWarn = console.warn;
-      console.warn = function(...args) {
+      console.warn = function (...args) {
         if (args[0] && args[0].includes && args[0].includes('cdn.tailwindcss.com')) {
           return;
         }
@@ -86,23 +86,23 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      console.warn = console.warn || function() {};
+      console.warn = console.warn || function () {};
     </script>
-    
+
     <style>
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: transparent; 
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #cbd5e1; 
+        background: #cbd5e1;
         border-radius: 3px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8; 
+        background: #94a3b8;
       }
 
       * {
@@ -112,7 +112,9 @@
         user-select: none !important;
       }
 
-      input, textarea, [contenteditable="true"] {
+      input,
+      textarea,
+      [contenteditable='true'] {
         -webkit-user-select: text !important;
         -moz-user-select: text !important;
         -ms-user-select: text !important;
@@ -128,17 +130,16 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
           for (var registration of registrations) {
             registration.unregister();
           }
         });
       }
-      
+
       if ('caches' in window) {
-        caches.keys().then(function(names) {
+        caches.keys().then(function (names) {
           for (var name of names) {
             caches.delete(name);
           }

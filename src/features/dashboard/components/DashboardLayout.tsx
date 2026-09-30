@@ -6,7 +6,7 @@ import {
   MessageCircle,
   LayoutDashboard,
   LogOut,
-  Users
+  Users,
 } from 'lucide-react';
 import { useHistory } from 'react-router-dom';
 import { TEXTS } from '../../../config/config';

@@ -9,7 +9,13 @@ interface FaqSectionProps {
   setActiveFaq: (idx: number | null) => void;
 }
 
-export const FaqSection: React.FC<FaqSectionProps> = ({ L, faqs, isDark, activeFaq, setActiveFaq }) => {
+export const FaqSection: React.FC<FaqSectionProps> = ({
+  L,
+  faqs,
+  isDark,
+  activeFaq,
+  setActiveFaq,
+}) => {
   return (
     <section id="faq" className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-12">

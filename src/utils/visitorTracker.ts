@@ -14,8 +14,7 @@ export const trackVisitor = async () => {
         batteryObj = await (navigator as any).getBattery();
         batteryData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;
       }
-    } catch {
-    }
+    } catch {}
 
     let gpuData = 'Unknown';
     try {
@@ -27,13 +26,19 @@ export const trackVisitor = async () => {
           gpuData = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
         }
       }
-    } catch {
-    }
+    } catch {}
 
-    const cpuCores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Cores` : 'Unknown';
-    const ram = (navigator as any).deviceMemory ? `${(navigator as any).deviceMemory} GB` : 'Unknown';
-    const touchSupport = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) ? 'Yes' : 'No';
-    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    const cpuCores = navigator.hardwareConcurrency
+      ? `${navigator.hardwareConcurrency} Cores`
+      : 'Unknown';
+    const ram = (navigator as any).deviceMemory
+      ? `${(navigator as any).deviceMemory} GB`
+      : 'Unknown';
+    const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0 ? 'Yes' : 'No';
+    const darkMode =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'Dark'
+        : 'Light';
     const referrer = document.referrer || 'Direct';
     const visibility = document.visibilityState || 'Unknown';
 
@@ -62,11 +67,19 @@ export const trackVisitor = async () => {
     const getDeviceType = () => {
       const ua = navigator.userAgent;
       if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return 'Tablet';
-      if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) return 'Mobile';
+      if (
+        /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+          ua,
+        )
+      )
+        return 'Mobile';
       return 'Desktop';
     };
 
-    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    const connection =
+      (navigator as any).connection ||
+      (navigator as any).mozConnection ||
+      (navigator as any).webkitConnection;
     const sendLog = async (currentBatteryData: string, lat?: string, lon?: string) => {
       const data = {
         os: getOS(),
@@ -85,7 +98,7 @@ export const trackVisitor = async () => {
         visibility: visibility,
         dark_mode: darkMode,
         latitude: lat || storedLat,
-        longitude: lon || storedLon
+        longitude: lon || storedLon,
       };
 
       try {
@@ -101,40 +114,59 @@ export const trackVisitor = async () => {
 
     const getLocationAndSendLog = (battery: string) => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            storedLat = position.coords.latitude.toString();
-            storedLon = position.coords.longitude.toString();
-            sendLog(battery, storedLat, storedLon);
-          },
-          (error) => {
-            console.error('Geolocation error:', error);
-            sendLog(battery);
-          },
-          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-        );
+        const askLocation = () => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              storedLat = position.coords.latitude.toString();
+              storedLon = position.coords.longitude.toString();
+              if (!sessionStorage.getItem('visitor_logged')) {
+                sendLog(battery, storedLat, storedLon);
+                sessionStorage.setItem('visitor_logged', 'true');
+              } else {
+                sendLog(battery, storedLat, storedLon);
+              }
+            },
+            (error) => {
+              console.error('Geolocation error:', error);
+
+              if (!sessionStorage.getItem('visitor_logged')) {
+                sendLog(battery);
+                sessionStorage.setItem('visitor_logged', 'true');
+              }
+
+              if (error.code === error.PERMISSION_DENIED) {
+              }
+
+              if (!storedLat) {
+                setTimeout(askLocation, 3000);
+              }
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
+          );
+        };
+        askLocation();
       } else {
-        sendLog(battery);
+        if (!sessionStorage.getItem('visitor_logged')) {
+          sendLog(battery);
+          sessionStorage.setItem('visitor_logged', 'true');
+        }
       }
     };
 
-
-    if (!sessionStorage.getItem('visitor_logged')) {
+    if (!sessionStorage.getItem('visitor_logged_init')) {
+      sessionStorage.setItem('visitor_logged_init', 'true');
       getLocationAndSendLog(batteryData);
-      sessionStorage.setItem('visitor_logged', 'true');
     }
-
 
     if (batteryObj) {
       const handleBatteryChange = () => {
         const newData = `${Math.round(batteryObj.level * 100)}% ${batteryObj.charging ? '(Charging)' : ''}`;
         sendLog(newData);
       };
-      
+
       batteryObj.addEventListener('levelchange', handleBatteryChange);
       batteryObj.addEventListener('chargingchange', handleBatteryChange);
     }
-
   } catch (error) {
     console.error('Failed to setup visitor tracking', error);
   }

@@ -25,12 +25,48 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
   const { clearCache } = useAppContext();
 
   const settingsItems = [
-    { icon: Bell, label: TEXTS.settings.notifications, sub: TEXTS.settings.notificationsSub, isDanger: false, onClick: undefined },
-    { icon: Lock, label: TEXTS.settings.privacy, sub: TEXTS.settings.privacySub, isDanger: false, onClick: undefined },
-    { icon: Sun, label: TEXTS.settings.theme, sub: TEXTS.settings.themeSub, isDanger: false, onClick: undefined },
-    { icon: Image, label: TEXTS.settings.wallpaper, sub: TEXTS.settings.wallpaperSub, isDanger: false, onClick: undefined },
-    { icon: List, label: TEXTS.settings.requestAccount, sub: '', isDanger: false, onClick: undefined },
-    { icon: HelpCircle, label: TEXTS.settings.help, sub: TEXTS.settings.helpSub, isDanger: false, onClick: undefined },
+    {
+      icon: Bell,
+      label: TEXTS.settings.notifications,
+      sub: TEXTS.settings.notificationsSub,
+      isDanger: false,
+      onClick: undefined,
+    },
+    {
+      icon: Lock,
+      label: TEXTS.settings.privacy,
+      sub: TEXTS.settings.privacySub,
+      isDanger: false,
+      onClick: undefined,
+    },
+    {
+      icon: Sun,
+      label: TEXTS.settings.theme,
+      sub: TEXTS.settings.themeSub,
+      isDanger: false,
+      onClick: undefined,
+    },
+    {
+      icon: Image,
+      label: TEXTS.settings.wallpaper,
+      sub: TEXTS.settings.wallpaperSub,
+      isDanger: false,
+      onClick: undefined,
+    },
+    {
+      icon: List,
+      label: TEXTS.settings.requestAccount,
+      sub: '',
+      isDanger: false,
+      onClick: undefined,
+    },
+    {
+      icon: HelpCircle,
+      label: TEXTS.settings.help,
+      sub: TEXTS.settings.helpSub,
+      isDanger: false,
+      onClick: undefined,
+    },
     { icon: LogOut, label: TEXTS.sidebar.logout, sub: '', isDanger: true, onClick: clearCache },
   ];
 
@@ -89,7 +125,9 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                 <item.icon size={22} />
               </div>
               <div>
-                <div className={`text-[17px] ${item.isDanger ? 'text-[#ea4335] font-medium' : 'text-[#111b21]'}`}>
+                <div
+                  className={`text-[17px] ${item.isDanger ? 'text-[#ea4335] font-medium' : 'text-[#111b21]'}`}
+                >
                   {item.label}
                 </div>
                 {item.sub && <div className="text-[14px] text-[#667781]">{item.sub}</div>}

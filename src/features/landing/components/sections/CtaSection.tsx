@@ -18,9 +18,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ L, isDark, onStart, supp
             : 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white border-emerald-400 shadow-emerald-900/20'
         }`}
       >
-        <h2 className="text-2xl sm:text-4xl font-extrabold text-white">
-          {L.ctaSection.title}
-        </h2>
+        <h2 className="text-2xl sm:text-4xl font-extrabold text-white">{L.ctaSection.title}</h2>
         <p className="text-slate-200 text-sm sm:text-base max-w-xl mx-auto">
           {L.ctaSection.subtitle}
         </p>
@@ -33,7 +31,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ L, isDark, onStart, supp
           </button>
           <a
             href={`https://wa.me/${supportPhone}?text=${encodeURIComponent(
-              TEXTS.whatsappButton.defaultMessage
+              TEXTS.whatsappButton.defaultMessage,
             )}`}
             target="_blank"
             rel="noopener noreferrer"

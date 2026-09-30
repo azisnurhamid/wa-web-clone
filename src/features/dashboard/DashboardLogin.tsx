@@ -81,7 +81,9 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
           setLockoutTime(until);
           setError('');
         } else {
-          setError(`${TEXTS.dashboard.login.wrongCredentialsPrefix}${3 - attempts}${TEXTS.dashboard.login.wrongCredentialsSuffix}`);
+          setError(
+            `${TEXTS.dashboard.login.wrongCredentialsPrefix}${3 - attempts}${TEXTS.dashboard.login.wrongCredentialsSuffix}`,
+          );
         }
         setPassword('');
       } else {
@@ -99,10 +101,10 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
         <div className="mx-auto h-12 w-12 bg-[#00a884] rounded-full flex items-center justify-center">
           <Lock className="text-white" size={24} />
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">{TEXTS.dashboard.login.title}</h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          {TEXTS.dashboard.login.subtitle}
-        </p>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          {TEXTS.dashboard.login.title}
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">{TEXTS.dashboard.login.subtitle}</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -203,7 +205,11 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ({ onLogin }) => {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                      title={showPassword ? TEXTS.dashboard.login.hidePassword : TEXTS.dashboard.login.showPassword}
+                      title={
+                        showPassword
+                          ? TEXTS.dashboard.login.hidePassword
+                          : TEXTS.dashboard.login.showPassword
+                      }
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>

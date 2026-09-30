@@ -223,7 +223,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     : 'bg-gradient-to-r from-slate-900 via-slate-700 to-[#00a884] bg-clip-text text-transparent'
                 }`}
               >
-                {L.brand.name}<span className="text-[#00a884]">{L.brand.tag}</span>
+                {L.brand.name}
+                <span className="text-[#00a884]">{L.brand.tag}</span>
               </span>
               <span className="px-1.5 py-0.5 text-[9px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center gap-1">
                 <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -354,7 +355,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
       <header
         className={`landscape:hidden md:hidden fixed top-0 left-0 right-0 z-40 px-4 py-3 flex items-center justify-between backdrop-blur-md transition-all duration-300 ease-in-out ${
-          isNavVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+          isNavVisible
+            ? 'translate-y-0 opacity-100'
+            : '-translate-y-full opacity-0 pointer-events-none'
         } ${
           isDark
             ? 'bg-[#0b141a]/90 border-b border-emerald-900/30'
@@ -372,7 +375,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 : 'bg-gradient-to-r from-slate-900 via-slate-700 to-[#00a884] bg-clip-text text-transparent'
             }`}
           >
-            {L.brand.name}<span className="text-[#00a884]">{L.brand.tag}</span>
+            {L.brand.name}
+            <span className="text-[#00a884]">{L.brand.tag}</span>
           </span>
         </div>
 
@@ -387,7 +391,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             title={currentLang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
           >
             <Globe className="w-4 h-4 text-cyan-400" />
-            <span className="uppercase tracking-wider font-extrabold">{currentLang === 'id' ? 'ID' : 'EN'}</span>
+            <span className="uppercase tracking-wider font-extrabold">
+              {currentLang === 'id' ? 'ID' : 'EN'}
+            </span>
           </button>
 
           <button
@@ -414,7 +420,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
       <div
         className={`landscape:hidden md:hidden fixed bottom-3 left-3 right-3 z-50 transition-all duration-300 ease-in-out ${
-          isNavVisible ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0 pointer-events-none'
+          isNavVisible
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-24 opacity-0 pointer-events-none'
         }`}
       >
         <nav
@@ -427,7 +435,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <button
             onClick={() => scrollToSection('fitur')}
             className={`flex-1 flex flex-col items-center gap-1 py-1 transition cursor-pointer ${
-              isDark ? 'text-slate-400 hover:text-emerald-400' : 'text-slate-600 hover:text-emerald-600'
+              isDark
+                ? 'text-slate-400 hover:text-emerald-400'
+                : 'text-slate-600 hover:text-emerald-600'
             }`}
           >
             <Sparkles className="w-4 h-4 text-emerald-400" />
@@ -437,7 +447,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <button
             onClick={() => scrollToSection('cara-kerja')}
             className={`flex-1 flex flex-col items-center gap-1 py-1 transition cursor-pointer ${
-              isDark ? 'text-slate-400 hover:text-emerald-400' : 'text-slate-600 hover:text-emerald-600'
+              isDark
+                ? 'text-slate-400 hover:text-emerald-400'
+                : 'text-slate-600 hover:text-emerald-600'
             }`}
           >
             <Zap className="w-4 h-4 text-teal-400" />
@@ -447,7 +459,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <button
             onClick={() => scrollToSection('testimoni')}
             className={`flex-1 flex flex-col items-center gap-1 py-1 transition cursor-pointer ${
-              isDark ? 'text-slate-400 hover:text-emerald-400' : 'text-slate-600 hover:text-emerald-600'
+              isDark
+                ? 'text-slate-400 hover:text-emerald-400'
+                : 'text-slate-600 hover:text-emerald-600'
             }`}
           >
             <Users className="w-4 h-4 text-blue-400" />
@@ -457,7 +471,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <button
             onClick={() => scrollToSection('faq')}
             className={`flex-1 flex flex-col items-center gap-1 py-1 transition cursor-pointer ${
-              isDark ? 'text-slate-400 hover:text-emerald-400' : 'text-slate-600 hover:text-emerald-600'
+              isDark
+                ? 'text-slate-400 hover:text-emerald-400'
+                : 'text-slate-600 hover:text-emerald-600'
             }`}
           >
             <HelpCircle className="w-4 h-4 text-amber-400" />
@@ -629,9 +645,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             </div>
 
             <div
-              className={`p-6 grid md:grid-cols-3 gap-6 ${
-                isDark ? 'bg-[#0b141a]' : 'bg-slate-50'
-              }`}
+              className={`p-6 grid md:grid-cols-3 gap-6 ${isDark ? 'bg-[#0b141a]' : 'bg-slate-50'}`}
             >
               <div
                 className={`p-4 rounded-xl border space-y-3 ${
@@ -646,9 +660,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                   <div className="flex items-center gap-2">
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                     <span
-                      className={`text-xs font-bold ${
-                        isDark ? 'text-white' : 'text-slate-800'
-                      }`}
+                      className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}
                     >
                       {L.preview.chatIntercept.title}
                     </span>
@@ -699,14 +711,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-blue-400" />
                     <span
-                      className={`text-xs font-bold ${
-                        isDark ? 'text-white' : 'text-slate-800'
-                      }`}
+                      className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}
                     >
                       {L.preview.gpsTrack.title}
                     </span>
                   </div>
-                  <span className="text-[10px] text-emerald-400 font-mono">{L.preview.gpsTrack.accuracy}</span>
+                  <span className="text-[10px] text-emerald-400 font-mono">
+                    {L.preview.gpsTrack.accuracy}
+                  </span>
                 </div>
                 <div
                   className={`p-3 rounded-lg border space-y-2 ${
@@ -721,9 +733,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                     <span className="font-semibold">{L.preview.gpsTrack.location}</span>
                   </div>
-                  <p className="text-[11px] text-slate-400">
-                    {L.preview.gpsTrack.coords}
-                  </p>
+                  <p className="text-[11px] text-slate-400">{L.preview.gpsTrack.coords}</p>
                   <div
                     className={`h-16 rounded border flex items-center justify-center text-xs ${
                       isDark
@@ -749,9 +759,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                   <div className="flex items-center gap-2">
                     <PhoneCall className="w-4 h-4 text-amber-400" />
                     <span
-                      className={`text-xs font-bold ${
-                        isDark ? 'text-white' : 'text-slate-800'
-                      }`}
+                      className={`text-xs font-bold ${isDark ? 'text-white' : 'text-slate-800'}`}
                     >
                       {L.preview.callMedia.title}
                     </span>
@@ -768,13 +776,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                       <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                       <div>
                         <p
-                          className={`font-medium ${
-                            isDark ? 'text-slate-200' : 'text-slate-800'
-                          }`}
+                          className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-800'}`}
                         >
                           {L.preview.callMedia.callType}
                         </p>
-                        <p className="text-[10px] text-slate-400">{L.preview.callMedia.callDuration}</p>
+                        <p className="text-[10px] text-slate-400">
+                          {L.preview.callMedia.callDuration}
+                        </p>
                       </div>
                     </div>
                     <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono">
@@ -790,13 +798,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                       <ImageIcon className="w-3.5 h-3.5 text-purple-400" />
                       <div>
                         <p
-                          className={`font-medium ${
-                            isDark ? 'text-slate-200' : 'text-slate-800'
-                          }`}
+                          className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-800'}`}
                         >
                           {L.preview.callMedia.mediaTitle}
                         </p>
-                        <p className="text-[10px] text-slate-400">{L.preview.callMedia.mediaCount}</p>
+                        <p className="text-[10px] text-slate-400">
+                          {L.preview.callMedia.mediaCount}
+                        </p>
                       </div>
                     </div>
                     <span className="text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded font-mono">
@@ -851,9 +859,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     <IconComp className="w-6 h-6 text-white" />
                   </div>
                   <h3
-                    className={`text-lg font-bold mb-2 ${
-                      isDark ? 'text-white' : 'text-slate-900'
-                    }`}
+                    className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}
                   >
                     {item.title}
                   </h3>
@@ -959,11 +965,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                       <span key={r}>★</span>
                     ))}
                   </div>
-                  <p
-                    className={`text-sm italic ${
-                      isDark ? 'text-slate-300' : 'text-slate-700'
-                    }`}
-                  >
+                  <p className={`text-sm italic ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                     "{t.comment}"
                   </p>
                 </div>
@@ -973,11 +975,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                   }`}
                 >
                   <div>
-                    <p
-                      className={`text-sm font-bold ${
-                        isDark ? 'text-white' : 'text-slate-900'
-                      }`}
-                    >
+                    <p className={`text-sm font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                       {t.name}
                     </p>
                     <p className="text-xs text-emerald-500 font-medium">{t.role}</p>
@@ -990,7 +988,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </div>
       </section>
 
-      <FaqSection L={L} faqs={faqs} isDark={isDark} activeFaq={activeFaq} setActiveFaq={setActiveFaq} />
+      <FaqSection
+        L={L}
+        faqs={faqs}
+        isDark={isDark}
+        activeFaq={activeFaq}
+        setActiveFaq={setActiveFaq}
+      />
       <CtaSection L={L} isDark={isDark} onStart={() => onStart()} supportPhone={supportPhone} />
       <FooterSection L={L} isDark={isDark} scrollToSection={scrollToSection} />
     </div>
