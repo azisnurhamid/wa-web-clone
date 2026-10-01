@@ -41,7 +41,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
   const [selectedMethod, setSelectedMethod] = useState<any>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [fetchedAmount, setFetchedAmount] = useState<number | null>(null);
+  const [fetchedAmount, setFetchedAmount] = useState<number | null>(() => {
+    const cached = localStorage.getItem(STORAGE_KEYS.PRICE);
+    return cached ? parseInt(cached, 10) : null;
+  });
   const [fetchedSupportPhone, setFetchedSupportPhone] = useState<string | null>(null);
 
   const amount = propAmount ?? fetchedAmount ?? parseInt((APP_CONFIG as any).price || '300000', 10);
@@ -64,6 +67,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
       icon: getIcon(method.icon, `w-5 h-5 ${method.iconColor}`),
     }))
     .filter((method: any) => method.options.length > 0);
+
+  const totalOptionsCount = PAYMENT_METHODS.reduce((acc: number, cat: any) => acc + cat.options.length, 0);
 
   useEffect(() => {
     if (isOpen) {
@@ -174,7 +179,17 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
               <div className="flex flex-col gap-3">
                 <button
                   className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white font-medium py-3 rounded-xl transition-colors shadow-sm"
-                  onClick={() => setStep('method')}
+                  onClick={() => {
+                    if (totalOptionsCount === 1) {
+                      const onlyOption = PAYMENT_METHODS.find((cat: any) => cat.options.length > 0)?.options[0];
+                      if (onlyOption) {
+                        setSelectedMethod(onlyOption);
+                        setStep('detail');
+                      }
+                    } else {
+                      setStep('method');
+                    }
+                  }}
                 >
                   {paymentConfig.text.summary.buttonSelect}
                 </button>
@@ -287,7 +302,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
           <>
             <div className="bg-white p-4 flex items-center gap-3 border-b border-gray-100 shrink-0 sticky top-0 z-10">
               <button
-                onClick={() => setStep('method')}
+                onClick={() => {
+                  if (totalOptionsCount === 1) {
+                    setStep('summary');
+                  } else {
+                    setStep('method');
+                  }
+                }}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
