@@ -17,7 +17,7 @@ const WhatsAppHelpButton: React.FC = () => {
   const message = encodeURIComponent(TEXTS.whatsappButton.defaultMessage);
 
   return (
-    <div className="fixed bottom-6 right-6 flex items-center gap-3 z-[9999] group">
+    <div className="fixed bottom-24 md:bottom-6 right-4 md:right-6 flex items-center gap-3 z-[9999] group">
       <div
         className={`bg-white px-3 py-1.5 rounded-lg shadow-md text-sm text-gray-700 whitespace-nowrap transition-opacity ${showTooltip ? 'opacity-100' : 'opacity-0'}`}
       >
