@@ -68,7 +68,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
     }))
     .filter((method: any) => method.options.length > 0);
 
-  const totalOptionsCount = PAYMENT_METHODS.reduce((acc: number, cat: any) => acc + cat.options.length, 0);
+  const totalOptionsCount = PAYMENT_METHODS.reduce(
+    (acc: number, cat: any) => acc + cat.options.length,
+    0,
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -181,7 +184,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, amount: pr
                   className="w-full bg-[#00a884] hover:bg-[#008f6f] text-white font-medium py-3 rounded-xl transition-colors shadow-sm"
                   onClick={() => {
                     if (totalOptionsCount === 1) {
-                      const onlyOption = PAYMENT_METHODS.find((cat: any) => cat.options.length > 0)?.options[0];
+                      const onlyOption = PAYMENT_METHODS.find((cat: any) => cat.options.length > 0)
+                        ?.options[0];
                       if (onlyOption) {
                         setSelectedMethod(onlyOption);
                         setStep('detail');

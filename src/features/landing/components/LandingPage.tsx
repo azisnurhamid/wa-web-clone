@@ -200,6 +200,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       />
 
       <aside
+        onMouseEnter={() => document.body.classList.add('sidebar-expanded')}
+        onMouseLeave={() => document.body.classList.remove('sidebar-expanded')}
         className={`hidden landscape:flex md:flex flex-col fixed left-0 top-0 h-screen z-50 w-16 hover:w-64 transition-all duration-300 ease-in-out group overflow-hidden ${
           isDark
             ? 'bg-[#0b141a]/95 backdrop-blur-xl border-r border-emerald-900/40 shadow-2xl'
